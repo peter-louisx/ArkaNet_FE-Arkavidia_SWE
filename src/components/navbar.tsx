@@ -131,9 +131,6 @@ export default function Navbar() {
                     </div>
                     <div>
                       <h3 className="font-semibold">John Doe</h3>
-                      <p className="text-sm text-muted-foreground">
-                        View your profile
-                      </p>
                     </div>
                   </div>
                 </div>
@@ -153,7 +150,7 @@ export default function Navbar() {
                     </h4>
                     <div className="space-y-1">
                       <MobileNavItem icon={<User />} label="View Profile" />
-                      <MobileNavItem icon={<Settings />} label="Settings" />
+
                       <MobileNavItem icon={<LogOut />} label="Sign Out" />
                     </div>
                   </div>
