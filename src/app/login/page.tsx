@@ -44,6 +44,7 @@ export default function Page() {
             height={570}
             alt="Professional networking"
             className="object-cover rounded-lg"
+            priority
           />
         </div>
       </div>
