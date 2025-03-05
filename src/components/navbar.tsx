@@ -14,7 +14,17 @@ import {
   LogOut,
   Menu,
 } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export default function Navbar() {
   return (
@@ -37,21 +47,61 @@ export default function Navbar() {
           <NavItem icon={<Users />} label="Network" />
           <NavItem icon={<MessageSquare />} label="Messaging" />
           <NavItem icon={<Bell />} label="Notifications" />
-          <div className="flex flex-col items-center px-3 py-1 hover:bg-muted rounded-md cursor-pointer">
-            <div className="w-6 h-6 rounded-full bg-muted-foreground/20 overflow-hidden">
-              <Image
-                src="https://img.freepik.com/free-photo/young-adult-man-wearing-hoodie-beanie_23-2149393636.jpg"
-                width={24}
-                height={24}
-                alt="Profile"
-                className="object-cover"
-              />
-            </div>
-            <div className="flex items-center text-xs">
-              <span>Me</span>
-              <ChevronDown className="h-3 w-3" />
-            </div>
-          </div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <div className="flex flex-col items-center px-3 py-1 hover:bg-muted rounded-md cursor-pointer">
+                <div className="w-6 h-6 rounded-full bg-muted-foreground/20 overflow-hidden">
+                  <Image
+                    src="https://img.freepik.com/free-photo/young-adult-man-wearing-hoodie-beanie_23-2149393636.jpg"
+                    width={24}
+                    height={24}
+                    alt="Profile"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex items-center text-xs">
+                  <span>Me</span>
+                  <ChevronDown className="h-3 w-3" />
+                </div>
+              </div>
+            </PopoverTrigger>
+            <PopoverContent className="w-56 p-0" align="end">
+              <div className="p-3 border-b">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 overflow-hidden">
+                    <Image
+                      src="https://img.freepik.com/free-photo/young-adult-man-wearing-hoodie-beanie_23-2149393636.jpg"
+                      width={40}
+                      height={40}
+                      alt="Profile"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-sm">John Doe</h3>
+                    <p className="text-xs text-muted-foreground">
+                      Software Developer
+                    </p>
+                  </div>
+                </div>
+                <Button variant="outline" size="sm" className="w-full mt-2">
+                  View Profile
+                </Button>
+              </div>
+
+              <div className="py-2 border-t">
+                <Link
+                  href="#"
+                  className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted"
+                >
+                  <span className="text-muted-foreground">
+                    <LogOut className="h-4 w-4" />
+                  </span>
+                  <span>Sign Out</span>
+                </Link>
+              </div>
+            </PopoverContent>
+          </Popover>
         </nav>
         <div className="flex items-center gap-2 md:hidden">
           <Button variant="ghost" size="icon">
@@ -65,6 +115,7 @@ export default function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-[80%] sm:w-[350px] p-0">
+              <SheetTitle></SheetTitle>
               <div className="flex flex-col h-full">
                 {/* Mobile Sidebar Header */}
                 <div className="border-b p-4">
@@ -139,6 +190,24 @@ function MobileNavItem({
     >
       <div className="text-muted-foreground">{icon}</div>
       <span className="font-medium">{label}</span>
+    </Link>
+  );
+}
+
+function PopoverMenuItem({
+  icon,
+  label,
+}: {
+  icon: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <Link
+      href="#"
+      className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted"
+    >
+      <span className="text-muted-foreground">{icon}</span>
+      <span>{label}</span>
     </Link>
   );
 }

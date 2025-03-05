@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Briefcase, Users, MessageSquare } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -17,9 +18,12 @@ export default function Home() {
               career with the world's largest professional network.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="px-8">
-                Join now
-              </Button>
+              <Link
+                href="/login"
+                className="bg-primary text-white px-8 py-3 rounded-lg"
+              >
+                Join Now
+              </Link>
             </div>
           </div>
           <div className=" md:block">
@@ -121,6 +125,7 @@ export default function Home() {
             <Button size="lg" className="px-8">
               Join now
             </Button>
+
             <Button size="lg" variant="outline" className="px-8">
               Sign in
             </Button>
