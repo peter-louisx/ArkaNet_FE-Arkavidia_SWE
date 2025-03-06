@@ -16,7 +16,7 @@ export default function Navbar() {
           <SearchBar />
         </div>
         <nav className="hidden md:flex items-center gap-1">
-          <NavItem icon={<Briefcase />} label="Jobs" />
+          <NavItem icon={<Briefcase />} label="Jobs" href="/jobs" />
           <NavItem icon={<Users />} label="Network" />
           <NavItem icon={<MessageSquare />} label="Messaging" />
           <NavItem icon={<Bell />} label="Notifications" />
@@ -34,11 +34,21 @@ export default function Navbar() {
   );
 }
 
-function NavItem({ icon, label }: { icon: React.ReactNode; label: string }) {
+function NavItem({
+  icon,
+  label,
+  href,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  href?: string;
+}) {
   return (
-    <div className="flex flex-col items-center px-3 py-1 hover:bg-muted rounded-md cursor-pointer">
-      {icon}
-      <span className="text-xs">{label}</span>
-    </div>
+    <Link href={href || "#"}>
+      <div className="flex flex-col items-center px-3 py-1 hover:bg-muted rounded-md cursor-pointer">
+        {icon}
+        <span className="text-xs">{label}</span>
+      </div>
+    </Link>
   );
 }

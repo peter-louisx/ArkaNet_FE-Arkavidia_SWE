@@ -17,10 +17,12 @@ export default function Footer() {
             <FooterColumn
               title="General"
               links={["Sign Up", "Help Center", "About"]}
+              hrefs={["/signup", "#", "#"]}
             />
             <FooterColumn
               title="Browse"
-              links={["Jobs", "Companies", "People"]}
+              links={["Jobs", "People"]}
+              hrefs={["/jobs", "#"]}
             />
           </div>
         </div>
@@ -29,7 +31,15 @@ export default function Footer() {
   );
 }
 
-function FooterColumn({ title, links }: { title: string; links: string[] }) {
+function FooterColumn({
+  title,
+  links,
+  hrefs,
+}: {
+  title: string;
+  links: string[];
+  hrefs: string[];
+}) {
   return (
     <div>
       <h3 className="font-semibold mb-3">{title}</h3>
@@ -37,7 +47,7 @@ function FooterColumn({ title, links }: { title: string; links: string[] }) {
         {links.map((link, i) => (
           <li key={i}>
             <Link
-              href="#"
+              href={hrefs[i]}
               className="text-sm text-muted-foreground hover:text-primary hover:underline"
             >
               {link}

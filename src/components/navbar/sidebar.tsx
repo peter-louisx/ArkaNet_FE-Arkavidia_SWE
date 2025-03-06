@@ -56,7 +56,7 @@ export default function Sidebar() {
           {/* Mobile Navigation Items */}
           <div className="flex-1 overflow-auto py-2">
             <div className="px-2 space-y-1">
-              <MobileNavItem icon={<Briefcase />} label="Jobs" />
+              <MobileNavItem icon={<Briefcase />} label="Jobs" href="/jobs" />
               <MobileNavItem icon={<Users />} label="My Network" />
               <MobileNavItem icon={<MessageSquare />} label="Messaging" />
               <MobileNavItem icon={<Bell />} label="Notifications" />
@@ -81,13 +81,15 @@ export default function Sidebar() {
 function MobileNavItem({
   icon,
   label,
+  href,
 }: {
   icon: React.ReactNode;
   label: string;
+  href?: string;
 }) {
   return (
     <Link
-      href="#"
+      href={href || "#"}
       className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-muted"
     >
       <div className="text-muted-foreground">{icon}</div>
