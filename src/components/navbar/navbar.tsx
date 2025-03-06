@@ -1,0 +1,44 @@
+import Link from "next/link";
+import { Button } from "../ui/button";
+import { Briefcase, Users, MessageSquare, Bell, Search } from "lucide-react";
+import Sidebar from "./sidebar";
+import Profile from "./profile-dropdown";
+import SearchBar from "./search-bar";
+
+export default function Navbar() {
+  return (
+    <header className="border-b sticky top-0 z-10 bg-white">
+      <div className="container mx-auto px-4 py-2 flex items-center justify-between">
+        <div className="flex items-center gap-4 flex-1">
+          <Link href="/" className="text-2xl font-bold text-primary">
+            ArkaNet
+          </Link>
+          <SearchBar />
+        </div>
+        <nav className="hidden md:flex items-center gap-1">
+          <NavItem icon={<Briefcase />} label="Jobs" />
+          <NavItem icon={<Users />} label="Network" />
+          <NavItem icon={<MessageSquare />} label="Messaging" />
+          <NavItem icon={<Bell />} label="Notifications" />
+          <Profile />
+        </nav>
+
+        <div className="flex items-center gap-2 md:hidden">
+          <Button variant="ghost" size="icon">
+            <Search className="h-5 w-5" />
+          </Button>
+          <Sidebar />
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function NavItem({ icon, label }: { icon: React.ReactNode; label: string }) {
+  return (
+    <div className="flex flex-col items-center px-3 py-1 hover:bg-muted rounded-md cursor-pointer">
+      {icon}
+      <span className="text-xs">{label}</span>
+    </div>
+  );
+}
