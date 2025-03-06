@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary/10 to-primary/5 py-12 md:py-20">
+      <section className="bg-gradient-to-r from-primary/10 to-primary/5 py-12 md:py-28">
         <div className="container mx-auto px-14 grid md:grid-cols-2 gap-8 items-center">
           <div className="space-y-6">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900">
@@ -79,7 +79,7 @@ export default function Home() {
                       width={48}
                       height={48}
                       alt={`User ${i}`}
-                      className="object-cover"
+                      className="object-cover h-full"
                     />
                   </div>
                   <div>

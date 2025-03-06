@@ -16,19 +16,11 @@ export default function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <FooterColumn
               title="General"
-              links={["Sign Up", "Help Center", "About", "Press"]}
+              links={["Sign Up", "Help Center", "About"]}
             />
             <FooterColumn
               title="Browse"
-              links={["Jobs", "Companies", "People", "Learning"]}
-            />
-            <FooterColumn
-              title="Business"
-              links={["Talent", "Marketing", "Sales", "Learning"]}
-            />
-            <FooterColumn
-              title="Directories"
-              links={["Members", "Jobs", "Companies", "Featured"]}
+              links={["Jobs", "Companies", "People"]}
             />
           </div>
         </div>

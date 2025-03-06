@@ -7,6 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import Logout from "./logout";
 
 export default function Profile() {
   return (
@@ -19,7 +20,7 @@ export default function Profile() {
               width={24}
               height={24}
               alt="Profile"
-              className="object-cover"
+              className="object-cover h-full"
               priority
             />
           </div>
@@ -38,7 +39,7 @@ export default function Profile() {
                 width={40}
                 height={40}
                 alt="Profile"
-                className="object-cover"
+                className="object-cover h-full"
                 priority
               />
             </div>
@@ -49,21 +50,18 @@ export default function Profile() {
               </p>
             </div>
           </div>
-          <Button variant="outline" size="sm" className="w-full mt-2">
-            View Profile
-          </Button>
+          <div className="mt-2 flex justify-center px-2">
+            <Link
+              href={"/seeker/afdsfds"}
+              className="w-full mt-2 border rounded-md p-1 text-md text-center shadow-sm hover:bg-muted bg-white"
+            >
+              View Profile
+            </Link>
+          </div>
         </div>
 
         <div className="py-2 border-t">
-          <Link
-            href="#"
-            className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted"
-          >
-            <span className="text-muted-foreground">
-              <LogOut className="h-4 w-4" />
-            </span>
-            <span>Sign Out</span>
-          </Link>
+          <Logout />
         </div>
       </PopoverContent>
     </Popover>

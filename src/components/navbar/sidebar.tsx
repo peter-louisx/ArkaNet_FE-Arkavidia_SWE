@@ -20,11 +20,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import Logout from "./logout";
 
 export default function Sidebar() {
   return (
@@ -47,7 +43,7 @@ export default function Sidebar() {
                   width={48}
                   height={48}
                   alt="Profile"
-                  className="object-cover"
+                  className="object-cover h-full"
                   priority
                 />
               </div>
@@ -72,8 +68,7 @@ export default function Sidebar() {
               </h4>
               <div className="space-y-1">
                 <MobileNavItem icon={<User />} label="View Profile" />
-
-                <MobileNavItem icon={<LogOut />} label="Sign Out" />
+                <Logout />
               </div>
             </div>
           </div>

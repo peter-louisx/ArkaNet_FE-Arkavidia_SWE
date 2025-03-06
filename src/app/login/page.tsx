@@ -18,14 +18,14 @@ export default function Page() {
             <div className="relative">
               <Input placeholder="Password" type="password" className="h-12" />
             </div>
-            <div className="flex items-center justify-between">
+            {/* <div className="flex items-center justify-between">
               <Link
                 href="#"
                 className="text-sm text-primary font-medium hover:underline"
               >
                 Forgot password?
               </Link>
-            </div>
+            </div> */}
             <Button className="w-full h-12 text-base">Sign in</Button>
             <div className="relative flex items-center gap-4 py-2">
               <div className="flex-1 border-t"></div>
