@@ -32,4 +32,4 @@ jobs:
             docker stop arkavidia-final-project-frontend
             docker rm arkavidia-final-project-frontend
             docker run -d -p 3000:3000 --name arkavidia-final-project-frontend ${{ secrets.DOCKER_USERNAME }}/arkavidia-final-project-frontend:latest
-            docker image prune
+            docker image prune -f
