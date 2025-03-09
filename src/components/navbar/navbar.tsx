@@ -13,7 +13,7 @@ export default function Navbar() {
           <Link href="/" className="text-2xl font-bold text-primary">
             ArkaNet
           </Link>
-          <SearchBar />
+          {/* <SearchBar /> */}
         </div>
         <nav className="hidden md:flex items-center gap-1">
           <NavItem icon={<Briefcase />} label="Jobs" href="/jobs" />

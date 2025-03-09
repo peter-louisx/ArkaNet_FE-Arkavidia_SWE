@@ -245,7 +245,7 @@ export default function CompanyJobs({
                 </DialogDescription>
               </DialogHeader>
               {currentJob && (
-                <div className="grid gap-4 py-4 overflow-y-auto pr-1">
+                <div className="grid gap-4 py-4 overflow-y-auto pr-4">
                   <div className="grid gap-2">
                     <Label htmlFor="title">Job Title</Label>
                     <Input
@@ -394,6 +394,7 @@ export default function CompanyJobs({
           {/* Applications Dialog */}
           <Dialog open={showApplications} onOpenChange={setShowApplications}>
             <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-hidden flex flex-col">
+              
               <DialogHeader>
                 <DialogTitle>
                   Applications for{" "}
