@@ -7,7 +7,6 @@ import {
   Clock,
   DollarSign,
   Edit,
-  Expand,
   MapPin,
   Plus,
   Search,
@@ -46,16 +45,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
-
-const jobTypes = [
-  "Full-time",
-  "Part-time",
-  "Contract",
-  "Internship",
-  "Temporary",
-];
-
-const experienceLevels = ["Entry Level", "Mid Level", "Senior Level"];
+import { experienceLevels, jobTypes } from "@/lib/jobs-filters";
 
 export default function CompanyJobs({
   jobsData,

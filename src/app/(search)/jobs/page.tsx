@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Briefcase, Filter, MapPin, Search } from "lucide-react";
+import { Briefcase, Filter, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -29,7 +29,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import JobCard from "@/components/jobs/job-card";
-import exp from "constants";
+import { jobTypes, experienceLevels, datePosted } from "@/lib/jobs-filters";
 
 // Mock job data
 const jobListings = [
@@ -146,17 +146,6 @@ const jobListings = [
     skills: ["JavaScript", "React", "Node.js", "MongoDB"],
   },
 ];
-
-// Filter options
-const jobTypes = [
-  "Full-time",
-  "Part-time",
-  "Contract",
-  "Internship",
-  "Temporary",
-];
-const experienceLevels = ["Entry Level", "Mid Level", "Senior Level"];
-const datePosted = ["Past 24 hours", "Past week", "Past month", "Any time"];
 
 // Combined Filters Component
 function JobFilters({
