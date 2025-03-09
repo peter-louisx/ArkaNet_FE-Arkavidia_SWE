@@ -8,4 +8,4 @@ export const jobTypes = [
   "Temporary",
 ];
 
-export const datePosted = ["Past 24 hours", "Past week", "Past month", "Any time"];
+export const datePosted = ["Past 24 hours", "Past week", "Past month"];
