@@ -49,6 +49,7 @@ import { experienceLevels, jobTypes } from "@/lib/jobs-filters";
 
 export default function CompanyJobs({
   jobsData,
+  allowEdit = false,
 }: {
   jobsData: {
     id: number;
@@ -72,6 +73,7 @@ export default function CompanyJobs({
       status: string;
     }[];
   }[];
+  allowEdit?: boolean;
 }) {
   // Jobs state
   const [jobs, setJobs] = useState(jobsData);
@@ -176,10 +178,12 @@ export default function CompanyJobs({
               Manage job listings and applications
             </CardDescription>
           </div>
-          <Button onClick={addNewJob} variant="outline" size="sm">
-            <Plus className="h-4 w-4 mr-2" />
-            Add Job
-          </Button>
+          {allowEdit && (
+            <Button onClick={addNewJob} variant="outline" size="sm">
+              <Plus className="h-4 w-4 mr-2" />
+              Add Job
+            </Button>
+          )}
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -220,6 +224,7 @@ export default function CompanyJobs({
                     onEdit={() => editJob(job)}
                     onDelete={() => deleteJob(job.id)}
                     onViewApplications={() => viewApplications(job.id)}
+                    allowEdit={allowEdit}
                   />
                 ))
               )}
@@ -228,250 +233,264 @@ export default function CompanyJobs({
         </CardContent>
       </Card>
 
-      {/* Job Edit Dialog */}
-      <Dialog open={isEditingJob} onOpenChange={setIsEditingJob}>
-        <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-hidden flex flex-col">
-          <DialogHeader>
-            <DialogTitle>{currentJob?.id ? "Edit Job" : "Add Job"}</DialogTitle>
-            <DialogDescription>
-              Create or update job listing details
-            </DialogDescription>
-          </DialogHeader>
-          {currentJob && (
-            <div className="grid gap-4 py-4 overflow-y-auto pr-1">
-              <div className="grid gap-2">
-                <Label htmlFor="title">Job Title</Label>
-                <Input
-                  id="title"
-                  value={currentJob.title}
-                  onChange={(e) =>
-                    setCurrentJob({ ...currentJob, title: e.target.value })
-                  }
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="location">Location</Label>
-                <Input
-                  id="location"
-                  value={currentJob.location}
-                  onChange={(e) =>
-                    setCurrentJob({ ...currentJob, location: e.target.value })
-                  }
-                />
-              </div>
-              <div className="grid gap-2 ">
-                <Label htmlFor="type">Job Type</Label>
-                <Select
-                  value={currentJob.type}
-                  onValueChange={(value) =>
-                    setCurrentJob({ ...currentJob, type: value })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select job type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {jobTypes.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {type}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid gap-2 ">
-                <Label htmlFor="type">Experience Level</Label>
-                <Select
-                  value={currentJob.experience}
-                  onValueChange={(value) =>
-                    setCurrentJob({ ...currentJob, experience: value })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select experience level" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {experienceLevels.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {type}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="salary">Salary Range</Label>
-                <Input
-                  id="salary"
-                  value={currentJob.salary}
-                  onChange={(e) =>
-                    setCurrentJob({ ...currentJob, salary: e.target.value })
-                  }
-                  placeholder="e.g., $80,000 - $100,000"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="description">Job Description</Label>
-                <Textarea
-                  id="description"
-                  value={currentJob.description}
-                  onChange={(e) =>
-                    setCurrentJob({
-                      ...currentJob,
-                      description: e.target.value,
-                    })
-                  }
-                  className="min-h-[150px]"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="skills">Required Skills</Label>
-                <div className="flex flex-wrap gap-2 mb-2">
-                  {currentJob.skills.map((skill: string, index: number) => (
-                    <Badge
-                      key={index}
-                      variant="secondary"
-                      className="group py-1.5 px-3"
-                    >
-                      {skill}
-                      <button
-                        onClick={() => {
-                          const updatedSkills = [...currentJob.skills];
-                          updatedSkills.splice(index, 1);
-                          setCurrentJob({
-                            ...currentJob,
-                            skills: updatedSkills,
-                          });
-                        }}
-                        className="ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </Badge>
-                  ))}
-                </div>
-                <div className="flex gap-2">
-                  <Input
-                    id="newSkill"
-                    placeholder="Add a required skill"
-                    value={newSkillName}
-                    onChange={(e) => setNewSkillName(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        addSkill();
+      {allowEdit && (
+        <>
+          {" "}
+          {/* Job Edit Dialog */}
+          <Dialog open={isEditingJob} onOpenChange={setIsEditingJob}>
+            <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-hidden flex flex-col">
+              <DialogHeader>
+                <DialogTitle>
+                  {currentJob?.id ? "Edit Job" : "Add Job"}
+                </DialogTitle>
+                <DialogDescription>
+                  Create or update job listing details
+                </DialogDescription>
+              </DialogHeader>
+              {currentJob && (
+                <div className="grid gap-4 py-4 overflow-y-auto pr-1">
+                  <div className="grid gap-2">
+                    <Label htmlFor="title">Job Title</Label>
+                    <Input
+                      id="title"
+                      value={currentJob.title}
+                      onChange={(e) =>
+                        setCurrentJob({ ...currentJob, title: e.target.value })
                       }
-                    }}
-                  />
-                  <Button type="button" onClick={addSkill}>
-                    Add
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEditingJob(false)}>
-              Cancel
-            </Button>
-            <Button onClick={saveJob}>Save</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Applications Dialog */}
-      <Dialog open={showApplications} onOpenChange={setShowApplications}>
-        <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-hidden flex flex-col">
-          <DialogHeader>
-            <DialogTitle>
-              Applications for{" "}
-              {jobs.find((job) => job.id === selectedJobId)?.title}
-            </DialogTitle>
-            <DialogDescription>
-              Review and manage candidate applications
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-4 overflow-y-auto pr-1">
-            {jobApplications.length === 0 ? (
-              <div className="text-center py-8">
-                <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium mb-2">
-                  No applications yet
-                </h3>
-                <p className="text-muted-foreground">
-                  There are no applications for this job posting yet.
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <Tabs defaultValue="all">
-                  <TabsList className="mb-4">
-                    <TabsTrigger value="all">
-                      All ({jobApplications.length})
-                    </TabsTrigger>
-                    <TabsTrigger value="review">Under Review</TabsTrigger>
-                    <TabsTrigger value="interview">Interview</TabsTrigger>
-                    <TabsTrigger value="rejected">Rejected</TabsTrigger>
-                  </TabsList>
-
-                  <TabsContent value="all" className="space-y-4">
-                    {jobApplications.map((application) => (
-                      <ApplicationCard
-                        key={application.id}
-                        application={application}
-                        changeApplicationStatus={changeApplicationStatus}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="location">Location</Label>
+                    <Input
+                      id="location"
+                      value={currentJob.location}
+                      onChange={(e) =>
+                        setCurrentJob({
+                          ...currentJob,
+                          location: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="grid gap-2 ">
+                    <Label htmlFor="type">Job Type</Label>
+                    <Select
+                      value={currentJob.type}
+                      onValueChange={(value) =>
+                        setCurrentJob({ ...currentJob, type: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select job type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {jobTypes.map((type) => (
+                          <SelectItem key={type} value={type}>
+                            {type}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid gap-2 ">
+                    <Label htmlFor="type">Experience Level</Label>
+                    <Select
+                      value={currentJob.experience}
+                      onValueChange={(value) =>
+                        setCurrentJob({ ...currentJob, experience: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select experience level" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {experienceLevels.map((type) => (
+                          <SelectItem key={type} value={type}>
+                            {type}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="salary">Salary Range</Label>
+                    <Input
+                      id="salary"
+                      value={currentJob.salary}
+                      onChange={(e) =>
+                        setCurrentJob({ ...currentJob, salary: e.target.value })
+                      }
+                      placeholder="e.g., $80,000 - $100,000"
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="description">Job Description</Label>
+                    <Textarea
+                      id="description"
+                      value={currentJob.description}
+                      onChange={(e) =>
+                        setCurrentJob({
+                          ...currentJob,
+                          description: e.target.value,
+                        })
+                      }
+                      className="min-h-[150px]"
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="skills">Required Skills</Label>
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {currentJob.skills.map((skill: string, index: number) => (
+                        <Badge
+                          key={index}
+                          variant="secondary"
+                          className="group py-1.5 px-3"
+                        >
+                          {skill}
+                          <button
+                            onClick={() => {
+                              const updatedSkills = [...currentJob.skills];
+                              updatedSkills.splice(index, 1);
+                              setCurrentJob({
+                                ...currentJob,
+                                skills: updatedSkills,
+                              });
+                            }}
+                            className="ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </Badge>
+                      ))}
+                    </div>
+                    <div className="flex gap-2">
+                      <Input
+                        id="newSkill"
+                        placeholder="Add a required skill"
+                        value={newSkillName}
+                        onChange={(e) => setNewSkillName(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            addSkill();
+                          }
+                        }}
                       />
-                    ))}
-                  </TabsContent>
+                      <Button type="button" onClick={addSkill}>
+                        Add
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsEditingJob(false)}
+                >
+                  Cancel
+                </Button>
+                <Button onClick={saveJob}>Save</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+          {/* Applications Dialog */}
+          <Dialog open={showApplications} onOpenChange={setShowApplications}>
+            <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-hidden flex flex-col">
+              <DialogHeader>
+                <DialogTitle>
+                  Applications for{" "}
+                  {jobs.find((job) => job.id === selectedJobId)?.title}
+                </DialogTitle>
+                <DialogDescription>
+                  Review and manage candidate applications
+                </DialogDescription>
+              </DialogHeader>
+              <div className="py-4 overflow-y-auto pr-1">
+                {jobApplications.length === 0 ? (
+                  <div className="text-center py-8">
+                    <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                    <h3 className="text-lg font-medium mb-2">
+                      No applications yet
+                    </h3>
+                    <p className="text-muted-foreground">
+                      There are no applications for this job posting yet.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <Tabs defaultValue="all">
+                      <TabsList className="mb-4">
+                        <TabsTrigger value="all">
+                          All ({jobApplications.length})
+                        </TabsTrigger>
+                        <TabsTrigger value="review">Under Review</TabsTrigger>
+                        <TabsTrigger value="interview">Interview</TabsTrigger>
+                        <TabsTrigger value="rejected">Rejected</TabsTrigger>
+                      </TabsList>
 
-                  <TabsContent value="review" className="space-y-4">
-                    {jobApplications
-                      .filter((app) => app.status === "Under Review")
-                      .map((application) => (
-                        <ApplicationCard
-                          key={application.id}
-                          application={application}
-                          changeApplicationStatus={changeApplicationStatus}
-                        />
-                      ))}
-                  </TabsContent>
+                      <TabsContent value="all" className="space-y-4">
+                        {jobApplications.map((application) => (
+                          <ApplicationCard
+                            key={application.id}
+                            application={application}
+                            changeApplicationStatus={changeApplicationStatus}
+                          />
+                        ))}
+                      </TabsContent>
 
-                  <TabsContent value="interview" className="space-y-4">
-                    {jobApplications
-                      .filter(
-                        (app) =>
-                          app.status === "Interview Scheduled" ||
-                          app.status === "Screening"
-                      )
-                      .map((application) => (
-                        <ApplicationCard
-                          key={application.id}
-                          application={application}
-                          changeApplicationStatus={changeApplicationStatus}
-                        />
-                      ))}
-                  </TabsContent>
+                      <TabsContent value="review" className="space-y-4">
+                        {jobApplications
+                          .filter((app) => app.status === "Under Review")
+                          .map((application) => (
+                            <ApplicationCard
+                              key={application.id}
+                              application={application}
+                              changeApplicationStatus={changeApplicationStatus}
+                            />
+                          ))}
+                      </TabsContent>
 
-                  <TabsContent value="rejected" className="space-y-4">
-                    {jobApplications
-                      .filter((app) => app.status === "Rejected")
-                      .map((application) => (
-                        <ApplicationCard
-                          key={application.id}
-                          application={application}
-                          changeApplicationStatus={changeApplicationStatus}
-                        />
-                      ))}
-                  </TabsContent>
-                </Tabs>
+                      <TabsContent value="interview" className="space-y-4">
+                        {jobApplications
+                          .filter(
+                            (app) =>
+                              app.status === "Interview Scheduled" ||
+                              app.status === "Screening"
+                          )
+                          .map((application) => (
+                            <ApplicationCard
+                              key={application.id}
+                              application={application}
+                              changeApplicationStatus={changeApplicationStatus}
+                            />
+                          ))}
+                      </TabsContent>
+
+                      <TabsContent value="rejected" className="space-y-4">
+                        {jobApplications
+                          .filter((app) => app.status === "Rejected")
+                          .map((application) => (
+                            <ApplicationCard
+                              key={application.id}
+                              application={application}
+                              changeApplicationStatus={changeApplicationStatus}
+                            />
+                          ))}
+                      </TabsContent>
+                    </Tabs>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-          <DialogFooter>
-            <Button onClick={() => setShowApplications(false)}>Close</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+              <DialogFooter>
+                <Button onClick={() => setShowApplications(false)}>
+                  Close
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </>
+      )}
     </>
   );
 }
@@ -570,11 +589,13 @@ function JobCard({
   onEdit,
   onDelete,
   onViewApplications,
+  allowEdit,
 }: {
   job: any;
   onEdit: () => void;
   onDelete: () => void;
   onViewApplications: () => void;
+  allowEdit: boolean;
 }) {
   return (
     <Card className="overflow-hidden hover:shadow-sm transition-shadow">
@@ -617,19 +638,21 @@ function JobCard({
                 ))}
               </div>
             </div>
-            <div className="flex items-start gap-2">
-              <Button variant="ghost" size="icon" onClick={onEdit}>
-                <Edit className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-destructive"
-                onClick={onDelete}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
+            {allowEdit && (
+              <div className="flex items-start gap-2">
+                <Button variant="ghost" size="icon" onClick={onEdit}>
+                  <Edit className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-destructive"
+                  onClick={onDelete}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </CardContent>
@@ -641,9 +664,11 @@ function JobCard({
             {job.applications.length !== 1 ? "s" : ""}
           </span>
         </div>
-        <Button size="sm" onClick={onViewApplications}>
-          View Applications
-        </Button>
+        {allowEdit && (
+          <Button size="sm" onClick={onViewApplications}>
+            View Applications
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

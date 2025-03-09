@@ -143,6 +143,8 @@ const company = {
 };
 
 export default function CompanyProfilePage() {
+  const allowEdit = true;
+
   return (
     <>
       <div className="max-w-4xl mx-auto space-y-8 py-8">

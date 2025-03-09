@@ -20,7 +20,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-export default function CompanyAbout({ aboutData }: { aboutData: string }) {
+export default function CompanyAbout({
+  aboutData,
+  allowEdit = false,
+}: {
+  aboutData: string;
+  allowEdit?: boolean;
+}) {
   const [about, setAbout] = useState(aboutData);
   const [isEditingAbout, setIsEditingAbout] = useState(false);
   const [editedAbout, setEditedAbout] = useState(about);
@@ -45,39 +51,46 @@ export default function CompanyAbout({ aboutData }: { aboutData: string }) {
             <CardTitle>About</CardTitle>
             <CardDescription>Company overview and mission</CardDescription>
           </div>
-          <Button onClick={openEditAbout} variant="ghost" size="icon">
-            <Edit className="h-4 w-4" />
-          </Button>
+          {allowEdit && (
+            <Button onClick={openEditAbout} variant="ghost" size="icon">
+              <Edit className="h-4 w-4" />
+            </Button>
+          )}
         </CardHeader>
         <CardContent>
           <p className="whitespace-pre-wrap">{about}</p>
         </CardContent>
       </Card>
-      {/* About Edit Dialog */}
-      <Dialog open={isEditingAbout} onOpenChange={setIsEditingAbout}>
-        <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-hidden flex flex-col">
-          <DialogHeader>
-            <DialogTitle>Edit About</DialogTitle>
-            <DialogDescription>
-              Update your company overview and mission
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4 overflow-y-auto pr-1">
-            <Textarea
-              value={editedAbout}
-              onChange={(e) => setEditedAbout(e.target.value)}
-              className="min-h-[200px]"
-              placeholder="Write about your company, mission, values, and culture..."
-            />
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEditingAbout(false)}>
-              Cancel
-            </Button>
-            <Button onClick={saveAbout}>Save</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+
+      {allowEdit && (
+        <Dialog open={isEditingAbout} onOpenChange={setIsEditingAbout}>
+          <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-hidden flex flex-col">
+            <DialogHeader>
+              <DialogTitle>Edit About</DialogTitle>
+              <DialogDescription>
+                Update your company overview and mission
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4 overflow-y-auto pr-1">
+              <Textarea
+                value={editedAbout}
+                onChange={(e) => setEditedAbout(e.target.value)}
+                className="min-h-[200px]"
+                placeholder="Write about your company, mission, values, and culture..."
+              />
+            </div>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setIsEditingAbout(false)}
+              >
+                Cancel
+              </Button>
+              <Button onClick={saveAbout}>Save</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 }
