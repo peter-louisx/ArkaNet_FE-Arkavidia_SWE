@@ -15,11 +15,13 @@ import { Badge } from "@/components/ui/badge";
 
 export default function Skills({
   skillsData,
+  allowEdit = false,
 }: {
   skillsData: {
     id: number;
     name: string;
   }[];
+  allowEdit?: boolean;
 }) {
   // Skills State
   const [skills, setSkills] = useState<
@@ -75,31 +77,35 @@ export default function Skills({
                   className="group py-1.5 px-3"
                 >
                   {skill.name}
-                  <button
-                    onClick={() => removeSkill(skill.id)}
-                    className="ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
+                  {allowEdit && (
+                    <button
+                      onClick={() => removeSkill(skill.id)}
+                      className="ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  )}
                 </Badge>
               ))}
             </div>
-            <div className="flex gap-2">
-              <Input
-                placeholder="Add a new skill"
-                value={newSkillName}
-                onChange={(e) => setNewSkillName(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    addSkill();
-                  }
-                }}
-              />
-              <Button onClick={addSkill} type="button">
-                Add
-              </Button>
-            </div>
+            {allowEdit && (
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Add a new skill"
+                  value={newSkillName}
+                  onChange={(e) => setNewSkillName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      addSkill();
+                    }
+                  }}
+                />
+                <Button onClick={addSkill} type="button">
+                  Add
+                </Button>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>

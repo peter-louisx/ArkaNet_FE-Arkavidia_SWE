@@ -1,19 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
 import {
   Briefcase,
   Building,
   Calendar,
   Edit,
-  GraduationCap,
   MapPin,
   Plus,
   Trash2,
-  Upload,
-  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,12 +29,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import PersonalInfo from "@/components/seeker-profile/personal-info";
-import About from "@/components/seeker-profile/about";
 
 export default function Experience({
   experienceData,
+  allowEdit = false,
 }: {
   experienceData: {
     id: number;
@@ -50,6 +43,7 @@ export default function Experience({
     endDate: string;
     description: string;
   }[];
+  allowEdit?: boolean;
 }) {
   // Experience State
   const [experiences, setExperiences] = useState(experienceData);
@@ -99,10 +93,12 @@ export default function Experience({
             <CardTitle>Experience</CardTitle>
             <CardDescription>Add your work experience</CardDescription>
           </div>
-          <Button onClick={addNewExperience} variant="outline" size="sm">
-            <Plus className="h-4 w-4 mr-2" />
-            Add Experience
-          </Button>
+          {allowEdit && (
+            <Button onClick={addNewExperience} variant="outline" size="sm">
+              <Plus className="h-4 w-4 mr-2" />
+              Add Experience
+            </Button>
+          )}
         </CardHeader>
         <CardContent className="space-y-6">
           {experiences.map((experience) => (
@@ -111,22 +107,26 @@ export default function Experience({
               className="border rounded-lg p-4 relative group"
             >
               <div className="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={() => editExperience(experience)}
-                >
-                  <Edit className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 text-destructive"
-                  onClick={() => deleteExperience(experience.id)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                {allowEdit && (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => editExperience(experience)}
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-destructive"
+                      onClick={() => deleteExperience(experience.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </>
+                )}
               </div>
               <div className="flex gap-4">
                 <div className="w-12 h-12 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
@@ -157,116 +157,121 @@ export default function Experience({
           ))}
         </CardContent>
       </Card>
-      <Dialog open={isEditingExperience} onOpenChange={setIsEditingExperience}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>
-              {currentExperience?.id ? "Edit Experience" : "Add Experience"}
-            </DialogTitle>
-            <DialogDescription>
-              Add or update your work experience details
-            </DialogDescription>
-          </DialogHeader>
-          {currentExperience && (
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="title">Job Title</Label>
-                <Input
-                  id="title"
-                  value={currentExperience.title}
-                  onChange={(e) =>
-                    setCurrentExperience({
-                      ...currentExperience,
-                      title: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="company">Company</Label>
-                <Input
-                  id="company"
-                  value={currentExperience.company}
-                  onChange={(e) =>
-                    setCurrentExperience({
-                      ...currentExperience,
-                      company: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="location">Location</Label>
-                <Input
-                  id="location"
-                  value={currentExperience.location}
-                  onChange={(e) =>
-                    setCurrentExperience({
-                      ...currentExperience,
-                      location: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
+      {allowEdit && (
+        <Dialog
+          open={isEditingExperience}
+          onOpenChange={setIsEditingExperience}
+        >
+          <DialogContent className="sm:max-w-[600px]">
+            <DialogHeader>
+              <DialogTitle>
+                {currentExperience?.id ? "Edit Experience" : "Add Experience"}
+              </DialogTitle>
+              <DialogDescription>
+                Add or update your work experience details
+              </DialogDescription>
+            </DialogHeader>
+            {currentExperience && (
+              <div className="grid gap-4 py-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="startDate">Start Date</Label>
+                  <Label htmlFor="title">Job Title</Label>
                   <Input
-                    id="startDate"
-                    value={currentExperience.startDate}
+                    id="title"
+                    value={currentExperience.title}
                     onChange={(e) =>
                       setCurrentExperience({
                         ...currentExperience,
-                        startDate: e.target.value,
+                        title: e.target.value,
                       })
                     }
-                    placeholder="e.g., Jan 2020"
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="endDate">End Date</Label>
+                  <Label htmlFor="company">Company</Label>
                   <Input
-                    id="endDate"
-                    value={currentExperience.endDate}
+                    id="company"
+                    value={currentExperience.company}
                     onChange={(e) =>
                       setCurrentExperience({
                         ...currentExperience,
-                        endDate: e.target.value,
+                        company: e.target.value,
                       })
                     }
-                    placeholder="e.g., Present"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="location">Location</Label>
+                  <Input
+                    id="location"
+                    value={currentExperience.location}
+                    onChange={(e) =>
+                      setCurrentExperience({
+                        ...currentExperience,
+                        location: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="startDate">Start Date</Label>
+                    <Input
+                      id="startDate"
+                      value={currentExperience.startDate}
+                      onChange={(e) =>
+                        setCurrentExperience({
+                          ...currentExperience,
+                          startDate: e.target.value,
+                        })
+                      }
+                      placeholder="e.g., Jan 2020"
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="endDate">End Date</Label>
+                    <Input
+                      id="endDate"
+                      value={currentExperience.endDate}
+                      onChange={(e) =>
+                        setCurrentExperience({
+                          ...currentExperience,
+                          endDate: e.target.value,
+                        })
+                      }
+                      placeholder="e.g., Present"
+                    />
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    value={currentExperience.description}
+                    onChange={(e) =>
+                      setCurrentExperience({
+                        ...currentExperience,
+                        description: e.target.value,
+                      })
+                    }
+                    className="min-h-[100px]"
                   />
                 </div>
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  value={currentExperience.description}
-                  onChange={(e) =>
-                    setCurrentExperience({
-                      ...currentExperience,
-                      description: e.target.value,
-                    })
-                  }
-                  className="min-h-[100px]"
-                />
-              </div>
-            </div>
-          )}
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setIsEditingExperience(false)}
-            >
-              Cancel
-            </Button>
-            <Button onClick={() => saveExperience(currentExperience)}>
-              Save
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            )}
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setIsEditingExperience(false)}
+              >
+                Cancel
+              </Button>
+              <Button onClick={() => saveExperience(currentExperience)}>
+                Save
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 }

@@ -77,23 +77,28 @@ export default function Page() {
     ],
   };
 
+  const allowEdit = false;
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Profile Header */}
-        <PersonalInfo personalInfoData={data.personalInfo} />
+        <PersonalInfo
+          personalInfoData={data.personalInfo}
+          allowEdit={allowEdit}
+        />
 
         {/* About */}
         <About aboutData={data.about} />
 
         {/* Experience */}
-        <Experience experienceData={data.experience} />
+        <Experience experienceData={data.experience} allowEdit={allowEdit} />
 
         {/* Education */}
-        <Education educationData={data.education} />
+        <Education educationData={data.education} allowEdit={allowEdit} />
 
         {/* Skills */}
-        <Skills skillsData={data.skills} />
+        <Skills skillsData={data.skills} allowEdit={allowEdit} />
       </div>
     </div>
   );
