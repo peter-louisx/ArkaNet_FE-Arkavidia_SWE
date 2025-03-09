@@ -16,27 +16,20 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-const companyData = {
-  id: "techcorp",
-  name: "TechCorp Inc.",
-  logo: "/placeholder.svg?height=128&width=128",
-  cover: "/placeholder.svg?height=300&width=1200",
-  industry: "Information Technology",
-
-  about:
-    "TechCorp Inc. is a leading technology company specializing in cloud solutions, software development, and digital transformation. We help businesses of all sizes leverage technology to drive growth and innovation. Our team of experts is dedicated to delivering high-quality solutions that meet the unique needs of our clients.",
-  specialties: [
-    "Cloud Computing",
-    "Software Development",
-    "AI & Machine Learning",
-    "Digital Transformation",
-    "Enterprise Solutions",
-  ],
-};
-
 type ImageUploadType = "logo" | "cover";
 
-export default function CompanyHeader() {
+export default function CompanyHeader({
+  companyData,
+}: {
+  companyData: {
+    id: string;
+    name: string;
+    logo: string;
+    cover: string;
+    industry: string;
+    specialties: string[];
+  };
+}) {
   // Company state
   const [company, setCompany] = useState(companyData);
   const [isEditingCompany, setIsEditingCompany] = useState(false);

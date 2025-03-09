@@ -20,10 +20,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-export default function CompanyAbout() {
-  const [about, setAbout] = useState(
-    "TechCorp Inc. is a leading technology company specializing in cloud solutions, software development, and digital transformation. We help businesses of all sizes leverage technology to drive growth and innovation. Our team of experts is dedicated to delivering high-quality solutions that meet the unique needs of our clients."
-  );
+export default function CompanyAbout({ aboutData }: { aboutData: string }) {
+  const [about, setAbout] = useState(aboutData);
   const [isEditingAbout, setIsEditingAbout] = useState(false);
   const [editedAbout, setEditedAbout] = useState(about);
 
