@@ -45,6 +45,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Link from "next/link";
 
 // Mock job listings
 const initialJobs = [
@@ -106,12 +107,11 @@ const initialJobs = [
         applicant: {
           name: "Emily Davis",
           title: "UI Developer",
-          photo: "/placeholder.svg?height=48&width=48",
+          photo:
+            "https://img.freepik.com/free-photo/young-adult-man-wearing-hoodie-beanie_23-2149393636.jpg",
         },
         date: "2023-05-13",
         status: "Rejected",
-        resume: "resume-emily-davis.pdf",
-        coverLetter: false,
       },
       {
         id: 4,
@@ -119,12 +119,11 @@ const initialJobs = [
         applicant: {
           name: "David Wilson",
           title: "Backend Developer",
-          photo: "/placeholder.svg?height=48&width=48",
+          photo:
+            "https://img.freepik.com/free-photo/young-adult-man-wearing-hoodie-beanie_23-2149393636.jpg",
         },
         date: "2023-05-12",
         status: "Interview Scheduled",
-        resume: "resume-david-wilson.pdf",
-        coverLetter: true,
       },
       {
         id: 5,
@@ -132,12 +131,11 @@ const initialJobs = [
         applicant: {
           name: "Sarah Brown",
           title: "Full Stack Developer",
-          photo: "/placeholder.svg?height=48&width=48",
+          photo:
+            "https://img.freepik.com/free-photo/young-adult-man-wearing-hoodie-beanie_23-2149393636.jpg",
         },
         date: "2023-05-11",
         status: "Under Review",
-        resume: "resume-sarah-brown.pdf",
-        coverLetter: true,
       },
     ],
   },
@@ -609,15 +607,18 @@ function ApplicationCard({
     <Card>
       <CardContent className="p-4">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-full bg-muted overflow-hidden flex-shrink-0">
+          <Link
+            href={"/seeker/fdasfds"}
+            className="w-12 h-12 rounded-full bg-muted overflow-hidden flex-shrink-0"
+          >
             <Image
               src={application.applicant.photo || "/placeholder.svg"}
               width={48}
               height={48}
               alt={application.applicant.name}
-              className="object-cover"
+              className="object-cover h-full"
             />
-          </div>
+          </Link>
           <div className="flex-1">
             <div className="flex items-start justify-between">
               <div>
