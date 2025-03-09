@@ -145,7 +145,7 @@ const company = {
 export default function CompanyProfilePage() {
   return (
     <>
-      <div className="max-w-4xl mx-auto space-y-8 py-4">
+      <div className="max-w-4xl mx-auto space-y-8 py-8">
         <CompanyHeader companyData={company.headline} />
         <CompanyAbout aboutData={company.about} />
         <CompanyJobs jobsData={company.jobs} />
