@@ -49,7 +49,6 @@ export default function CompanyAbout({
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle>About</CardTitle>
-            <CardDescription>Company overview and mission</CardDescription>
           </div>
           {allowEdit && (
             <Button onClick={openEditAbout} variant="ghost" size="icon">

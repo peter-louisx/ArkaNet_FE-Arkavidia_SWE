@@ -174,9 +174,6 @@ export default function CompanyJobs({
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle>Jobs</CardTitle>
-            <CardDescription>
-              Manage job listings and applications
-            </CardDescription>
           </div>
           {allowEdit && (
             <Button onClick={addNewJob} variant="outline" size="sm">

@@ -80,7 +80,6 @@ export default function Education({
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle>Education</CardTitle>
-            <CardDescription>Add your educational background</CardDescription>
           </div>
           {allowEdit && (
             <Button onClick={addNewEducation} variant="outline" size="sm">

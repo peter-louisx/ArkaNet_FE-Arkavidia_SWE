@@ -64,7 +64,6 @@ export default function Skills({
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle>Skills</CardTitle>
-            <CardDescription>Add your key skills and expertise</CardDescription>
           </div>
         </CardHeader>
         <CardContent>

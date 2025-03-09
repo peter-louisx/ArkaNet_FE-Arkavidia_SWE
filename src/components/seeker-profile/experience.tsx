@@ -91,7 +91,6 @@ export default function Experience({
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle>Experience</CardTitle>
-            <CardDescription>Add your work experience</CardDescription>
           </div>
           {allowEdit && (
             <Button onClick={addNewExperience} variant="outline" size="sm">
