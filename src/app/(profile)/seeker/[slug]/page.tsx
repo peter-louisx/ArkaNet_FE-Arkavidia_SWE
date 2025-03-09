@@ -9,6 +9,8 @@ export default function Page() {
     personalInfo: {
       name: "John Doe",
       headline: "Senior Software Engineer at TechCorp Inc.",
+      cover: "/placeholder.svg?height=300&width=1200",
+      profilePicture: "/placeholder.svg?height=128&width=128",
       location: "San Francisco, California",
       industry: "Information Technology",
     },
