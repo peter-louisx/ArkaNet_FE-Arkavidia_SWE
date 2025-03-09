@@ -113,7 +113,7 @@ export default function Education({
                   </>
                 )}
               </div>
-              <div className="flex gap-4">
+              <div className="flex gap-4 max-md:flex-col">
                 <div className="w-12 h-12 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
                   <GraduationCap className="h-6 w-6 text-primary" />
                 </div>

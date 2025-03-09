@@ -127,7 +127,7 @@ export default function Experience({
                   </>
                 )}
               </div>
-              <div className="flex gap-4">
+              <div className="flex gap-4 max-md:flex-col">
                 <div className="w-12 h-12 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
                   <Briefcase className="h-6 w-6 text-primary" />
                 </div>
