@@ -67,7 +67,11 @@ export default function Sidebar() {
                 Account
               </h4>
               <div className="space-y-1">
-                <MobileNavItem icon={<User />} label="View Profile" />
+                <MobileNavItem
+                  icon={<User />}
+                  label="View Profile"
+                  href="/seeker/afsdf"
+                />
                 <Logout />
               </div>
             </div>

@@ -245,7 +245,7 @@ export default function CompanyJobs({
                 </DialogDescription>
               </DialogHeader>
               {currentJob && (
-                <div className="grid gap-4 py-4 overflow-y-auto pr-4">
+                <div className="grid gap-4 py-4 overflow-y-auto pr-4 pl-2">
                   <div className="grid gap-2">
                     <Label htmlFor="title">Job Title</Label>
                     <Input
@@ -394,7 +394,6 @@ export default function CompanyJobs({
           {/* Applications Dialog */}
           <Dialog open={showApplications} onOpenChange={setShowApplications}>
             <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-hidden flex flex-col">
-              
               <DialogHeader>
                 <DialogTitle>
                   Applications for{" "}
@@ -599,7 +598,7 @@ function JobCard({
     <Card className="overflow-hidden hover:shadow-sm transition-shadow">
       <CardContent className="p-0">
         <div className="p-6">
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between max-md:flex-col max-md:gap-4">
             <div>
               <h2 className="text-lg font-semibold">{job.title}</h2>
 
@@ -654,7 +653,7 @@ function JobCard({
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between p-4 bg-muted/10 border-t">
+      <CardFooter className="flex justify-between p-4 bg-muted/10 border-t max-md:flex-col max-md:gap-4">
         <div className="flex items-center text-sm">
           <Users className="h-4 w-4 mr-1 text-muted-foreground" />
           <span>

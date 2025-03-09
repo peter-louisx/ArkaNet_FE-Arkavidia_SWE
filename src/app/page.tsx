@@ -43,7 +43,7 @@ export default function Home() {
           <h2 className="text-3xl font-bold text-center mb-12">
             Connect to opportunities
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 px-24 max-md:px-0 ">
             <FeatureCard
               icon={<Briefcase className="h-8 w-8 text-primary" />}
               title="Find the right job"
@@ -53,11 +53,6 @@ export default function Home() {
               icon={<Users className="h-8 w-8 text-primary" />}
               title="Connect with people"
               description="Build your network with professionals in your industry."
-            />
-            <FeatureCard
-              icon={<MessageSquare className="h-8 w-8 text-primary" />}
-              title="Learn new skills"
-              description="Discover courses to advance your career."
             />
           </div>
         </div>
