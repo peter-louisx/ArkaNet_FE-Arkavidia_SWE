@@ -7,9 +7,11 @@ import {
   Clock,
   DollarSign,
   Edit,
+  Expand,
   MapPin,
   Plus,
   Search,
+  SquareKanban,
   Trash2,
   Users,
   X,
@@ -51,6 +53,7 @@ const initialJobs = [
     title: "Senior Frontend Developer",
     location: "San Francisco, CA",
     type: "Full-time",
+    experience: "Senior Level",
     salary: "$120,000 - $150,000",
     posted: "2 days ago",
     description:
@@ -89,6 +92,7 @@ const initialJobs = [
     id: 2,
     title: "Backend Engineer",
     location: "Austin, TX",
+    experience: "Mid Level",
     type: "Full-time",
     salary: "$110,000 - $140,000",
     posted: "1 week ago",
@@ -141,6 +145,7 @@ const initialJobs = [
     id: 3,
     title: "DevOps Engineer",
     location: "Seattle, WA",
+    experience: "Mid Level",
     type: "Full-time",
     salary: "$130,000 - $160,000",
     posted: "5 days ago",
@@ -153,6 +158,7 @@ const initialJobs = [
     id: 4,
     title: "Product Manager",
     location: "Chicago, IL",
+    experience: "Senior Level",
     type: "Full-time",
     salary: "$115,000 - $145,000",
     posted: "1 day ago",
@@ -170,6 +176,8 @@ const jobTypes = [
   "Internship",
   "Temporary",
 ];
+
+const experienceLevels = ["Entry Level", "Mid Level", "Senior Level"];
 
 export default function CompanyJobs() {
   // Jobs state
@@ -372,6 +380,26 @@ export default function CompanyJobs() {
                   </SelectTrigger>
                   <SelectContent>
                     {jobTypes.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {type}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2 ">
+                <Label htmlFor="type">Experience Level</Label>
+                <Select
+                  value={currentJob.experience}
+                  onValueChange={(value) =>
+                    setCurrentJob({ ...currentJob, experience: value })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select experience level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {experienceLevels.map((type) => (
                       <SelectItem key={type} value={type}>
                         {type}
                       </SelectItem>
@@ -677,6 +705,10 @@ function JobCard({
                 <div className="flex items-center">
                   <Clock className="h-4 w-4 mr-1" />
                   <span>{job.posted}</span>
+                </div>
+                <div className="flex items-center">
+                  <SquareKanban className="h-4 w-4 mr-1" />
+                  <span>{job.experience}</span>
                 </div>
               </div>
 

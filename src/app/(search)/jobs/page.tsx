@@ -29,14 +29,16 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import JobCard from "@/components/jobs/job-card";
+import exp from "constants";
 
 // Mock job data
 const jobListings = [
   {
     id: 1,
     title: "Senior Frontend Developer",
+    experience: "Senior Level",
     company: "TechCorp Inc.",
-    logo: "/placeholder.svg?height=40&width=40",
+    logo: "https://karirlab-prod-bucket.s3.ap-southeast-1.amazonaws.com/files/privates/aHR0cHM6Ly9jZG4uc2VqdXRhY2l0YS5pZC82Mjk5ODAyNmI5ZGRjNTAwMTM4NDBiMTAvT3RoZXJzLzFhOTM0MTYwLWI3YmYtNDMyYi1iNzk3LWVmMTc0NmMwMjU4NC5wbmc%3D.png",
     location: "San Francisco, CA",
     type: "Full-time",
     salary: "$120,000 - $150,000",
@@ -48,6 +50,7 @@ const jobListings = [
   {
     id: 2,
     title: "Backend Engineer",
+    experience: "Mid Level",
     company: "InnovateTech",
     logo: "/placeholder.svg?height=40&width=40",
     location: "Austin, TX",
@@ -61,6 +64,7 @@ const jobListings = [
   {
     id: 3,
     title: "UX/UI Designer",
+    experience: "Entry Level",
     company: "DesignHub",
     logo: "/placeholder.svg?height=40&width=40",
     location: "New York, NY",
@@ -74,6 +78,7 @@ const jobListings = [
   {
     id: 4,
     title: "DevOps Engineer",
+    experience: "Mid Level",
     company: "CloudSystems",
     logo: "/placeholder.svg?height=40&width=40",
     location: "Seattle, WA",
@@ -88,6 +93,7 @@ const jobListings = [
     id: 5,
     title: "Product Manager",
     company: "ProductFirst",
+    experience: "Senior Level",
     logo: "/placeholder.svg?height=40&width=40",
     location: "Chicago, IL",
     type: "Full-time",
@@ -101,6 +107,7 @@ const jobListings = [
     id: 6,
     title: "Data Scientist",
     company: "DataInsights",
+    experience: "Mid Level",
     logo: "/placeholder.svg?height=40&width=40",
     location: "Boston, MA",
     type: "Full-time",
@@ -114,6 +121,7 @@ const jobListings = [
     id: 7,
     title: "Mobile Developer (iOS)",
     company: "AppWorks",
+    experience: "Mid Level",
     logo: "/placeholder.svg?height=40&width=40",
     location: "Los Angeles, CA",
     type: "Part-time",
@@ -127,6 +135,7 @@ const jobListings = [
     id: 8,
     title: "Full Stack Developer",
     company: "WebSolutions",
+    experience: "Mid Level",
     logo: "/placeholder.svg?height=40&width=40",
     location: "Denver, CO",
     type: "Full-time",
@@ -398,7 +407,7 @@ export default function JobsPage() {
                     Narrow down your job search with these filters.
                   </SheetDescription>
                 </SheetHeader>
-                <div className="py-4">
+                <div className="py-4 max-md:py-0 px-4">
                   <JobFilters
                     filters={filters}
                     setFilters={setFilters}

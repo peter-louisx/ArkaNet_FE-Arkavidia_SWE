@@ -1,9 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { Briefcase, Clock, DollarSign, MapPin } from "lucide-react";
+import {
+  Briefcase,
+  Clock,
+  DollarSign,
+  KanbanSquare,
+  MapPin,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
 export default function JobCard({ job }: { job: any }) {
@@ -12,7 +19,10 @@ export default function JobCard({ job }: { job: any }) {
       <CardContent className="p-0">
         <div className="p-6">
           <div className="flex items-start gap-4 max-md:flex-col">
-            <div className="w-12 h-12 rounded-md bg-muted overflow-hidden flex-shrink-0">
+            <Link
+              href={"/company/afsdf"}
+              className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0 flex items-center justify-center"
+            >
               <Image
                 src={job.logo || "/placeholder.svg"}
                 width={48}
@@ -20,7 +30,7 @@ export default function JobCard({ job }: { job: any }) {
                 alt={`${job.company} logo`}
                 className="object-cover"
               />
-            </div>
+            </Link>
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between">
                 <div>
@@ -47,6 +57,10 @@ export default function JobCard({ job }: { job: any }) {
                 <div className="flex items-center">
                   <Clock className="h-4 w-4 mr-1" />
                   <span>{job.posted}</span>
+                </div>
+                <div className="flex items-center">
+                  <KanbanSquare className="h-4 w-4 mr-1" />
+                  <span>{job.experience}</span>
                 </div>
               </div>
 

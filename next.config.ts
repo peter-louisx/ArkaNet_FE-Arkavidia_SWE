@@ -12,6 +12,14 @@ const nextConfig: NextConfig = {
         pathname: "/**",
         search: "",
       },
+      {
+       
+        protocol: "https",
+        hostname: "karirlab-prod-bucket.s3.ap-southeast-1.amazonaws.com",
+        port: "",
+        pathname: "/**",
+        search: "",
+      }
     ],
   },
 };
