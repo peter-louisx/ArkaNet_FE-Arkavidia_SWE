@@ -33,7 +33,7 @@ const company = {
       min_salary: 120000,
       max_salary: 150000,
       salary: "$120,000 - $150,000",
-      posted: "2 days ago",
+      posted: "03-10-2025",
       description:
         "We're looking for a Senior Frontend Developer with 5+ years of experience in React, TypeScript, and modern frontend frameworks.",
       skills: ["React", "TypeScript", "Next.js", "CSS"],
@@ -75,7 +75,8 @@ const company = {
       type: "Full-time",
       min_salary: 120000,
       max_salary: 150000,
-      posted: "1 week ago",
+      posted: "02-10-2025",
+
       description:
         "Join our backend team to build scalable APIs and microservices using Node.js and Python.",
       skills: ["Node.js", "Python", "AWS", "MongoDB"],
@@ -127,7 +128,8 @@ const company = {
       min_salary: 120000,
       max_salary: 150000,
       type: "Full-time",
-      posted: "5 days ago",
+      posted: "02-10-2025",
+
       description:
         "Manage our cloud infrastructure and CI/CD pipelines to ensure smooth deployments.",
       skills: ["AWS", "Docker", "Kubernetes", "CI/CD"],
@@ -142,7 +144,8 @@ const company = {
       location_type: "Remote",
       experience: "Senior Level",
       type: "Full-time",
-      posted: "1 day ago",
+      posted: "02-10-2025",
+
       description:
         "Lead product development from conception to launch, working with cross-functional teams.",
       skills: ["Product Strategy", "Agile", "User Research", "Roadmapping"],

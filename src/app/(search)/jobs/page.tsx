@@ -49,8 +49,7 @@ const jobListings = [
     type: "Full-time",
     min_salary: 120000,
     max_salary: 150000,
-    salary: "$120,000 - $150,000",
-    posted: "2 days ago",
+    posted: "03-10-2025",
     description:
       "We're looking for a Senior Frontend Developer with 5+ years of experience in React, TypeScript, and modern frontend frameworks.",
     skills: ["React", "TypeScript", "Next.js", "CSS"],
@@ -66,8 +65,7 @@ const jobListings = [
     type: "Full-time",
     min_salary: 110000,
     max_salary: 140000,
-    salary: "$110,000 - $140,000",
-    posted: "1 week ago",
+    posted: "03-10-2025",
     description:
       "Join our backend team to build scalable APIs and microservices using Node.js and Python.",
     skills: ["Node.js", "Python", "AWS", "MongoDB"],
@@ -76,7 +74,6 @@ const jobListings = [
     id: 3,
     title: "UX/UI Designer",
     location_type: "Remote",
-
     experience: "Entry Level",
     company: "DesignHub",
     logo: "/placeholder.svg?height=40&width=40",
@@ -84,8 +81,8 @@ const jobListings = [
     type: "Contract",
     min_salary: 90000,
     max_salary: 120000,
-    salary: "$90,000 - $120,000",
-    posted: "3 days ago",
+    posted: "02-10-2025",
+
     description:
       "Create beautiful and intuitive user interfaces for web and mobile applications.",
     skills: ["Figma", "Adobe XD", "UI Design", "Prototyping"],
@@ -101,8 +98,8 @@ const jobListings = [
     logo: "/placeholder.svg?height=40&width=40",
     location: "Seattle, WA",
     type: "Full-time",
-    salary: "$130,000 - $160,000",
-    posted: "5 days ago",
+    posted: "01-10-2025",
+
     description:
       "Manage our cloud infrastructure and CI/CD pipelines to ensure smooth deployments.",
     skills: ["AWS", "Docker", "Kubernetes", "CI/CD"],
@@ -298,9 +295,8 @@ export default function JobsPage() {
       }
 
       // Salary range filter
-      const jobSalaryMin = Number.parseInt(
-        job.salary.split(" - ")[0].replace(/\$|,/g, "")
-      );
+      const jobSalaryMin = job.min_salary;
+
       if (jobSalaryMin < filters.salaryRange[0]) {
         return false;
       }

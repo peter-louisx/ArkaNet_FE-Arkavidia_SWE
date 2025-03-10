@@ -47,7 +47,7 @@ import {
 } from "@/components/ui/select";
 import Link from "next/link";
 import { experienceLevels, jobTypes, locationTypes } from "@/lib/jobs-filters";
-import { formatNumberCommas } from "@/lib/utils";
+import { countTimeAfterDate, formatNumberCommas } from "@/lib/utils";
 
 export default function CompanyJobs({
   jobsData,
@@ -645,7 +645,7 @@ function JobCard({
                 </div>
                 <div className="flex items-center">
                   <Clock className="h-4 w-4 mr-1" />
-                  <span>{job.posted}</span>
+                  <span>{countTimeAfterDate(job.posted)}</span>
                 </div>
                 <div className="flex items-center">
                   <SquareKanban className="h-4 w-4 mr-1" />
