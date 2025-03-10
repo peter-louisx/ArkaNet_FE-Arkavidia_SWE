@@ -1,3 +1,4 @@
+import { getAuthToken } from "@/lib/session"
 import axios from "./axios"
 
 export const UserAPI = {
@@ -12,5 +13,13 @@ export const UserAPI = {
             email,
             password
         })
-    }
+    },
+
+    testRestricted: async function(){
+        return axios.get("/restricted", {
+            headers: {
+                Authorization: `Bearer ${await getAuthToken()}`
+            }
+        })
+    }   
 }

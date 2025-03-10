@@ -1,5 +1,5 @@
 const api = {
-    BASE_URL: "http://paundrapujodarmawan.space:8080/api",
+    BASE_URL: "http://paundrapujodarmawan.space:8080",
     BASE_URL_API: "http://paundrapujodarmawan.space:8080/api",
 };
 
