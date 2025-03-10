@@ -55,7 +55,7 @@ export async function deleteSession() {
 
   cookieStore.delete({
     name: "auth_token",
-    secure: true,
+    secure: false,
     path: "/",
   });
   
