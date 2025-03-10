@@ -89,7 +89,7 @@ export default function Page() {
         />
 
         {/* About */}
-        <About aboutData={data.about} />
+        <About aboutData={data.about} allowEdit={allowEdit} />
 
         {/* Experience */}
         <Experience experienceData={data.experience} allowEdit={allowEdit} />

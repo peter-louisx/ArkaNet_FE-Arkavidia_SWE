@@ -4,8 +4,11 @@ import { Briefcase, Users, MessageSquare, Bell, Search } from "lucide-react";
 import Sidebar from "./sidebar";
 import Profile from "./profile-dropdown";
 import SearchBar from "./search-bar";
+import { verifySession } from "@/lib/session";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const { isAuthenticated, user } = await verifySession();
+
   return (
     <header className="border-b sticky top-0 z-10 bg-white">
       <div className="container mx-auto px-4 py-2 flex items-center justify-between">
@@ -20,7 +23,15 @@ export default function Navbar() {
           <NavItem icon={<Users />} label="Network" />
           <NavItem icon={<MessageSquare />} label="Messaging" />
           <NavItem icon={<Bell />} label="Notifications" />
-          <Profile />
+          {isAuthenticated && <Profile />}
+          {!isAuthenticated && (
+            <Link
+              href={"/login"}
+              className="bg-primary px-4 py-2 text-white rounded-md"
+            >
+              Login
+            </Link>
+          )}
         </nav>
 
         <div className="flex items-center gap-2 md:hidden">

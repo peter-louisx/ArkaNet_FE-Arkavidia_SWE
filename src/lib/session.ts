@@ -3,6 +3,18 @@
 import { cookies } from "next/headers";
 
 
+
+export const setAuthToken = async (cookie: string) => {
+  const cookieStore = await cookies()
+  cookieStore.set('auth_token', cookie)
+}
+
+export const getAuthToken = async () => {
+  const cookieStore = await cookies()
+  return cookieStore.get('auth_token')?.value
+}
+
+
 export const verifySession = async () => {
     const cookieStore = await cookies();
     const cookie = cookieStore.get("auth_token")?.value;
