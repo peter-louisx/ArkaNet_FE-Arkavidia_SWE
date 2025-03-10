@@ -8,4 +8,10 @@ export const jobTypes = [
   "Temporary",
 ];
 
+export const locationTypes = [
+  "Remote",
+  "On-site",
+  "Hybrid",
+]
+
 export const datePosted = ["Past 24 hours", "Past week", "Past month"];

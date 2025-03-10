@@ -29,7 +29,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import JobCard from "@/components/jobs/job-card";
-import { jobTypes, experienceLevels, datePosted } from "@/lib/jobs-filters";
+import {
+  jobTypes,
+  experienceLevels,
+  datePosted,
+  locationTypes,
+} from "@/lib/jobs-filters";
 
 // Mock job data
 const jobListings = [
@@ -40,6 +45,7 @@ const jobListings = [
     company: "TechCorp Inc.",
     logo: "https://karirlab-prod-bucket.s3.ap-southeast-1.amazonaws.com/files/privates/aHR0cHM6Ly9jZG4uc2VqdXRhY2l0YS5pZC82Mjk5ODAyNmI5ZGRjNTAwMTM4NDBiMTAvT3RoZXJzLzFhOTM0MTYwLWI3YmYtNDMyYi1iNzk3LWVmMTc0NmMwMjU4NC5wbmc%3D.png",
     location: "San Francisco, CA",
+    location_type: "Remote",
     type: "Full-time",
     salary: "$120,000 - $150,000",
     posted: "2 days ago",
@@ -51,6 +57,7 @@ const jobListings = [
     id: 2,
     title: "Backend Engineer",
     experience: "Mid Level",
+    location_type: "Remote",
     company: "InnovateTech",
     logo: "/placeholder.svg?height=40&width=40",
     location: "Austin, TX",
@@ -64,6 +71,8 @@ const jobListings = [
   {
     id: 3,
     title: "UX/UI Designer",
+    location_type: "Remote",
+
     experience: "Entry Level",
     company: "DesignHub",
     logo: "/placeholder.svg?height=40&width=40",
@@ -78,6 +87,8 @@ const jobListings = [
   {
     id: 4,
     title: "DevOps Engineer",
+    location_type: "Remote",
+
     experience: "Mid Level",
     company: "CloudSystems",
     logo: "/placeholder.svg?height=40&width=40",
@@ -92,6 +103,8 @@ const jobListings = [
   {
     id: 5,
     title: "Product Manager",
+    location_type: "Remote",
+
     company: "ProductFirst",
     experience: "Senior Level",
     logo: "/placeholder.svg?height=40&width=40",
@@ -106,6 +119,8 @@ const jobListings = [
   {
     id: 6,
     title: "Data Scientist",
+    location_type: "Remote",
+
     company: "DataInsights",
     experience: "Mid Level",
     logo: "/placeholder.svg?height=40&width=40",
@@ -120,6 +135,8 @@ const jobListings = [
   {
     id: 7,
     title: "Mobile Developer (iOS)",
+    location_type: "Remote",
+
     company: "AppWorks",
     experience: "Mid Level",
     logo: "/placeholder.svg?height=40&width=40",
@@ -134,6 +151,8 @@ const jobListings = [
   {
     id: 8,
     title: "Full Stack Developer",
+    location_type: "Remote",
+
     company: "WebSolutions",
     experience: "Mid Level",
     logo: "/placeholder.svg?height=40&width=40",
@@ -171,7 +190,13 @@ function JobFilters({
     <div className="space-y-6">
       <Accordion
         type="multiple"
-        defaultValue={["job-type", "experience", "date-posted", "salary"]}
+        defaultValue={[
+          "job-type",
+          "experience",
+          "date-posted",
+          "salary",
+          "location-type",
+        ]}
       >
         <AccordionItem value="job-type">
           <AccordionTrigger>Job Type</AccordionTrigger>
@@ -185,6 +210,26 @@ function JobFilters({
                     onCheckedChange={() => toggleJobType(type)}
                   />
                   <Label htmlFor={`${idPrefix}job-type-${type}`}>{type}</Label>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="location-type">
+          <AccordionTrigger>Location Type</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-2">
+              {locationTypes.map((type) => (
+                <div key={type} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`${idPrefix}location-type-${type}`}
+                    checked={filters.locationTypes.includes(type)}
+                    onCheckedChange={() => toggleJobType(type)}
+                  />
+                  <Label htmlFor={`${idPrefix}location-type-${type}`}>
+                    {type}
+                  </Label>
                 </div>
               ))}
             </div>
@@ -279,6 +324,7 @@ export default function JobsPage() {
   const [filters, setFilters] = useState({
     jobTypes: [] as string[],
     experienceLevels: [] as string[],
+    locationTypes: [] as string[],
     datePosted: "",
     salaryRange: [0, 200000],
     remoteOnly: false,
@@ -326,6 +372,7 @@ export default function JobsPage() {
     setFilters({
       jobTypes: [],
       experienceLevels: [],
+      locationTypes: [],
       datePosted: "",
       salaryRange: [0, 200000],
       remoteOnly: false,

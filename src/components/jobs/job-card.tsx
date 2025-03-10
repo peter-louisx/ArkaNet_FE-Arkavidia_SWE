@@ -6,6 +6,7 @@ import {
   Clock,
   DollarSign,
   KanbanSquare,
+  Locate,
   MapPin,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -61,6 +62,10 @@ export default function JobCard({ job }: { job: any }) {
                 <div className="flex items-center">
                   <KanbanSquare className="h-4 w-4 mr-1" />
                   <span>{job.experience}</span>
+                </div>
+                <div className="flex items-center">
+                  <Locate className="h-4 w-4 mr-1" />
+                  <span>{job.location_type}</span>
                 </div>
               </div>
 

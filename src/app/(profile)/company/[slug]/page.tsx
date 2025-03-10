@@ -26,6 +26,7 @@ const company = {
     {
       id: 1,
       title: "Senior Frontend Developer",
+      location_type: "Remote",
       location: "San Francisco, CA",
       type: "Full-time",
       experience: "Senior Level",
@@ -67,6 +68,7 @@ const company = {
       id: 2,
       title: "Backend Engineer",
       location: "Austin, TX",
+      location_type: "Remote",
       experience: "Mid Level",
       type: "Full-time",
       salary: "$110,000 - $140,000",
@@ -116,6 +118,7 @@ const company = {
     {
       id: 3,
       title: "DevOps Engineer",
+      location_type: "Remote",
       location: "Seattle, WA",
       experience: "Mid Level",
       type: "Full-time",
@@ -130,6 +133,7 @@ const company = {
       id: 4,
       title: "Product Manager",
       location: "Chicago, IL",
+      location_type: "Remote",
       experience: "Senior Level",
       type: "Full-time",
       salary: "$115,000 - $145,000",
