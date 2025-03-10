@@ -47,6 +47,7 @@ import {
 } from "@/components/ui/select";
 import Link from "next/link";
 import { experienceLevels, jobTypes, locationTypes } from "@/lib/jobs-filters";
+import { formatNumberCommas } from "@/lib/utils";
 
 export default function CompanyJobs({
   jobsData,
@@ -56,9 +57,11 @@ export default function CompanyJobs({
     id: number;
     title: string;
     location: string;
+    location_type: string;
     type: string;
     experience: string;
-    salary: string;
+    max_salary: number;
+    min_salary: number;
     posted: string;
     description: string;
     skills: string[];
@@ -634,7 +637,11 @@ function JobCard({
                 </div>
                 <div className="flex items-center">
                   <DollarSign className="h-4 w-4 mr-1" />
-                  <span>{job.salary}</span>
+                  <span>
+                    {formatNumberCommas(job.min_salary) +
+                      " - " +
+                      formatNumberCommas(job.max_salary)}
+                  </span>
                 </div>
                 <div className="flex items-center">
                   <Clock className="h-4 w-4 mr-1" />

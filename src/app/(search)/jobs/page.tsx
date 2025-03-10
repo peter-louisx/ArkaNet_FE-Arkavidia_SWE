@@ -47,6 +47,8 @@ const jobListings = [
     location: "San Francisco, CA",
     location_type: "Remote",
     type: "Full-time",
+    min_salary: 120000,
+    max_salary: 150000,
     salary: "$120,000 - $150,000",
     posted: "2 days ago",
     description:
@@ -62,6 +64,8 @@ const jobListings = [
     logo: "/placeholder.svg?height=40&width=40",
     location: "Austin, TX",
     type: "Full-time",
+    min_salary: 110000,
+    max_salary: 140000,
     salary: "$110,000 - $140,000",
     posted: "1 week ago",
     description:
@@ -78,6 +82,8 @@ const jobListings = [
     logo: "/placeholder.svg?height=40&width=40",
     location: "New York, NY",
     type: "Contract",
+    min_salary: 90000,
+    max_salary: 120000,
     salary: "$90,000 - $120,000",
     posted: "3 days ago",
     description:
@@ -88,7 +94,8 @@ const jobListings = [
     id: 4,
     title: "DevOps Engineer",
     location_type: "Remote",
-
+    min_salary: 90000,
+    max_salary: 120000,
     experience: "Mid Level",
     company: "CloudSystems",
     logo: "/placeholder.svg?height=40&width=40",
@@ -100,70 +107,6 @@ const jobListings = [
       "Manage our cloud infrastructure and CI/CD pipelines to ensure smooth deployments.",
     skills: ["AWS", "Docker", "Kubernetes", "CI/CD"],
   },
-  {
-    id: 5,
-    title: "Product Manager",
-    location_type: "Remote",
-
-    company: "ProductFirst",
-    experience: "Senior Level",
-    logo: "/placeholder.svg?height=40&width=40",
-    location: "Chicago, IL",
-    type: "Full-time",
-    salary: "$115,000 - $145,000",
-    posted: "1 day ago",
-    description:
-      "Lead product development from conception to launch, working with cross-functional teams.",
-    skills: ["Product Strategy", "Agile", "User Research", "Roadmapping"],
-  },
-  {
-    id: 6,
-    title: "Data Scientist",
-    location_type: "Remote",
-
-    company: "DataInsights",
-    experience: "Mid Level",
-    logo: "/placeholder.svg?height=40&width=40",
-    location: "Boston, MA",
-    type: "Full-time",
-    salary: "$125,000 - $155,000",
-    posted: "2 weeks ago",
-    description:
-      "Analyze large datasets to extract insights and build predictive models.",
-    skills: ["Python", "Machine Learning", "SQL", "Data Visualization"],
-  },
-  {
-    id: 7,
-    title: "Mobile Developer (iOS)",
-    location_type: "Remote",
-
-    company: "AppWorks",
-    experience: "Mid Level",
-    logo: "/placeholder.svg?height=40&width=40",
-    location: "Los Angeles, CA",
-    type: "Part-time",
-    salary: "$80,000 - $100,000",
-    posted: "4 days ago",
-    description:
-      "Develop and maintain iOS applications using Swift and SwiftUI.",
-    skills: ["Swift", "iOS", "SwiftUI", "Xcode"],
-  },
-  {
-    id: 8,
-    title: "Full Stack Developer",
-    location_type: "Remote",
-
-    company: "WebSolutions",
-    experience: "Mid Level",
-    logo: "/placeholder.svg?height=40&width=40",
-    location: "Denver, CO",
-    type: "Full-time",
-    salary: "$100,000 - $130,000",
-    posted: "1 week ago",
-    description:
-      "Build end-to-end web applications using modern JavaScript frameworks.",
-    skills: ["JavaScript", "React", "Node.js", "MongoDB"],
-  },
 ];
 
 // Combined Filters Component
@@ -174,11 +117,13 @@ function JobFilters({
   toggleExperienceLevel,
   applyFilters,
   resetFilters,
+  toggleLocationType,
   isMobile = false,
 }: {
   filters: any;
   setFilters: any;
   toggleJobType: (type: string) => void;
+  toggleLocationType: (type: string) => void;
   toggleExperienceLevel: (level: string) => void;
   applyFilters: () => void;
   resetFilters: () => void;
@@ -225,7 +170,7 @@ function JobFilters({
                   <Checkbox
                     id={`${idPrefix}location-type-${type}`}
                     checked={filters.locationTypes.includes(type)}
-                    onCheckedChange={() => toggleJobType(type)}
+                    onCheckedChange={() => toggleLocationType(type)}
                   />
                   <Label htmlFor={`${idPrefix}location-type-${type}`}>
                     {type}
@@ -397,6 +342,20 @@ export default function JobsPage() {
     }
   };
 
+  const toggleLocationType = (type: string) => {
+    if (filters.locationTypes.includes(type)) {
+      setFilters({
+        ...filters,
+        locationTypes: filters.locationTypes.filter((t) => t !== type),
+      });
+    } else {
+      setFilters({
+        ...filters,
+        locationTypes: [...filters.locationTypes, type],
+      });
+    }
+  };
+
   // Toggle experience level filter
   const toggleExperienceLevel = (level: string) => {
     if (filters.experienceLevels.includes(level)) {
@@ -449,6 +408,7 @@ export default function JobsPage() {
                     setFilters={setFilters}
                     toggleJobType={toggleJobType}
                     toggleExperienceLevel={toggleExperienceLevel}
+                    toggleLocationType={toggleLocationType}
                     applyFilters={() => {
                       applyFilters();
                       setShowMobileFilters(false);
@@ -475,6 +435,7 @@ export default function JobsPage() {
               toggleExperienceLevel={toggleExperienceLevel}
               applyFilters={applyFilters}
               resetFilters={resetFilters}
+              toggleLocationType={toggleLocationType}
             />
           </div>
         </div>

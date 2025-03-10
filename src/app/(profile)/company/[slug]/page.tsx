@@ -30,6 +30,8 @@ const company = {
       location: "San Francisco, CA",
       type: "Full-time",
       experience: "Senior Level",
+      min_salary: 120000,
+      max_salary: 150000,
       salary: "$120,000 - $150,000",
       posted: "2 days ago",
       description:
@@ -71,7 +73,8 @@ const company = {
       location_type: "Remote",
       experience: "Mid Level",
       type: "Full-time",
-      salary: "$110,000 - $140,000",
+      min_salary: 120000,
+      max_salary: 150000,
       posted: "1 week ago",
       description:
         "Join our backend team to build scalable APIs and microservices using Node.js and Python.",
@@ -121,8 +124,9 @@ const company = {
       location_type: "Remote",
       location: "Seattle, WA",
       experience: "Mid Level",
+      min_salary: 120000,
+      max_salary: 150000,
       type: "Full-time",
-      salary: "$130,000 - $160,000",
       posted: "5 days ago",
       description:
         "Manage our cloud infrastructure and CI/CD pipelines to ensure smooth deployments.",
@@ -133,10 +137,11 @@ const company = {
       id: 4,
       title: "Product Manager",
       location: "Chicago, IL",
+      min_salary: 120000,
+      max_salary: 150000,
       location_type: "Remote",
       experience: "Senior Level",
       type: "Full-time",
-      salary: "$115,000 - $145,000",
       posted: "1 day ago",
       description:
         "Lead product development from conception to launch, working with cross-functional teams.",
