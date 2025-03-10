@@ -7,12 +7,36 @@ import Image from "next/image";
 import { UserAPI } from "@/api/User";
 import { setAuthToken } from "@/lib/session";
 import { toast } from "sonner";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 export default function Page() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const formSchema = z.object({
+    email: z.string().email(),
+    password: z.string().min(6),
+  });
 
-  const submitLogin = async () => {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { email, password } = values;
+
     await UserAPI.login({
       email,
       password,
@@ -23,9 +47,9 @@ export default function Page() {
         toast("Login successful");
       })
       .catch((err) => {
-        console.log(err);
+        toast("Login failed. Please check your credentials");
       });
-  };
+  }
 
   return (
     <section className="bg-gradient-to-r from-primary/10 to-primary/5 py-12 md:py-20">
@@ -34,45 +58,63 @@ export default function Page() {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900">
             Login
           </h1>
-          <div className="space-y-4 max-w-md">
-            <div className="relative">
-              <Input
-                placeholder="Email or phone number"
-                className="h-12"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-              />
-            </div>
-            <div className="relative">
-              <Input
-                placeholder="Password"
-                type="password"
-                className="h-12"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              />
-            </div>
-            <Button
-              className="w-full h-12 text-base"
-              onClick={() => {
-                submitLogin();
-              }}
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-4 max-w-md"
             >
-              Sign in
-            </Button>
-            <div className="relative flex items-center gap-4 py-2">
-              <div className="flex-1 border-t"></div>
-              <span className="text-muted-foreground text-sm">or</span>
-              <div className="flex-1 border-t"></div>
-            </div>
-            <Button variant="outline" className="w-full h-12 text-base">
-              Join now
-            </Button>
-          </div>
+              <div className="relative">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Username</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Email or phone number"
+                          className="h-12"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="relative">
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Username</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Email or phone number"
+                          className="h-12"
+                          type="password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <Button className="w-full h-12 text-base" type="submit">
+                Sign in
+              </Button>
+              <div className="relative flex items-center gap-4 py-2">
+                <div className="flex-1 border-t"></div>
+                <span className="text-muted-foreground text-sm">or</span>
+                <div className="flex-1 border-t"></div>
+              </div>
+              <Button variant="outline" className="w-full h-12 text-base">
+                Join now
+              </Button>
+            </form>
+          </Form>
         </div>
         <div className="hidden md:block">
           <Image
