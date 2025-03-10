@@ -56,7 +56,7 @@ export default function Page() {
       <div className="container mx-auto px-14 grid md:grid-cols-2 gap-8 items-center">
         <div className="space-y-6">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900">
-            Login
+            Register
           </h1>
           <Form {...form}>
             <form
@@ -103,7 +103,7 @@ export default function Page() {
                 />
               </div>
               <Button className="w-full h-12 text-base" type="submit">
-                Sign in
+                Sign Up
               </Button>
               <div className="relative flex items-center gap-4 py-2">
                 <div className="flex-1 border-t"></div>
@@ -111,11 +111,10 @@ export default function Page() {
                 <div className="flex-1 border-t"></div>
               </div>
               <Link
-                href="/register"
-                type="button"
+                href="/login"
                 className="w-full h-12 text-base bg-white flex items-center justify-center rounded-lg shadow-sm"
               >
-                Join now
+                Already have an account? Sign in
               </Link>
             </form>
           </Form>
