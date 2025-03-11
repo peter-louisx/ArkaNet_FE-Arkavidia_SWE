@@ -15,7 +15,7 @@ export const UserAPI = {
         })
     },
 
-    testRestricted: async function(){
+    validateToken: async function(){
         return axios.get("/restricted", {
             headers: {
                 Authorization: `Bearer ${await getAuthToken()}`

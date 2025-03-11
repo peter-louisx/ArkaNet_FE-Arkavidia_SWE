@@ -43,25 +43,24 @@ export default function Register() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) { 
-    const {name, email, password, about, address,currenttitle} = values;
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { name, email, password, about, address, currenttitle } = values;
 
-    await UserAPI.register({ 
-        name, 
-        email, 
-        password, 
-        about, 
-        address,
-        currenttitle
+    await UserAPI.register({
+      name,
+      email,
+      password,
+      about,
+      address,
+      currenttitle,
     })
-    .then((res) => { 
-        const {success, message, data} = res.data;
-        setAuthToken
+      .then((res) => {
+        const { success, message, data } = res.data;
         toast("Registration successful");
-    })
-    .catch ((err) => { 
+      })
+      .catch((err) => {
         toast("Registration failed. Please check your credentials");
-    })
+      });
   }
 
   return (
@@ -72,9 +71,10 @@ export default function Register() {
             Register
           </h1>
           <Form {...form}>
-            <form 
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 max-w-md">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-4 max-w-md"
+            >
               <div>
                 <FormField
                   control={form.control}
@@ -83,9 +83,11 @@ export default function Register() {
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Name" 
-                        className="h-12" 
-                        {...field} />
+                        <Input
+                          placeholder="Enter your name"
+                          className="h-12"
+                          {...field}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -100,9 +102,11 @@ export default function Register() {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="Email" 
-                        className="h-12" 
-                        {...field} />
+                        <Input
+                          placeholder="Enter your email"
+                          className="h-12"
+                          {...field}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -117,15 +121,17 @@ export default function Register() {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input placeholder="Password" 
-                        className="h-12" 
-                        type="password" 
-                        {...field} />
+                        <Input
+                          placeholder="Enter your password"
+                          className="h-12"
+                          type="password"
+                          {...field}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
-                />  
-                </div>
+                />
+              </div>
 
               <div>
                 <FormField
@@ -135,9 +141,11 @@ export default function Register() {
                     <FormItem>
                       <FormLabel>About</FormLabel>
                       <FormControl>
-                        <Input placeholder="About" 
-                        className="h-12" 
-                        {...field} />
+                        <Input
+                          placeholder="Tell us about yourself"
+                          className="h-12"
+                          {...field}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -152,9 +160,11 @@ export default function Register() {
                     <FormItem>
                       <FormLabel>Address</FormLabel>
                       <FormControl>
-                        <Input placeholder="Address" 
-                        className="h-12" 
-                        {...field} />
+                        <Input
+                          placeholder="Enter your address"
+                          className="h-12"
+                          {...field}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -169,17 +179,19 @@ export default function Register() {
                     <FormItem>
                       <FormLabel>Current Title</FormLabel>
                       <FormControl>
-                        <Input placeholder="Current Title" 
-                        className="h-12" 
-                        {...field} />
+                        <Input
+                          placeholder="Enter your current title"
+                          className="h-12"
+                          {...field}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
                 />
               </div>
-              <Button className="w-full h-12 text-base" type="submit"> 
-                SignUp
-                </Button>
+              <Button className="w-full h-12 text-base" type="submit">
+                Sign Up
+              </Button>
               <div className="relative flex items-center gap-4 py-2">
                 <div className="flex-1 border-t"></div>
                 <span className="text-muted-foreground text-sm">or</span>
@@ -208,4 +220,3 @@ export default function Register() {
     </section>
   );
 }
-
