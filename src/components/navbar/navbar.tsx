@@ -38,7 +38,7 @@ export default async function Navbar() {
           <Button variant="ghost" size="icon">
             <Search className="h-5 w-5" />
           </Button>
-          <Sidebar />
+          <Sidebar isAuthenticated={isAuthenticated} />
         </div>
       </div>
     </header>
