@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -20,35 +21,47 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-export default function Page() {
+export default function Register() {
   const formSchema = z.object({
+    name: z.string().min(3),
     email: z.string().email(),
     password: z.string().min(6),
+    about: z.string().min(100),
+    address: z.string().min(100),
+    currenttitle: z.string().min(100),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
+      about: "",
+      address: "",
+      currenttitle: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    const { email, password } = values;
+  async function onSubmit(values: z.infer<typeof formSchema>) { 
+    const {name, email, password, about, address,currenttitle} = values;
 
-    await UserAPI.login({
-      email,
-      password,
+    await UserAPI.register({ 
+        name, 
+        email, 
+        password, 
+        about, 
+        address,
+        currenttitle
     })
-      .then((res) => {
-        const { success, message, data } = res.data;
-        setAuthToken(data.token);
-        toast("Login successful");
-      })
-      .catch((err) => {
-        toast("Login failed. Please check your credentials");
-      });
+    .then((res) => { 
+        const {success, message, data} = res.data;
+        setAuthToken
+        toast("Registration successful");
+    })
+    .catch ((err) => { 
+        toast("Registration failed. Please check your credentials");
+    })
   }
 
   return (
@@ -59,11 +72,27 @@ export default function Page() {
             Register
           </h1>
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-4 max-w-md"
-            >
-              <div className="relative">
+            <form 
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4 max-w-md">
+              <div>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Name" 
+                        className="h-12" 
+                        {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div>
                 <FormField
                   control={form.control}
                   name="email"
@@ -71,18 +100,16 @@ export default function Page() {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Email"
-                          className="h-12"
-                          {...field}
-                        />
+                        <Input placeholder="Email" 
+                        className="h-12" 
+                        {...field} />
                       </FormControl>
-                      <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
-              <div className="relative">
+
+              <div>
                 <FormField
                   control={form.control}
                   name="password"
@@ -90,21 +117,69 @@ export default function Page() {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Enter your password"
-                          className="h-12"
-                          type="password"
-                          {...field}
-                        />
+                        <Input placeholder="Password" 
+                        className="h-12" 
+                        type="password" 
+                        {...field} />
                       </FormControl>
-                      <FormMessage />
+                    </FormItem>
+                  )}
+                />  
+                </div>
+
+              <div>
+                <FormField
+                  control={form.control}
+                  name="about"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>About</FormLabel>
+                      <FormControl>
+                        <Input placeholder="About" 
+                        className="h-12" 
+                        {...field} />
+                      </FormControl>
                     </FormItem>
                   )}
                 />
               </div>
-              <Button className="w-full h-12 text-base" type="submit">
-                Sign Up
-              </Button>
+
+              <div>
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Address</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Address" 
+                        className="h-12" 
+                        {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div>
+                <FormField
+                  control={form.control}
+                  name="currenttitle"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Current Title</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Current Title" 
+                        className="h-12" 
+                        {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <Button className="w-full h-12 text-base" type="submit"> 
+                SignUp
+                </Button>
               <div className="relative flex items-center gap-4 py-2">
                 <div className="flex-1 border-t"></div>
                 <span className="text-muted-foreground text-sm">or</span>
@@ -112,7 +187,7 @@ export default function Page() {
               </div>
               <Link
                 href="/login"
-                className="w-full h-12 text-base bg-white flex items-center justify-center rounded-lg shadow-sm"
+                className="text-base flex items-center justify-center  "
               >
                 Already have an account? Sign in
               </Link>
@@ -133,3 +208,4 @@ export default function Page() {
     </section>
   );
 }
+
