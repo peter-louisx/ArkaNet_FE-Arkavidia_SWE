@@ -20,6 +20,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function Register() {
   const formSchema = z.object({
@@ -27,8 +28,8 @@ export default function Register() {
     email: z.string().email(),
     password: z.string().min(6),
     about: z.string().min(100),
-    address: z.string().min(100),
-    currenttitle: z.string().min(100),
+    address: z.string().min(1),
+    currenttitle: z.string().min(1),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -89,6 +90,7 @@ export default function Register() {
                           {...field}
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -108,6 +110,7 @@ export default function Register() {
                           {...field}
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -128,6 +131,7 @@ export default function Register() {
                           {...field}
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -141,12 +145,13 @@ export default function Register() {
                     <FormItem>
                       <FormLabel>About</FormLabel>
                       <FormControl>
-                        <Input
+                        <Textarea
                           placeholder="Tell us about yourself"
-                          className="h-12"
+                          className="h-12 bg-white"
                           {...field}
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -166,6 +171,7 @@ export default function Register() {
                           {...field}
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -185,6 +191,7 @@ export default function Register() {
                           {...field}
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
