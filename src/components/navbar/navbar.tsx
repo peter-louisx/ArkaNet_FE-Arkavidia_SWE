@@ -21,9 +21,15 @@ export default async function Navbar() {
         <nav className="hidden md:flex items-center gap-1">
           <NavItem icon={<Briefcase />} label="Jobs" href="/jobs" />
           <NavItem icon={<Users />} label="People" href="/people" />
-          <NavItem icon={<MessageSquare />} label="Messaging" />
-          <NavItem icon={<Bell />} label="Notifications" />
-          {isAuthenticated && <Profile />}
+
+          {isAuthenticated && (
+            <>
+              {" "}
+              <NavItem icon={<MessageSquare />} label="Messaging" />
+              <NavItem icon={<Bell />} label="Notifications" />
+              <Profile />{" "}
+            </>
+          )}
           {!isAuthenticated && (
             <Link
               href={"/login"}
