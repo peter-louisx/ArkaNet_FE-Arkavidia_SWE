@@ -21,8 +21,8 @@ export default function Page() {
         title: "Senior Software Engineer",
         company: "TechCorp Inc.",
         location: "San Francisco, CA",
-        startDate: "Jan 2020",
-        endDate: "Present",
+        startDate: new Date("01-01-2020"),
+        endDate: null,
         description:
           "Led development of cloud-based solutions for enterprise clients. Managed a team of 5 developers and implemented CI/CD pipelines.",
       },
@@ -31,8 +31,8 @@ export default function Page() {
         title: "Software Developer",
         company: "InnovateTech",
         location: "Austin, TX",
-        startDate: "Mar 2017",
-        endDate: "Dec 2019",
+        startDate: new Date("01-01-2018"),
+        endDate: new Date("01-01-2020"),
         description:
           "Developed and maintained web applications using React and Node.js. Collaborated with design team to implement UI/UX improvements.",
       },

@@ -4,20 +4,14 @@ import { useState } from "react";
 import {
   Briefcase,
   Building,
-  Calendar,
+  Calendar as CalendarIcon,
   Edit,
   MapPin,
   Plus,
   Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,6 +23,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Form, FormField, FormMessage } from "@/components/ui/form";
+import { DatePicker } from "../ui/date-picker";
 
 export default function Experience({
   experienceData,
@@ -39,51 +38,108 @@ export default function Experience({
     title: string;
     company: string;
     location: string;
-    startDate: string;
-    endDate: string;
+    startDate: Date;
+    endDate: Date | null;
     description: string;
   }[];
   allowEdit?: boolean;
 }) {
+  const formSchema = z.object({
+    title: z.string().nonempty(),
+    company: z.string().nonempty(),
+    location: z.string().nonempty(),
+    startDate: z.date(),
+    endDate: z.date().nullable(),
+    description: z.string(),
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      company: "",
+      location: "",
+      //@ts-ignore
+      startDate: null,
+      endDate: null,
+      description: "",
+    },
+  });
+
   // Experience State
-  const [experiences, setExperiences] = useState(experienceData);
+  const [experiences, setExperiences] = useState<
+    {
+      id: number;
+      title: string;
+      company: string;
+      location: string;
+      startDate: Date;
+      endDate: Date | null;
+      description: string;
+    }[]
+  >(experienceData);
 
   const [isEditingExperience, setIsEditingExperience] = useState(false);
-  const [currentExperience, setCurrentExperience] = useState<any>(null);
+  const [currentExperience, setCurrentExperience] = useState<number>(0);
 
   // Experience Handlers
   const editExperience = (experience: any) => {
-    setCurrentExperience(experience);
+    setCurrentExperience(experience.id);
+    form.setValue("title", experience.title);
+    form.setValue("company", experience.company);
+    form.setValue("location", experience.location);
+    form.setValue("startDate", new Date(experience.startDate));
+    form.setValue("endDate", experience.endDate);
+    form.setValue("description", experience.description);
     setIsEditingExperience(true);
   };
 
   const addNewExperience = () => {
-    setCurrentExperience({
-      id: Date.now(),
-      title: "",
-      company: "",
-      location: "",
-      startDate: "",
-      endDate: "",
-      description: "",
-    });
     setIsEditingExperience(true);
-  };
-
-  const saveExperience = (experience: any) => {
-    if (experiences.find((e) => e.id === experience.id)) {
-      setExperiences(
-        experiences.map((e) => (e.id === experience.id ? experience : e))
-      );
-    } else {
-      setExperiences([...experiences, experience]);
-    }
-    setIsEditingExperience(false);
   };
 
   const deleteExperience = (id: number) => {
     setExperiences(experiences.filter((e) => e.id !== id));
   };
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { title, company, location, startDate, endDate, description } =
+      values;
+    if (currentExperience) {
+      setExperiences(
+        experiences.map((e) =>
+          e.id === currentExperience
+            ? {
+                ...e,
+                title,
+                company,
+                location,
+                startDate: new Date(startDate),
+                endDate: endDate ? new Date(endDate) : null,
+                description,
+              }
+            : e
+        )
+      );
+      setCurrentExperience(0);
+    } else {
+      setExperiences([
+        ...experiences,
+        {
+          id: Date.now(),
+          title,
+          company,
+          location,
+          startDate: new Date(startDate),
+          endDate: endDate ? new Date(endDate) : null,
+          description,
+        },
+      ]);
+    }
+
+    setIsEditingExperience(false);
+    form.reset();
+  }
 
   return (
     <>
@@ -138,9 +194,10 @@ export default function Experience({
                     <span>{experience.company}</span>
                   </div>
                   <div className="flex items-center text-muted-foreground">
-                    <Calendar className="h-4 w-4 mr-1" />
+                    <CalendarIcon className="h-4 w-4 mr-1" />
                     <span>
-                      {experience.startDate} - {experience.endDate}
+                      {experience.startDate?.toLocaleDateString() || "Present"}{" "}
+                      - {experience.endDate?.toLocaleDateString() || "Present"}
                     </span>
                   </div>
                   <div className="flex items-center text-muted-foreground">
@@ -156,6 +213,7 @@ export default function Experience({
           ))}
         </CardContent>
       </Card>
+
       {allowEdit && (
         <Dialog
           open={isEditingExperience}
@@ -164,110 +222,98 @@ export default function Experience({
           <DialogContent className="sm:max-w-[600px]">
             <DialogHeader>
               <DialogTitle>
-                {currentExperience?.id ? "Edit Experience" : "Add Experience"}
+                {currentExperience ? "Edit Experience" : "Add Experience"}
               </DialogTitle>
               <DialogDescription>
                 Add or update your work experience details
               </DialogDescription>
             </DialogHeader>
-            {currentExperience && (
-              <div className="grid gap-4 py-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="title">Job Title</Label>
-                  <Input
-                    id="title"
-                    value={currentExperience.title}
-                    onChange={(e) =>
-                      setCurrentExperience({
-                        ...currentExperience,
-                        title: e.target.value,
-                      })
-                    }
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <div className="grid gap-4 py-4">
+                  <FormField
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => (
+                      <div className="grid gap-2">
+                        <Label htmlFor="title">Job Title</Label>
+                        <Input id="title" {...field} />
+                        <FormMessage />
+                      </div>
+                    )}
                   />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="company">Company</Label>
-                  <Input
-                    id="company"
-                    value={currentExperience.company}
-                    onChange={(e) =>
-                      setCurrentExperience({
-                        ...currentExperience,
-                        company: e.target.value,
-                      })
-                    }
+                  <FormField
+                    control={form.control}
+                    name="company"
+                    render={({ field }) => (
+                      <div className="grid gap-2">
+                        <Label htmlFor="company">Company</Label>
+                        <Input id="company" {...field} />
+                        <FormMessage />
+                      </div>
+                    )}
                   />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="location">Location</Label>
-                  <Input
-                    id="location"
-                    value={currentExperience.location}
-                    onChange={(e) =>
-                      setCurrentExperience({
-                        ...currentExperience,
-                        location: e.target.value,
-                      })
-                    }
+                  <FormField
+                    control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                      <div className="grid gap-2">
+                        <Label htmlFor="location">Location</Label>
+                        <Input id="location" {...field} />
+                        <FormMessage />
+                      </div>
+                    )}
                   />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="grid gap-2">
-                    <Label htmlFor="startDate">Start Date</Label>
-                    <Input
-                      id="startDate"
-                      value={currentExperience.startDate}
-                      onChange={(e) =>
-                        setCurrentExperience({
-                          ...currentExperience,
-                          startDate: e.target.value,
-                        })
-                      }
-                      placeholder="e.g., Jan 2020"
-                    />
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                      <DatePicker
+                        form={form}
+                        name="startDate"
+                        label="Start Date"
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <DatePicker form={form} name="endDate" label="End Date" />
+                      <Button
+                        variant="outline"
+                        type="button"
+                        className="w-full"
+                        onClick={() => form.setValue("endDate", null)}
+                      >
+                        I currently work here
+                      </Button>
+                    </div>
                   </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="endDate">End Date</Label>
-                    <Input
-                      id="endDate"
-                      value={currentExperience.endDate}
-                      onChange={(e) =>
-                        setCurrentExperience({
-                          ...currentExperience,
-                          endDate: e.target.value,
-                        })
-                      }
-                      placeholder="e.g., Present"
-                    />
-                  </div>
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    value={currentExperience.description}
-                    onChange={(e) =>
-                      setCurrentExperience({
-                        ...currentExperience,
-                        description: e.target.value,
-                      })
-                    }
-                    className="min-h-[100px]"
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <div className="grid gap-2">
+                        <Label htmlFor="description">Description</Label>
+                        <Textarea id="description" {...field} />
+                        <FormMessage />
+                      </div>
+                    )}
                   />
                 </div>
-              </div>
-            )}
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setIsEditingExperience(false)}
-              >
-                Cancel
-              </Button>
-              <Button onClick={() => saveExperience(currentExperience)}>
-                Save
-              </Button>
-            </DialogFooter>
+
+                <DialogFooter>
+                  <Button
+                    variant="outline"
+                    type="button"
+                    onClick={() => {
+                      setIsEditingExperience(false);
+                      setCurrentExperience(0);
+                      form.reset();
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit">Save</Button>
+                </DialogFooter>
+              </form>
+            </Form>
           </DialogContent>
         </Dialog>
       )}
