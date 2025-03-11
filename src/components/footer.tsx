@@ -17,7 +17,7 @@ export default function Footer() {
             <FooterColumn
               title="General"
               links={["Sign Up", "Help Center", "About"]}
-              hrefs={["/signup", "#", "#"]}
+              hrefs={["/register", "#", "#"]}
             />
             <FooterColumn
               title="Browse"

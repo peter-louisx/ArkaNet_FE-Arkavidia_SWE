@@ -21,5 +21,31 @@ export const UserAPI = {
                 Authorization: `Bearer ${await getAuthToken()}`
             }
         })
-    }   
+    },
+
+    register: async function({
+        name,
+        email,
+        password,
+        about,
+        address,
+        currenttitle
+    }: {
+        name: string,
+        email: string,
+        password: string,
+        about: string,
+        address: string,
+        currenttitle: string,
+    }){
+        return axios.post("/user/register", {
+            name,
+            email,
+            password,
+            about,
+            address,
+            currenttitle,
+        })
+    }
+    
 }
