@@ -72,7 +72,7 @@ export default function Page() {
                       <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Email"
+                          placeholder="Enter your email"
                           className="h-12"
                           {...field}
                         />
