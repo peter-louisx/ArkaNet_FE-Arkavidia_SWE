@@ -3,6 +3,14 @@
 import Link from "next/link";
 import React from "react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { UserAPI } from "@/api/User";
+import { setAuthToken } from "@/lib/session";
+import { toast } from "sonner";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -12,14 +20,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { UserAPI } from "@/api/User";
-import { setAuthToken } from "@/lib/session";
-import { toast } from "sonner";
 
 export default function Register() {
   const formSchema = z.object({
@@ -117,17 +117,15 @@ export default function Register() {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Password"
-                          type="password"
-                          className="h-12"
-                          {...field}
-                        />
+                        <Input placeholder="Password" 
+                        className="h-12" 
+                        type="password" 
+                        {...field} />
                       </FormControl>
                     </FormItem>
                   )}
-                />
-              </div>
+                />  
+                </div>
 
               <div>
                 <FormField
@@ -182,7 +180,7 @@ export default function Register() {
               <Button className="w-full h-12 text-base" type="submit"> 
                 SignUp
                 </Button>
-                <div className="relative flex items-center gap-4 py-2">
+              <div className="relative flex items-center gap-4 py-2">
                 <div className="flex-1 border-t"></div>
                 <span className="text-muted-foreground text-sm">or</span>
                 <div className="flex-1 border-t"></div>
@@ -210,3 +208,4 @@ export default function Register() {
     </section>
   );
 }
+

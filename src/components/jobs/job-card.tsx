@@ -6,12 +6,14 @@ import {
   Clock,
   DollarSign,
   KanbanSquare,
+  Locate,
   MapPin,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { countTimeAfterDate, formatNumberCommas } from "@/lib/utils";
 
 export default function JobCard({ job }: { job: any }) {
   return (
@@ -52,15 +54,23 @@ export default function JobCard({ job }: { job: any }) {
                 </div>
                 <div className="flex items-center">
                   <DollarSign className="h-4 w-4 mr-1" />
-                  <span>{job.salary}</span>
+                  <span>
+                    {formatNumberCommas(job.min_salary) +
+                      " - " +
+                      formatNumberCommas(job.max_salary)}
+                  </span>
                 </div>
                 <div className="flex items-center">
                   <Clock className="h-4 w-4 mr-1" />
-                  <span>{job.posted}</span>
+                  <span>{countTimeAfterDate(job.posted)}</span>
                 </div>
                 <div className="flex items-center">
                   <KanbanSquare className="h-4 w-4 mr-1" />
                   <span>{job.experience}</span>
+                </div>
+                <div className="flex items-center">
+                  <Locate className="h-4 w-4 mr-1" />
+                  <span>{job.location_type}</span>
                 </div>
               </div>
 

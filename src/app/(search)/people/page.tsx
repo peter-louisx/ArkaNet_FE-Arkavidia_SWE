@@ -8,13 +8,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Sheet,
   SheetContent,
   SheetDescription,
@@ -111,17 +104,13 @@ function JobFilters({
   filters,
   setFilters,
   toggleJobType,
-  toggleExperienceLevel,
   applyFilters,
   resetFilters,
-  toggleLocationType,
   isMobile = false,
 }: {
   filters: any;
   setFilters: any;
   toggleJobType: (type: string) => void;
-  toggleLocationType: (type: string) => void;
-  toggleExperienceLevel: (level: string) => void;
   applyFilters: () => void;
   resetFilters: () => void;
   isMobile?: boolean;
@@ -130,18 +119,9 @@ function JobFilters({
 
   return (
     <div className="space-y-6">
-      <Accordion
-        type="multiple"
-        defaultValue={[
-          "job-type",
-          "experience",
-          "date-posted",
-          "salary",
-          "location-type",
-        ]}
-      >
+      <Accordion type="multiple" defaultValue={["job-type"]}>
         <AccordionItem value="job-type">
-          <AccordionTrigger>Job Type</AccordionTrigger>
+          <AccordionTrigger>Connection Type</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-2">
               {jobTypes.map((type) => (
@@ -154,96 +134,6 @@ function JobFilters({
                   <Label htmlFor={`${idPrefix}job-type-${type}`}>{type}</Label>
                 </div>
               ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="location-type">
-          <AccordionTrigger>Location Type</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2">
-              {locationTypes.map((type) => (
-                <div key={type} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`${idPrefix}location-type-${type}`}
-                    checked={filters.locationTypes.includes(type)}
-                    onCheckedChange={() => toggleLocationType(type)}
-                  />
-                  <Label htmlFor={`${idPrefix}location-type-${type}`}>
-                    {type}
-                  </Label>
-                </div>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="experience">
-          <AccordionTrigger>Experience Level</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2">
-              {experienceLevels.map((level) => (
-                <div key={level} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`${idPrefix}exp-level-${level}`}
-                    checked={filters.experienceLevels.includes(level)}
-                    onCheckedChange={() => toggleExperienceLevel(level)}
-                  />
-                  <Label htmlFor={`${idPrefix}exp-level-${level}`}>
-                    {level}
-                  </Label>
-                </div>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="date-posted">
-          <AccordionTrigger>Date Posted</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2">
-              {datePosted.map((option) => (
-                <div key={option} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`${idPrefix}date-${option}`}
-                    checked={filters.datePosted === option}
-                    onCheckedChange={() =>
-                      setFilters({ ...filters, datePosted: option })
-                    }
-                  />
-                  <Label htmlFor={`${idPrefix}date-${option}`}>{option}</Label>
-                </div>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="salary">
-          <AccordionTrigger>Salary Range</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-6">
-              <div className="pt-4">
-                <Slider
-                  defaultValue={[0, 200000]}
-                  max={200000}
-                  step={10000}
-                  value={filters.salaryRange}
-                  onValueChange={(value) =>
-                    setFilters({
-                      ...filters,
-                      salaryRange: value as [number, number],
-                    })
-                  }
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">
-                  ${filters.salaryRange[0].toLocaleString()}
-                </span>
-                <span className="text-sm">
-                  ${filters.salaryRange[1].toLocaleString()}
-                </span>
-              </div>
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -265,13 +155,6 @@ export default function JobsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState({
     jobTypes: [] as string[],
-    experienceLevels: [] as string[],
-    locationTypes: [] as string[],
-    datePosted: "",
-    salaryRange: [0, 200000],
-    remoteOnly: false,
-    easyApplyOnly: false,
-    featuredOnly: false,
   });
   const [filteredJobs, setFilteredJobs] = useState(jobListings);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
@@ -294,13 +177,6 @@ export default function JobsPage() {
         return false;
       }
 
-      // Salary range filter
-      const jobSalaryMin = job.min_salary;
-
-      if (jobSalaryMin < filters.salaryRange[0]) {
-        return false;
-      }
-
       return true;
     });
 
@@ -312,13 +188,6 @@ export default function JobsPage() {
     setSearchTerm("");
     setFilters({
       jobTypes: [],
-      experienceLevels: [],
-      locationTypes: [],
-      datePosted: "",
-      salaryRange: [0, 200000],
-      remoteOnly: false,
-      easyApplyOnly: false,
-      featuredOnly: false,
     });
     setFilteredJobs(jobListings);
   };
@@ -338,35 +207,6 @@ export default function JobsPage() {
     }
   };
 
-  const toggleLocationType = (type: string) => {
-    if (filters.locationTypes.includes(type)) {
-      setFilters({
-        ...filters,
-        locationTypes: filters.locationTypes.filter((t) => t !== type),
-      });
-    } else {
-      setFilters({
-        ...filters,
-        locationTypes: [...filters.locationTypes, type],
-      });
-    }
-  };
-
-  // Toggle experience level filter
-  const toggleExperienceLevel = (level: string) => {
-    if (filters.experienceLevels.includes(level)) {
-      setFilters({
-        ...filters,
-        experienceLevels: filters.experienceLevels.filter((l) => l !== level),
-      });
-    } else {
-      setFilters({
-        ...filters,
-        experienceLevels: [...filters.experienceLevels, level],
-      });
-    }
-  };
-
   return (
     <div className="p-10 max-md:px-2">
       {/* Search and Filter Bar */}
@@ -376,14 +216,14 @@ export default function JobsPage() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
               className="pl-10"
-              placeholder="Search job titles, companies, or keywords"
+              placeholder="Search people"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <div className=" flex gap-2">
             <Button className="flex-1" onClick={applyFilters}>
-              Search Jobs
+              Search People
             </Button>
             <Sheet open={showMobileFilters} onOpenChange={setShowMobileFilters}>
               <SheetTrigger asChild>
@@ -403,8 +243,6 @@ export default function JobsPage() {
                     filters={filters}
                     setFilters={setFilters}
                     toggleJobType={toggleJobType}
-                    toggleExperienceLevel={toggleExperienceLevel}
-                    toggleLocationType={toggleLocationType}
                     applyFilters={() => {
                       applyFilters();
                       setShowMobileFilters(false);
@@ -428,39 +266,14 @@ export default function JobsPage() {
               filters={filters}
               setFilters={setFilters}
               toggleJobType={toggleJobType}
-              toggleExperienceLevel={toggleExperienceLevel}
               applyFilters={applyFilters}
               resetFilters={resetFilters}
-              toggleLocationType={toggleLocationType}
             />
           </div>
         </div>
 
         {/* Job Listings */}
         <div className="lg:col-span-3 space-y-4">
-          <div className="flex items-center justify-between bg-white rounded-lg shadow-sm p-4 max-md:flex-col max-md:gap-3">
-            <h1 className="text-xl font-bold">
-              {filteredJobs.length} {filteredJobs.length === 1 ? "Job" : "Jobs"}{" "}
-              Found
-            </h1>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground hidden md:inline">
-                Sort by:
-              </span>
-              <Select defaultValue="relevance">
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="relevance">Most Relevant</SelectItem>
-                  <SelectItem value="recent">Most Recent</SelectItem>
-                  <SelectItem value="salary-high">Highest Salary</SelectItem>
-                  <SelectItem value="salary-low">Lowest Salary</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
           {filteredJobs.length === 0 ? (
             <div className="bg-white rounded-lg shadow-sm p-8 text-center">
               <Briefcase className="h-12 w-12 mx-auto text-muted-foreground mb-4" />

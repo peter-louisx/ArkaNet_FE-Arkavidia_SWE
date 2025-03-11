@@ -26,11 +26,14 @@ const company = {
     {
       id: 1,
       title: "Senior Frontend Developer",
+      location_type: "Remote",
       location: "San Francisco, CA",
       type: "Full-time",
       experience: "Senior Level",
+      min_salary: 120000,
+      max_salary: 150000,
       salary: "$120,000 - $150,000",
-      posted: "2 days ago",
+      posted: "03-10-2025",
       description:
         "We're looking for a Senior Frontend Developer with 5+ years of experience in React, TypeScript, and modern frontend frameworks.",
       skills: ["React", "TypeScript", "Next.js", "CSS"],
@@ -67,10 +70,13 @@ const company = {
       id: 2,
       title: "Backend Engineer",
       location: "Austin, TX",
+      location_type: "Remote",
       experience: "Mid Level",
       type: "Full-time",
-      salary: "$110,000 - $140,000",
-      posted: "1 week ago",
+      min_salary: 120000,
+      max_salary: 150000,
+      posted: "02-10-2025",
+
       description:
         "Join our backend team to build scalable APIs and microservices using Node.js and Python.",
       skills: ["Node.js", "Python", "AWS", "MongoDB"],
@@ -116,11 +122,14 @@ const company = {
     {
       id: 3,
       title: "DevOps Engineer",
+      location_type: "Remote",
       location: "Seattle, WA",
       experience: "Mid Level",
+      min_salary: 120000,
+      max_salary: 150000,
       type: "Full-time",
-      salary: "$130,000 - $160,000",
-      posted: "5 days ago",
+      posted: "02-10-2025",
+
       description:
         "Manage our cloud infrastructure and CI/CD pipelines to ensure smooth deployments.",
       skills: ["AWS", "Docker", "Kubernetes", "CI/CD"],
@@ -130,10 +139,13 @@ const company = {
       id: 4,
       title: "Product Manager",
       location: "Chicago, IL",
+      min_salary: 120000,
+      max_salary: 150000,
+      location_type: "Remote",
       experience: "Senior Level",
       type: "Full-time",
-      salary: "$115,000 - $145,000",
-      posted: "1 day ago",
+      posted: "02-10-2025",
+
       description:
         "Lead product development from conception to launch, working with cross-functional teams.",
       skills: ["Product Strategy", "Agile", "User Research", "Roadmapping"],

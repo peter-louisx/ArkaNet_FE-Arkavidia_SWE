@@ -57,7 +57,7 @@ export default function Sidebar() {
           <div className="flex-1 overflow-auto py-2">
             <div className="px-2 space-y-1">
               <MobileNavItem icon={<Briefcase />} label="Jobs" href="/jobs" />
-              <MobileNavItem icon={<Users />} label="My Network" />
+              <MobileNavItem icon={<Users />} label="People" href="/people" />
               <MobileNavItem icon={<MessageSquare />} label="Messaging" />
               <MobileNavItem icon={<Bell />} label="Notifications" />
             </div>

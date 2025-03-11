@@ -7,6 +7,7 @@ import {
   Clock,
   DollarSign,
   Edit,
+  Locate,
   MapPin,
   Plus,
   Search,
@@ -45,7 +46,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
-import { experienceLevels, jobTypes } from "@/lib/jobs-filters";
+import { experienceLevels, jobTypes, locationTypes } from "@/lib/jobs-filters";
+import { countTimeAfterDate, formatNumberCommas } from "@/lib/utils";
 
 export default function CompanyJobs({
   jobsData,
@@ -55,9 +57,11 @@ export default function CompanyJobs({
     id: number;
     title: string;
     location: string;
+    location_type: string;
     type: string;
     experience: string;
-    salary: string;
+    max_salary: number;
+    min_salary: number;
     posted: string;
     description: string;
     skills: string[];
@@ -282,6 +286,26 @@ export default function CompanyJobs({
                       </SelectTrigger>
                       <SelectContent>
                         {jobTypes.map((type) => (
+                          <SelectItem key={type} value={type}>
+                            {type}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid gap-2 ">
+                    <Label htmlFor="type">Location Type</Label>
+                    <Select
+                      value={currentJob.location_type}
+                      onValueChange={(value) =>
+                        setCurrentJob({ ...currentJob, location_type: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a location type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {locationTypes.map((type) => (
                           <SelectItem key={type} value={type}>
                             {type}
                           </SelectItem>
@@ -613,15 +637,23 @@ function JobCard({
                 </div>
                 <div className="flex items-center">
                   <DollarSign className="h-4 w-4 mr-1" />
-                  <span>{job.salary}</span>
+                  <span>
+                    {formatNumberCommas(job.min_salary) +
+                      " - " +
+                      formatNumberCommas(job.max_salary)}
+                  </span>
                 </div>
                 <div className="flex items-center">
                   <Clock className="h-4 w-4 mr-1" />
-                  <span>{job.posted}</span>
+                  <span>{countTimeAfterDate(job.posted)}</span>
                 </div>
                 <div className="flex items-center">
                   <SquareKanban className="h-4 w-4 mr-1" />
                   <span>{job.experience}</span>
+                </div>
+                <div className="flex items-center">
+                  <Locate className="h-4 w-4 mr-1" />
+                  <span>{job.location_type}</span>
                 </div>
               </div>
 

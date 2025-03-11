@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -69,10 +69,10 @@ export default function Page() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Username</FormLabel>
+                      <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Email or phone number"
+                          placeholder="Email"
                           className="h-12"
                           {...field}
                         />
@@ -88,10 +88,10 @@ export default function Page() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Username</FormLabel>
+                      <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Email or phone number"
+                          placeholder="Enter your password"
                           className="h-12"
                           type="password"
                           {...field}
@@ -110,9 +110,13 @@ export default function Page() {
                 <span className="text-muted-foreground text-sm">or</span>
                 <div className="flex-1 border-t"></div>
               </div>
-              <Button variant="outline" className="w-full h-12 text-base">
+              <Link
+                href="/register"
+                type="button"
+                className="w-full h-12 text-base bg-white flex items-center justify-center rounded-lg shadow-sm"
+              >
                 Join now
-              </Button>
+              </Link>
             </form>
           </Form>
         </div>
