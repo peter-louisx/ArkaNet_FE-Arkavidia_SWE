@@ -15,6 +15,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Form, FormField } from "@/components/ui/form";
 
 type ImageUploadType = "logo" | "cover";
 
@@ -26,7 +30,6 @@ export default function PersonalInfo({
     name: string;
     headline: string;
     location: string;
-    industry: string;
     cover: string;
     profilePicture: string;
   };
@@ -34,10 +37,33 @@ export default function PersonalInfo({
 }) {
   const [personalInfo, setPersonalInfo] = useState(personalInfoData);
 
-  const [isEditingPersonalInfo, setIsEditingPersonalInfo] = useState(false);
-  const [editedPersonalInfo, setEditedPersonalInfo] = useState({
-    ...personalInfo,
+  const formSchema = z.object({
+    name: z.string(),
+    headline: z.string(),
+    location: z.string(),
   });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: personalInfoData.name,
+      headline: personalInfoData.headline,
+      location: personalInfoData.location,
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { name, headline, location } = values;
+    setPersonalInfo({
+      ...personalInfo,
+      name,
+      headline,
+      location,
+    });
+    setIsEditingPersonalInfo(false);
+  }
+
+  const [isEditingPersonalInfo, setIsEditingPersonalInfo] = useState(false);
 
   // Image upload state
   const [isUploadingImage, setIsUploadingImage] = useState(false);
@@ -47,13 +73,7 @@ export default function PersonalInfo({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const openEditPersonalInfo = () => {
-    setEditedPersonalInfo({ ...personalInfo });
     setIsEditingPersonalInfo(true);
-  };
-
-  const savePersonalInfo = () => {
-    setPersonalInfo({ ...editedPersonalInfo });
-    setIsEditingPersonalInfo(false);
   };
 
   // Image Upload Handlers
@@ -167,10 +187,6 @@ export default function PersonalInfo({
                   <MapPin className="h-4 w-4 mr-1" />
                   <span>{personalInfo.location}</span>
                 </div>
-                <div className="flex items-center">
-                  <Briefcase className="h-4 w-4 mr-1" />
-                  <span>{personalInfo.industry}</span>
-                </div>
               </div>
             </div>
           </div>
@@ -259,75 +275,75 @@ export default function PersonalInfo({
             onOpenChange={setIsEditingPersonalInfo}
           >
             <DialogContent className="sm:max-w-[600px]">
-              <DialogHeader>
-                <DialogTitle>Edit Profile Information</DialogTitle>
-                <DialogDescription>
-                  Update your personal and professional details
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="name">Full Name</Label>
-                  <Input
-                    id="name"
-                    value={editedPersonalInfo.name}
-                    onChange={(e) =>
-                      setEditedPersonalInfo({
-                        ...editedPersonalInfo,
-                        name: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="headline">Professional Headline</Label>
-                  <Input
-                    id="headline"
-                    value={editedPersonalInfo.headline}
-                    onChange={(e) =>
-                      setEditedPersonalInfo({
-                        ...editedPersonalInfo,
-                        headline: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="location">Location</Label>
-                  <Input
-                    id="location"
-                    value={editedPersonalInfo.location}
-                    onChange={(e) =>
-                      setEditedPersonalInfo({
-                        ...editedPersonalInfo,
-                        location: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="industry">Industry</Label>
-                  <Input
-                    id="industry"
-                    value={editedPersonalInfo.industry}
-                    onChange={(e) =>
-                      setEditedPersonalInfo({
-                        ...editedPersonalInfo,
-                        industry: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button
-                  variant="outline"
-                  onClick={() => setIsEditingPersonalInfo(false)}
-                >
-                  Cancel
-                </Button>
-                <Button onClick={savePersonalInfo}>Save</Button>
-              </DialogFooter>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <DialogHeader>
+                    <DialogTitle>Edit Profile Information</DialogTitle>
+                    <DialogDescription>
+                      Update your personal and professional details
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <div className="grid gap-2">
+                          <Label htmlFor="name">Full Name</Label>
+                          <Input
+                            id="name"
+                            {...field}
+                            placeholder="Enter your full name"
+                          />
+                        </div>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="headline"
+                      render={({ field }) => (
+                        <div className="grid gap-2">
+                          <Label htmlFor="headline">
+                            Professional Headline
+                          </Label>
+                          <Input
+                            id="headline"
+                            {...field}
+                            placeholder="Enter your professional headline"
+                          />
+                        </div>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="location"
+                      render={({ field }) => (
+                        <div className="grid gap-2">
+                          <Label htmlFor="location">Location</Label>
+                          <Input
+                            id="location"
+                            {...field}
+                            placeholder="Enter your location"
+                          />
+                        </div>
+                      )}
+                    />
+                  </div>
+                  <DialogFooter>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setIsEditingPersonalInfo(false);
+                        form.reset();
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button type="submit">Save</Button>
+                  </DialogFooter>
+                </form>
+              </Form>
             </DialogContent>
           </Dialog>
         </>

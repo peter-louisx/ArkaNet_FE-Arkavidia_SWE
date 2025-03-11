@@ -12,7 +12,6 @@ export default function Page() {
       cover: "/placeholder.svg?height=300&width=1200",
       profilePicture: "/placeholder.svg?height=128&width=128",
       location: "San Francisco, California",
-      industry: "Information Technology",
     },
     about:
       "Experienced software engineer with a passion for building scalable web applications. Skilled in JavaScript, React, and Node.js. Strong team leadership and project management abilities.",

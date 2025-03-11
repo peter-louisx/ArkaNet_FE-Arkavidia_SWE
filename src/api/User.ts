@@ -46,6 +46,26 @@ export const UserAPI = {
             address,
             currenttitle,
         })
-    }
+    },
+
+    setPersonalInfo: async function({
+        name,
+        headline,
+        location,
+    }: {
+        name: string,
+        headline: string,
+        location: string,
+    }){
+        return axios.post("/user/personal-info", {
+            name,
+            headline,
+            location,
+        }, {
+            headers: {
+                Authorization: `Bearer ${await getAuthToken()}`
+            }
+        })
+    },
     
 }
