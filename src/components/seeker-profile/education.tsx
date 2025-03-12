@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, Edit, GraduationCap, Plus, Trash2 } from "lucide-react";
+import {
+  Calendar,
+  Edit,
+  GraduationCap,
+  Plus,
+  School,
+  Trash2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,6 +28,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Form, FormField, FormMessage } from "@/components/ui/form";
+import { DatePicker } from "../ui/date-picker";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { set } from "date-fns";
 
 export default function Education({
   educationData,
@@ -31,49 +44,92 @@ export default function Education({
     school: string;
     degree: string;
     field: string;
-    startYear: string;
-    endYear: string;
+    startDate: Date;
+    endDate: Date;
     description: string;
   }[];
   allowEdit?: boolean;
 }) {
+  const formSchema = z.object({
+    school: z.string().nonempty("School is required"),
+    degree: z.string().nonempty("Degree is required"),
+    field: z.string().nonempty("Field of study is required"),
+    startDate: z.date(),
+    endDate: z.date(),
+    description: z.string(),
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      school: "",
+      degree: "",
+      field: "",
+      // @ts-ignore
+      startDate: null,
+      // @ts-ignore
+      endDate: null,
+      description: "",
+    },
+  });
+
   // Education State
   const [education, setEducation] = useState(educationData);
 
   const [isEditingEducation, setIsEditingEducation] = useState(false);
-  const [currentEducation, setCurrentEducation] = useState<any>(null);
+  const [currentEducation, setCurrentEducation] = useState<number>(0);
 
   // Education Handlers
   const editEducation = (edu: any) => {
-    setCurrentEducation(edu);
+    setCurrentEducation(edu.id);
+    form.setValue("school", edu.school);
+    form.setValue("degree", edu.degree);
+    form.setValue("field", edu.field);
+    form.setValue("startDate", edu.startDate);
+    form.setValue("endDate", edu.endDate);
+    form.setValue("description", edu.description);
     setIsEditingEducation(true);
   };
 
   const addNewEducation = () => {
-    setCurrentEducation({
-      id: Date.now(),
-      school: "",
-      degree: "",
-      field: "",
-      startYear: "",
-      endYear: "",
-      description: "",
-    });
     setIsEditingEducation(true);
-  };
-
-  const saveEducation = (edu: any) => {
-    if (education.find((e) => e.id === edu.id)) {
-      setEducation(education.map((e) => (e.id === edu.id ? edu : e)));
-    } else {
-      setEducation([...education, edu]);
-    }
-    setIsEditingEducation(false);
   };
 
   const deleteEducation = (id: number) => {
     setEducation(education.filter((e) => e.id !== id));
   };
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { school, degree, field, startDate, endDate, description } = values;
+
+    if (currentEducation) {
+      setEducation(
+        education.map((e) =>
+          e.id === currentEducation
+            ? { ...e, school, degree, field, startDate, endDate, description }
+            : e
+        )
+      );
+      setCurrentEducation(0);
+    } else {
+      setEducation([
+        ...education,
+        {
+          id: education.length + 1,
+          school,
+          degree,
+          field,
+          startDate,
+          endDate,
+          description,
+        },
+      ]);
+    }
+
+    setIsEditingEducation(false);
+    form.reset();
+  }
+
   return (
     <>
       <Card>
@@ -125,7 +181,8 @@ export default function Education({
                   <div className="flex items-center text-muted-foreground">
                     <Calendar className="h-4 w-4 mr-1" />
                     <span>
-                      {edu.startYear} - {edu.endYear}
+                      {edu.startDate.toLocaleDateString()} -{" "}
+                      {edu.endDate.toLocaleDateString()}
                     </span>
                   </div>
                   <p className="mt-2 text-muted-foreground">
@@ -142,108 +199,92 @@ export default function Education({
           <DialogContent className="sm:max-w-[600px]">
             <DialogHeader>
               <DialogTitle>
-                {currentEducation?.id ? "Edit Education" : "Add Education"}
+                {currentEducation ? "Edit Education" : "Add Education"}
               </DialogTitle>
               <DialogDescription>
                 Add or update your education details
               </DialogDescription>
             </DialogHeader>
-            {currentEducation && (
-              <div className="grid gap-4 py-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="school">School/University</Label>
-                  <Input
-                    id="school"
-                    value={currentEducation.school}
-                    onChange={(e) =>
-                      setCurrentEducation({
-                        ...currentEducation,
-                        school: e.target.value,
-                      })
-                    }
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <div className="grid gap-4 py-4">
+                  <FormField
+                    control={form.control}
+                    name="school"
+                    render={({ field }) => (
+                      <div className="grid gap-2">
+                        <Label htmlFor="school">School/University</Label>
+                        <Input id="school" {...field} />
+                        <FormMessage />
+                      </div>
+                    )}
                   />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="degree">Degree</Label>
-                  <Input
-                    id="degree"
-                    value={currentEducation.degree}
-                    onChange={(e) =>
-                      setCurrentEducation({
-                        ...currentEducation,
-                        degree: e.target.value,
-                      })
-                    }
+
+                  <FormField
+                    control={form.control}
+                    name="degree"
+                    render={({ field }) => (
+                      <div className="grid gap-2 mt-4">
+                        <Label htmlFor="degree">Degree</Label>
+                        <Input id="degree" {...field} />
+                        <FormMessage />
+                      </div>
+                    )}
                   />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="field">Field of Study</Label>
-                  <Input
-                    id="field"
-                    value={currentEducation.field}
-                    onChange={(e) =>
-                      setCurrentEducation({
-                        ...currentEducation,
-                        field: e.target.value,
-                      })
-                    }
+
+                  <FormField
+                    control={form.control}
+                    name="field"
+                    render={({ field }) => (
+                      <div className="grid gap-2 mt-4">
+                        <Label htmlFor="field">Field of Study</Label>
+                        <Input id="field" {...field} />
+                        <FormMessage />
+                      </div>
+                    )}
                   />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="grid gap-2">
-                    <Label htmlFor="startYear">Start Year</Label>
-                    <Input
-                      id="startYear"
-                      value={currentEducation.startYear}
-                      onChange={(e) =>
-                        setCurrentEducation({
-                          ...currentEducation,
-                          startYear: e.target.value,
-                        })
-                      }
-                    />
+
+                  <div className="grid grid-cols-2 gap-4 mt-4">
+                    <div className="grid gap-2">
+                      <DatePicker
+                        form={form}
+                        name="startDate"
+                        label="Start Date"
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <DatePicker form={form} name="endDate" label="End Date" />
+                    </div>
                   </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="endYear">End Year</Label>
-                    <Input
-                      id="endYear"
-                      value={currentEducation.endYear}
-                      onChange={(e) =>
-                        setCurrentEducation({
-                          ...currentEducation,
-                          endYear: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="eduDescription">Description</Label>
-                  <Textarea
-                    id="eduDescription"
-                    value={currentEducation.description}
-                    onChange={(e) =>
-                      setCurrentEducation({
-                        ...currentEducation,
-                        description: e.target.value,
-                      })
-                    }
-                    className="min-h-[100px]"
+
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <div className="grid gap-2 mt-4">
+                        <Label htmlFor="description">Description</Label>
+                        <Textarea id="description" {...field} />
+                        <FormMessage />
+                      </div>
+                    )}
                   />
                 </div>
-              </div>
-            )}
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setIsEditingEducation(false)}
-              >
-                Cancel
-              </Button>
-              <Button onClick={() => saveEducation(currentEducation)}>
-                Save
-              </Button>
-            </DialogFooter>
+                <DialogFooter>
+                  <Button
+                    variant="outline"
+                    type="button"
+                    onClick={() => {
+                      setCurrentEducation(0);
+                      setIsEditingEducation(false);
+                      form.reset();
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit">Save</Button>
+                </DialogFooter>
+              </form>
+            </Form>
           </DialogContent>
         </Dialog>
       )}

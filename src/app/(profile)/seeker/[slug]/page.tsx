@@ -43,8 +43,8 @@ export default function Page() {
         school: "Stanford University",
         degree: "Master of Science",
         field: "Computer Science",
-        startYear: "2015",
-        endYear: "2017",
+        startDate: new Date("01-01-2020"),
+        endDate: new Date("01-01-2022"),
         description:
           "Specialized in Artificial Intelligence and Machine Learning. Thesis on neural networks for natural language processing.",
       },
@@ -53,8 +53,8 @@ export default function Page() {
         school: "University of California, Berkeley",
         degree: "Bachelor of Science",
         field: "Computer Science",
-        startYear: "2011",
-        endYear: "2015",
+        startDate: new Date("01-01-2011"),
+        endDate: new Date("01-01-2015"),
         description:
           "Dean's List, Computer Science Student Association, Hackathon Winner",
       },
