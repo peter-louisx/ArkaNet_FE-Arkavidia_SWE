@@ -15,6 +15,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Form, FormField, FormMessage } from "@/components/ui/form";
+import { set } from "date-fns";
+
 type ImageUploadType = "logo" | "cover";
 
 export default function CompanyHeader({
@@ -31,10 +37,22 @@ export default function CompanyHeader({
   };
   allowEdit?: boolean;
 }) {
+  const formSchema = z.object({
+    name: z.string().nonempty("Company name is required"),
+    industry: z.string().nonempty("Industry is required"),
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: companyData.name,
+      industry: companyData.industry,
+    },
+  });
+
   // Company state
   const [company, setCompany] = useState(companyData);
   const [isEditingCompany, setIsEditingCompany] = useState(false);
-  const [editedCompany, setEditedCompany] = useState(companyData);
 
   // Image upload state
   const [isUploadingImage, setIsUploadingImage] = useState(false);
@@ -45,13 +63,9 @@ export default function CompanyHeader({
 
   // Company Info Handlers
   const openEditCompany = () => {
-    setEditedCompany({ ...company });
+    form.setValue("name", company.name);
+    form.setValue("industry", company.industry);
     setIsEditingCompany(true);
-  };
-
-  const saveCompanyInfo = () => {
-    setCompany({ ...editedCompany });
-    setIsEditingCompany(false);
   };
 
   // Image Upload Handlers
@@ -88,6 +102,12 @@ export default function CompanyHeader({
     }
     setIsUploadingImage(false);
   };
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { name, industry } = values;
+    setCompany({ ...company, name, industry });
+    setIsEditingCompany(false);
+  }
 
   return (
     <>
@@ -248,43 +268,49 @@ export default function CompanyHeader({
                   Update your company details
                 </DialogDescription>
               </DialogHeader>
-              <div className="grid gap-4 py-4 overflow-y-auto pr-1">
-                <div className="grid gap-2">
-                  <Label htmlFor="name">Company Name</Label>
-                  <Input
-                    id="name"
-                    value={editedCompany.name}
-                    onChange={(e) =>
-                      setEditedCompany({
-                        ...editedCompany,
-                        name: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="industry">Industry</Label>
-                  <Input
-                    id="industry"
-                    value={editedCompany.industry}
-                    onChange={(e) =>
-                      setEditedCompany({
-                        ...editedCompany,
-                        industry: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button
-                  variant="outline"
-                  onClick={() => setIsEditingCompany(false)}
-                >
-                  Cancel
-                </Button>
-                <Button onClick={saveCompanyInfo}>Save</Button>
-              </DialogFooter>
+
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <div className="grid gap-4 py-4 overflow-y-auto pr-1">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <div className="grid gap-2">
+                          <Label htmlFor="name">Company Name</Label>
+                          <Input id="name" {...field} />
+                          <FormMessage />
+                        </div>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="industry"
+                      render={({ field }) => (
+                        <div className="grid gap-2">
+                          <Label htmlFor="industry">Industry</Label>
+                          <Input id="industry" {...field} />
+                          <FormMessage />
+                        </div>
+                      )}
+                    />
+                  </div>
+                  <DialogFooter>
+                    <Button
+                      variant="outline"
+                      type="button"
+                      onClick={() => {
+                        form.reset();
+                        setIsEditingCompany(false);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button type="submit">Save</Button>
+                  </DialogFooter>
+                </form>
+              </Form>
             </DialogContent>
           </Dialog>
         </>
