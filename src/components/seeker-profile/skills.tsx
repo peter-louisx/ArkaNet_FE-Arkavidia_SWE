@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import SkillInput from "../skills/skill-input";
 
 export default function Skills({
   skillsData,
@@ -31,26 +32,22 @@ export default function Skills({
     }[]
   >(skillsData);
 
-  const [newSkillName, setNewSkillName] = useState("");
-
   // Update the addSkill function
-  const addSkill = () => {
+  const addSkill = (newSkill: string) => {
     if (
-      newSkillName.trim() &&
+      newSkill.trim() &&
       !skills.some(
-        (skill) =>
-          skill.name.toLowerCase() === newSkillName.trim().toLowerCase()
+        (skill) => skill.name.toLowerCase() === newSkill.trim().toLowerCase()
       )
     ) {
-      const newSkill: {
+      const newSkillObject: {
         id: number;
         name: string;
       } = {
         id: Date.now(),
-        name: newSkillName.trim(),
+        name: newSkill.trim(),
       };
-      setSkills([...skills, newSkill]);
-      setNewSkillName("");
+      setSkills([...skills, newSkillObject]);
     }
   };
 
@@ -89,7 +86,7 @@ export default function Skills({
             </div>
             {allowEdit && (
               <div className="flex gap-2">
-                <Input
+                {/* <Input
                   placeholder="Add a new skill"
                   value={newSkillName}
                   onChange={(e) => setNewSkillName(e.target.value)}
@@ -99,10 +96,12 @@ export default function Skills({
                       addSkill();
                     }
                   }}
-                />
-                <Button onClick={addSkill} type="button">
+                /> */}
+                <SkillInput addSkill={addSkill} />
+                {/* <Button onClick={addSkill} type="button">
                   Add
-                </Button>
+                </Button> */}
+                {/* <SkillInput /> */}
               </div>
             )}
           </div>
