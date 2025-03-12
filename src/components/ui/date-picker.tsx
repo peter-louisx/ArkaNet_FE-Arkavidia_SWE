@@ -21,11 +21,13 @@ export function DatePicker({
   name,
   label,
   description = "",
+  disabled = false,
 }: {
   form: any;
   name: string;
   label: string;
   description?: string;
+  disabled?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   return (
@@ -61,7 +63,7 @@ export function DatePicker({
                 selected={field.value}
                 onSelect={field.onChange}
                 disabled={(date) =>
-                  date > new Date() || date < new Date("1900-01-01")
+                  date > new Date() || date < new Date("1900-01-01") || disabled
                 }
                 initialFocus
               />

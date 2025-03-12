@@ -23,6 +23,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Checkbox } from "../ui/checkbox";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -274,15 +275,31 @@ export default function Experience({
                       />
                     </div>
                     <div className="grid gap-2">
-                      <DatePicker form={form} name="endDate" label="End Date" />
-                      <Button
-                        variant="outline"
-                        type="button"
-                        className="w-full"
-                        onClick={() => form.setValue("endDate", null)}
-                      >
-                        I currently work here
-                      </Button>
+                      <DatePicker
+                        form={form}
+                        name="endDate"
+                        label="End Date"
+                        disabled={form.watch("endDate") ? false : true}
+                      />
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="terms"
+                          checked={!form.watch("endDate")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              form.setValue("endDate", null);
+                            } else {
+                              form.setValue("endDate", new Date());
+                            }
+                          }}
+                        />
+                        <label
+                          htmlFor="terms"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          I'm currently working here
+                        </label>
+                      </div>
                     </div>
                   </div>
                   <FormField
