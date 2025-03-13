@@ -45,6 +45,15 @@ export default function Page() {
         const { success, message, data } = res.data;
         setAuthToken(data.token);
         toast("Login successful");
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            name: data.name,
+            headline: data.headline,
+            slug: data.slug,
+            role: data.role,
+          })
+        );
       })
       .catch((err) => {
         toast("Login failed. Please check your credentials");

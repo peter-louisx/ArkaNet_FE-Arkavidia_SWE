@@ -1,6 +1,7 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "../ui/button";
 import { ChevronDown, LogOut } from "lucide-react";
 import {
   Popover,
@@ -10,6 +11,11 @@ import {
 import Logout from "./logout";
 
 export default function Profile() {
+  const user = JSON.parse(
+    localStorage.getItem("user") ||
+      "{name: '', headline: '', slug: '', role: ''}"
+  );
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -44,15 +50,13 @@ export default function Profile() {
               />
             </div>
             <div>
-              <h3 className="font-semibold text-sm">John Doe</h3>
-              <p className="text-xs text-muted-foreground">
-                Software Developer
-              </p>
+              <h3 className="font-semibold text-sm">{user.name}</h3>
+              <p className="text-xs text-muted-foreground">{user.headline}</p>
             </div>
           </div>
           <div className="mt-2 flex justify-center px-2">
             <Link
-              href={"/seeker/afdsfds"}
+              href={"/seeker/" + user.slug}
               className="w-full mt-2 border rounded-md p-1 text-md text-center shadow-sm hover:bg-muted bg-white"
             >
               View Profile
