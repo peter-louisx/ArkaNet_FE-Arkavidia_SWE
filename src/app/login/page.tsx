@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { UserAPI } from "@/api/User";
-import { setAuthToken } from "@/lib/session";
+import { setAuthToken, setUserCookie } from "@/lib/session";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -44,9 +44,7 @@ export default function Page() {
       .then((res) => {
         const { success, message, data } = res.data;
         setAuthToken(data.token);
-        toast("Login successful");
-        localStorage.setItem(
-          "user",
+        setUserCookie(
           JSON.stringify({
             name: data.name,
             current_title: data.current_title,
@@ -55,6 +53,7 @@ export default function Page() {
             profile_picture: data.profile_picture,
           })
         );
+        toast("Login successful");
       })
       .catch((err) => {
         toast("Login failed. Please check your credentials");

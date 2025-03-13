@@ -1,5 +1,6 @@
 "use server";
 
+import { get } from "http";
 import { cookies } from "next/headers";
 
 
@@ -7,6 +8,16 @@ import { cookies } from "next/headers";
 export const setAuthToken = async (cookie: string) => {
   const cookieStore = await cookies()
   cookieStore.set('auth_token', cookie)
+}
+
+export const setUserCookie = async (userData: string) => {
+  const cookieStore = await cookies()
+  cookieStore.set('user', userData)
+}
+
+export const getUserCookie = async () => {
+  const cookieStore = await cookies()
+  return JSON.parse(cookieStore.get('user')?.value ||  '{"name": "", "current_title": "", "slug": "", "role": "", "profile_picture": ""}')
 }
 
 export const getAuthToken = async () => {
@@ -20,7 +31,7 @@ export const verifySession = async () => {
     const cookie = cookieStore.get("auth_token")?.value;
   
     let isAuthenticated = false;
-    let user = {};
+    let user = await getUserCookie();
     if (!cookie) return { isAuthenticated, user };
   
     const session = await decrypt(cookie);
@@ -55,6 +66,12 @@ export async function deleteSession() {
 
   cookieStore.delete({
     name: "auth_token",
+    secure: false,
+    path: "/",
+  });
+
+  cookieStore.delete({
+    name: "user",
     secure: false,
     path: "/",
   });

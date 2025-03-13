@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
   const  { isAuthenticated, user } = await verifySession()
 
   if(request.nextUrl.pathname === '/login' && isAuthenticated) {
-    return NextResponse.redirect(new URL("/seeker/fsdf", request.nextUrl))
+    return NextResponse.redirect(new URL("/seeker/" + user.slug, request.nextUrl))
   }
 
   if(authRoutes.includes(request.nextUrl.pathname) && !isAuthenticated) {

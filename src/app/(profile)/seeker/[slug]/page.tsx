@@ -4,6 +4,7 @@ import Experience from "@/components/seeker-profile/experience";
 import Education from "@/components/seeker-profile/education";
 import Skills from "@/components/seeker-profile/skills";
 import { UserAPI } from "@/api/User";
+import { getUserCookie } from "@/lib/session";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const data = {
@@ -96,7 +97,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
     return data;
   });
 
-  const allowEdit = true;
+  const allowEdit = await getUserCookie().then((user) => {
+    return user.slug === params.slug;
+  });
 
   return (
     <div className="container mx-auto px-4 py-8">

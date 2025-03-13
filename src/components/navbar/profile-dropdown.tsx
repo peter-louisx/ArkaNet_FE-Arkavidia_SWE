@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown, LogOut } from "lucide-react";
@@ -9,12 +7,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import Logout from "./logout";
+import { getUserCookie } from "@/lib/session";
 
-export default function Profile() {
-  const user = JSON.parse(
-    localStorage.getItem("user") ||
-      "{name: '', current_title: '', slug: '', role: '', profile_picture: ''}"
-  );
+export default async function Profile() {
+  const user = await getUserCookie();
+  console.log(user);
 
   return (
     <Popover>
