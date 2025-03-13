@@ -52,6 +52,7 @@ export default function Page() {
             headline: data.headline,
             slug: data.slug,
             role: data.role,
+            profile_picture: data.profile_picture,
           })
         );
       })

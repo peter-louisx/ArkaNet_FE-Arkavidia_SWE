@@ -13,7 +13,7 @@ import Logout from "./logout";
 export default function Profile() {
   const user = JSON.parse(
     localStorage.getItem("user") ||
-      "{name: '', headline: '', slug: '', role: ''}"
+      "{name: '', headline: '', slug: '', role: '', profile_picture: ''}"
   );
 
   return (
