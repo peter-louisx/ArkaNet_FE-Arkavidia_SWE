@@ -49,7 +49,7 @@ export default function Page() {
           "user",
           JSON.stringify({
             name: data.name,
-            headline: data.headline,
+            current_title: data.current_title,
             slug: data.slug,
             role: data.role,
             profile_picture: data.profile_picture,

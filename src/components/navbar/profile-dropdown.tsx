@@ -13,7 +13,7 @@ import Logout from "./logout";
 export default function Profile() {
   const user = JSON.parse(
     localStorage.getItem("user") ||
-      "{name: '', headline: '', slug: '', role: '', profile_picture: ''}"
+      "{name: '', current_title: '', slug: '', role: '', profile_picture: ''}"
   );
 
   return (
@@ -51,7 +51,9 @@ export default function Profile() {
             </div>
             <div>
               <h3 className="font-semibold text-sm">{user.name}</h3>
-              <p className="text-xs text-muted-foreground">{user.headline}</p>
+              <p className="text-xs text-muted-foreground">
+                {user.current_title}
+              </p>
             </div>
           </div>
           <div className="mt-2 flex justify-center px-2">
