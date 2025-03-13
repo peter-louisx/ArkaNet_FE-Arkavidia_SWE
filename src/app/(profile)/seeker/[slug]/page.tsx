@@ -5,8 +5,9 @@ import Education from "@/components/seeker-profile/education";
 import Skills from "@/components/seeker-profile/skills";
 import { UserAPI } from "@/api/User";
 import { getUserCookie } from "@/lib/session";
+type tParams = Promise<{ slug: string }>;
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page(props: { params: tParams }) {
   const data = {
     personalInfo: {
       name: "John Doe",
@@ -78,8 +79,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
     ],
   };
 
+  const { slug } = await props.params;
+
   const profileData = await UserAPI.getProfile({
-    slug: params.slug,
+    slug: slug,
   }).then((res) => {
     const { success, message, data } = res.data;
     data.experiences.forEach((experience: any) => {
@@ -98,7 +101,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   });
 
   const allowEdit = await getUserCookie().then((user) => {
-    return user.slug === params.slug;
+    return user.slug === slug;
   });
 
   return (
