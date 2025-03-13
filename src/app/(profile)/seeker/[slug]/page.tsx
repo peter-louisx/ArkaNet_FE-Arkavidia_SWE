@@ -3,8 +3,9 @@ import About from "@/components/seeker-profile/about";
 import Experience from "@/components/seeker-profile/experience";
 import Education from "@/components/seeker-profile/education";
 import Skills from "@/components/seeker-profile/skills";
+import { UserAPI } from "@/api/User";
 
-export default function Page() {
+export default async function Page({ params }: { params: { slug: string } }) {
   const data = {
     personalInfo: {
       name: "John Doe",
@@ -76,6 +77,25 @@ export default function Page() {
     ],
   };
 
+  const profileData = await UserAPI.getProfile({
+    slug: params.slug,
+  }).then((res) => {
+    const { success, message, data } = res.data;
+    data.experiences.forEach((experience: any) => {
+      experience.startDate = new Date(experience.startDate);
+      experience.endDate = experience.endDate
+        ? new Date(experience.endDate)
+        : null;
+    });
+
+    data.educations.forEach((education: any) => {
+      education.startDate = new Date(education.startDate);
+      education.endDate = new Date(education.endDate);
+    });
+
+    return data;
+  });
+
   const allowEdit = true;
 
   return (
@@ -83,21 +103,30 @@ export default function Page() {
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Profile Header */}
         <PersonalInfo
-          personalInfoData={data.personalInfo}
+          personalInfoData={profileData.personal_info}
           allowEdit={allowEdit}
         />
 
         {/* About */}
-        <About aboutData={data.about} allowEdit={allowEdit} />
+        <About
+          aboutData={profileData.personal_info.about}
+          allowEdit={allowEdit}
+        />
 
         {/* Experience */}
-        <Experience experienceData={data.experience} allowEdit={allowEdit} />
+        <Experience
+          experienceData={profileData.experiences}
+          allowEdit={allowEdit}
+        />
 
         {/* Education */}
-        <Education educationData={data.education} allowEdit={allowEdit} />
+        <Education
+          educationData={profileData.educations}
+          allowEdit={allowEdit}
+        />
 
         {/* Skills */}
-        <Skills skillsData={data.skills} allowEdit={allowEdit} />
+        <Skills skillsData={profileData.skills} allowEdit={allowEdit} />
       </div>
     </div>
   );

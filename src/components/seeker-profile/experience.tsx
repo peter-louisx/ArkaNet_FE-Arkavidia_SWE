@@ -23,6 +23,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Checkbox } from "../ui/checkbox";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -38,6 +45,7 @@ export default function Experience({
     id: number;
     title: string;
     company: string;
+    company_id: string;
     location: string;
     startDate: Date;
     endDate: Date | null;
@@ -67,6 +75,17 @@ export default function Experience({
     },
   });
 
+  const companies = [
+    {
+      id: "32d25e64-b577-4cfb-8dc2-a0721cf67ead",
+      name: "Google",
+    },
+    {
+      id: "c0485370-b14e-44e3-afda-4fe49156a303",
+      name: "Facebook",
+    },
+  ];
+
   // Experience State
   const [experiences, setExperiences] = useState<
     {
@@ -87,7 +106,7 @@ export default function Experience({
   const editExperience = (experience: any) => {
     setCurrentExperience(experience.id);
     form.setValue("title", experience.title);
-    form.setValue("company", experience.company);
+    form.setValue("company", experience.company_id);
     form.setValue("location", experience.location);
     form.setValue("startDate", new Date(experience.startDate));
     form.setValue("endDate", experience.endDate);
@@ -113,7 +132,8 @@ export default function Experience({
             ? {
                 ...e,
                 title,
-                company,
+                company:
+                  companies.find((c: any) => c.id === company)?.name || company,
                 location,
                 startDate: new Date(startDate),
                 endDate: endDate ? new Date(endDate) : null,
@@ -129,7 +149,8 @@ export default function Experience({
         {
           id: Date.now(),
           title,
-          company,
+          company:
+            companies.find((c: any) => c.id === company)?.name || company,
           location,
           startDate: new Date(startDate),
           endDate: endDate ? new Date(endDate) : null,
@@ -249,7 +270,22 @@ export default function Experience({
                     render={({ field }) => (
                       <div className="grid gap-2">
                         <Label htmlFor="company">Company</Label>
-                        <Input id="company" {...field} />
+
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select job type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {companies.map((type) => (
+                              <SelectItem key={type.id} value={type.id}>
+                                {type.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </div>
                     )}

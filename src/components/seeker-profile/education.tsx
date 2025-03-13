@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Calendar,
   Edit,
@@ -34,6 +34,9 @@ import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { DatePicker } from "../ui/date-picker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { set } from "date-fns";
+import { UserAPI } from "@/api/User";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function Education({
   educationData,
@@ -50,6 +53,7 @@ export default function Education({
   }[];
   allowEdit?: boolean;
 }) {
+  const router = useRouter();
   const formSchema = z.object({
     school: z.string().nonempty("School is required"),
     degree: z.string().nonempty("Degree is required"),
@@ -76,6 +80,10 @@ export default function Education({
   // Education State
   const [education, setEducation] = useState(educationData);
 
+  useEffect(() => {
+    setEducation(educationData);
+  }, [educationData]);
+
   const [isEditingEducation, setIsEditingEducation] = useState(false);
   const [currentEducation, setCurrentEducation] = useState<number>(0);
 
@@ -96,34 +104,50 @@ export default function Education({
   };
 
   const deleteEducation = (id: number) => {
-    setEducation(education.filter((e) => e.id !== id));
+    UserAPI.deleteEducation({ id })
+      .then(() => {
+        toast.success("Education deleted successfully");
+        router.refresh();
+      })
+      .catch(() => {
+        toast.error("Failed to delete education");
+      });
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { school, degree, field, startDate, endDate, description } = values;
 
     if (currentEducation) {
-      setEducation(
-        education.map((e) =>
-          e.id === currentEducation
-            ? { ...e, school, degree, field, startDate, endDate, description }
-            : e
-        )
-      );
-      setCurrentEducation(0);
+      await UserAPI.updateEducation({
+        id: currentEducation,
+        school_name: school,
+        degree,
+        field_of_study: field,
+        start_date: startDate.toISOString().split("T")[0],
+        end_date: endDate.toISOString().split("T")[0],
+      })
+        .then((res) => {
+          toast.success("Education updated successfully");
+          router.refresh();
+        })
+        .catch((err) => {
+          toast.error("Failed to update education");
+        });
     } else {
-      setEducation([
-        ...education,
-        {
-          id: education.length + 1,
-          school,
-          degree,
-          field,
-          startDate,
-          endDate,
-          description,
-        },
-      ]);
+      await UserAPI.addEducation({
+        school_name: school,
+        degree,
+        field_of_study: field,
+        start_date: startDate.toISOString().split("T")[0],
+        end_date: endDate.toISOString().split("T")[0],
+      })
+        .then((res) => {
+          toast.success("Education added successfully");
+          router.refresh();
+        })
+        .catch((err) => {
+          toast.error("Failed to add education");
+        });
     }
 
     setIsEditingEducation(false);
