@@ -70,11 +70,17 @@ export function JobCardCompany({
               <p className="mt-3 text-sm line-clamp-2">{job.description}</p>
 
               <div className="flex flex-wrap gap-2 mt-3">
-                {job.skills.map((skill: string) => (
-                  <Badge key={skill} variant="secondary" className="text-xs">
-                    {skill}
-                  </Badge>
-                ))}
+                {job.skills.map(
+                  (skill: { id: string; skill_id: string; name: string }) => (
+                    <Badge
+                      key={skill.skill_id}
+                      variant="secondary"
+                      className="text-xs"
+                    >
+                      {skill.name}
+                    </Badge>
+                  )
+                )}
               </div>
             </div>
             {allowEdit && (

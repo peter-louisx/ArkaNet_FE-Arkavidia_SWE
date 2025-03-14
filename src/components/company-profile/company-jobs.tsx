@@ -31,6 +31,7 @@ import { z } from "zod";
 import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { JobCardCompany as JobCard } from "./job-card-company";
 import { ApplicationCard } from "./application-card";
+import SkillInput from "../skills/skill-input";
 
 export default function CompanyJobs({
   jobsData,
@@ -47,7 +48,11 @@ export default function CompanyJobs({
     min_salary: number;
     posted: string;
     description: string;
-    skills: string[];
+    skills: {
+      id: string | null;
+      skill_id: string;
+      name: string;
+    }[];
     applications: {
       id: number;
       jobId: number;
@@ -71,7 +76,13 @@ export default function CompanyJobs({
     min_salary: z.number(),
     max_salary: z.number(),
     job_description: z.string().nonempty(),
-    skills: z.array(z.string()),
+    skills: z.array(
+      z.object({
+        id: z.string().nullable(),
+        skill_id: z.string().nonempty(),
+        name: z.string().nonempty(),
+      })
+    ),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -96,9 +107,6 @@ export default function CompanyJobs({
   const [jobSearch, setJobSearch] = useState("");
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
   const [showApplications, setShowApplications] = useState(false);
-
-  // Add this with the other state variables
-  const [newSkillName, setNewSkillName] = useState("");
 
   // Filter jobs based on search
   const filteredJobs = jobs.filter(
@@ -153,22 +161,24 @@ export default function CompanyJobs({
   };
 
   // Add this with the other functions
-  const addSkill = () => {
+  const addSkill = (skillID: string, skillName: string) => {
     if (
-      newSkillName.trim() &&
+      skillID &&
       !form
         .getValues("skills")
         .some(
-          (skill: string) =>
-            skill.toLowerCase() === newSkillName.trim().toLowerCase()
+          (skill: { id: string | null; skill_id: string; name: string }) =>
+            skill.skill_id === skillID
         )
     ) {
-      console.log("fdfdf");
       form.setValue("skills", [
         ...form.getValues("skills"),
-        newSkillName.trim(),
+        {
+          id: null,
+          skill_id: skillID,
+          name: skillName,
+        },
       ]);
-      setNewSkillName("");
     }
   };
 
@@ -475,15 +485,21 @@ export default function CompanyJobs({
                       <div className="grid gap-2">
                         <Label htmlFor="skills">Required Skills</Label>
                         <div className="flex flex-wrap gap-2 mb-2">
-                          {form
-                            .watch("skills")
-                            .map((skill: string, index: number) => (
+                          {form.watch("skills").map(
+                            (
+                              skill: {
+                                id: string | null;
+                                skill_id: string;
+                                name: string;
+                              },
+                              index: number
+                            ) => (
                               <Badge
                                 key={index}
                                 variant="secondary"
                                 className="group py-1.5 px-3"
                               >
-                                {skill}
+                                {skill.name}
                                 <button
                                   type="button"
                                   onClick={() => {
@@ -491,7 +507,10 @@ export default function CompanyJobs({
                                       "skills",
                                       form
                                         .getValues("skills")
-                                        .filter((s: string) => s !== skill)
+                                        .filter(
+                                          (s, i) =>
+                                            s.skill_id !== skill.skill_id
+                                        )
                                     );
                                   }}
                                   className="ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -499,24 +518,11 @@ export default function CompanyJobs({
                                   <X className="h-3 w-3" />
                                 </button>
                               </Badge>
-                            ))}
+                            )
+                          )}
                         </div>
                         <div className="flex gap-2">
-                          <Input
-                            id="newSkill"
-                            placeholder="Add a required skill"
-                            value={newSkillName}
-                            onChange={(e) => setNewSkillName(e.target.value)}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") {
-                                e.preventDefault();
-                                addSkill();
-                              }
-                            }}
-                          />
-                          <Button type="button" onClick={addSkill}>
-                            Add
-                          </Button>
+                          <SkillInput addSkill={addSkill} />
                         </div>
                       </div>
                     </div>

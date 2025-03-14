@@ -36,7 +36,13 @@ const company = {
       posted: "03-10-2025",
       description:
         "We're looking for a Senior Frontend Developer with 5+ years of experience in React, TypeScript, and modern frontend frameworks.",
-      skills: ["React", "TypeScript", "Next.js", "CSS"],
+      skills: [
+        {
+          id: "1",
+          skill_id: "1",
+          name: "React",
+        },
+      ],
       applications: [
         {
           id: 1,
@@ -79,7 +85,13 @@ const company = {
 
       description:
         "Join our backend team to build scalable APIs and microservices using Node.js and Python.",
-      skills: ["Node.js", "Python", "AWS", "MongoDB"],
+      skills: [
+        {
+          id: "2",
+          skill_id: "2",
+          name: "Vue",
+        },
+      ],
       applications: [
         {
           id: 3,
@@ -132,23 +144,13 @@ const company = {
 
       description:
         "Manage our cloud infrastructure and CI/CD pipelines to ensure smooth deployments.",
-      skills: ["AWS", "Docker", "Kubernetes", "CI/CD"],
-      applications: [],
-    },
-    {
-      id: 4,
-      title: "Product Manager",
-      location: "Chicago, IL",
-      min_salary: 120000,
-      max_salary: 150000,
-      location_type: "Remote",
-      experience: "Senior Level",
-      type: "Full-time",
-      posted: "02-10-2025",
-
-      description:
-        "Lead product development from conception to launch, working with cross-functional teams.",
-      skills: ["Product Strategy", "Agile", "User Research", "Roadmapping"],
+      skills: [
+        {
+          id: "31",
+          skill_id: "31",
+          name: "AWS",
+        },
+      ],
       applications: [],
     },
   ],

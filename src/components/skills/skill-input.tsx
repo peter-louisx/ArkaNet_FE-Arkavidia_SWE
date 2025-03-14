@@ -136,6 +136,10 @@ export default function SkillInput({
       id: "30",
       name: "Knockout Router",
     },
+    {
+      id: "31",
+      name: "AWS",
+    },
   ];
 
   const handleInputChange = async (
