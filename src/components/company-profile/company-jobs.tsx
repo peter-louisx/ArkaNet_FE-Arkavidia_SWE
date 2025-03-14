@@ -476,7 +476,7 @@ export default function CompanyJobs({
                         <Label htmlFor="skills">Required Skills</Label>
                         <div className="flex flex-wrap gap-2 mb-2">
                           {form
-                            .getValues("skills")
+                            .watch("skills")
                             .map((skill: string, index: number) => (
                               <Badge
                                 key={index}
@@ -485,12 +485,13 @@ export default function CompanyJobs({
                               >
                                 {skill}
                                 <button
+                                  type="button"
                                   onClick={() => {
                                     form.setValue(
                                       "skills",
-                                      currentJob.skills.filter(
-                                        (s: string) => s !== skill
-                                      )
+                                      form
+                                        .getValues("skills")
+                                        .filter((s: string) => s !== skill)
                                     );
                                   }}
                                   className="ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
