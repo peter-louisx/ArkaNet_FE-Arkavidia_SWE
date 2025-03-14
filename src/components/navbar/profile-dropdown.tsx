@@ -11,7 +11,6 @@ import { getUserCookie } from "@/lib/session";
 
 export default async function Profile() {
   const user = await getUserCookie();
-  console.log(user);
 
   return (
     <Popover>

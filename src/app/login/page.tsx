@@ -19,8 +19,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
   const formSchema = z.object({
     email: z.string().email(),
     password: z.string().min(6),
@@ -43,17 +45,23 @@ export default function Page() {
     })
       .then((res) => {
         const { success, message, data } = res.data;
-        setAuthToken(data.token);
-        setUserCookie(
-          JSON.stringify({
-            name: data.name,
-            current_title: data.current_title,
-            slug: data.slug,
-            role: data.role,
-            profile_picture: data.profile_picture,
-          })
-        );
-        toast("Login successful");
+
+        Promise.all([
+          setAuthToken(data.token),
+          setUserCookie(
+            JSON.stringify({
+              name: data.name,
+              current_title: data.current_title,
+              slug: data.slug,
+              role: data.role,
+              profile_picture: data.profile_picture,
+            })
+          ),
+        ]).then(() => {
+          toast("Login successful");
+          router.push("/seeker/" + data.slug);
+          router.refresh();
+        });
       })
       .catch((err) => {
         toast("Login failed. Please check your credentials");
