@@ -19,7 +19,8 @@ export default function Skills({
   allowEdit = false,
 }: {
   skillsData: {
-    id: number;
+    id?: string;
+    skill_id: string;
     name: string;
   }[];
   allowEdit?: boolean;
@@ -27,33 +28,29 @@ export default function Skills({
   // Skills State
   const [skills, setSkills] = useState<
     {
-      id: number;
+      id?: string;
       name: string;
+      skill_id: string;
     }[]
   >(skillsData);
 
   // Update the addSkill function
-  const addSkill = (newSkill: string) => {
-    if (
-      newSkill.trim() &&
-      !skills.some(
-        (skill) => skill.name.toLowerCase() === newSkill.trim().toLowerCase()
-      )
-    ) {
+  const addSkill = (skillID: string, skillName: string) => {
+    if (skillID && !skills.some((skill) => skill.skill_id === skillID)) {
       const newSkillObject: {
-        id: number;
+        skill_id: string;
         name: string;
       } = {
-        id: Date.now(),
-        name: newSkill.trim(),
+        skill_id: skillID,
+        name: skillName,
       };
       setSkills([...skills, newSkillObject]);
     }
   };
 
   // Update the removeSkill function
-  const removeSkill = (id: number) => {
-    setSkills(skills.filter((skill) => skill.id !== id));
+  const removeSkill = (id: string) => {
+    setSkills(skills.filter((skill) => skill.skill_id !== id));
   };
   return (
     <>
@@ -68,14 +65,14 @@ export default function Skills({
             <div className="flex flex-wrap gap-2">
               {skills.map((skill) => (
                 <Badge
-                  key={skill.id}
+                  key={skill.skill_id}
                   variant="secondary"
                   className="group py-1.5 px-3"
                 >
                   {skill.name}
                   {allowEdit && (
                     <button
-                      onClick={() => removeSkill(skill.id)}
+                      onClick={() => removeSkill(skill.skill_id)}
                       className="ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <X className="h-3 w-3" />
@@ -86,22 +83,7 @@ export default function Skills({
             </div>
             {allowEdit && (
               <div className="flex gap-2">
-                {/* <Input
-                  placeholder="Add a new skill"
-                  value={newSkillName}
-                  onChange={(e) => setNewSkillName(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      addSkill();
-                    }
-                  }}
-                /> */}
                 <SkillInput addSkill={addSkill} />
-                {/* <Button onClick={addSkill} type="button">
-                  Add
-                </Button> */}
-                {/* <SkillInput /> */}
               </div>
             )}
           </div>
