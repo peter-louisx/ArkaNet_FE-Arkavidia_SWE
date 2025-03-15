@@ -10,6 +10,38 @@ export const CompanyAPI = {
         return axios.get(`/company/profile/${slug}`)
     },
 
+    updateProfile: async function({
+        company_id,
+        name,
+        industry,
+        logo,
+        cover,
+        about,
+    }: {
+        company_id: string,
+        name: string,
+        industry: string,
+        logo: Blob | null,
+        cover: Blob | null
+        about: string
+    }){
+
+        return axios.patch(`/company/update-profile`, {
+            company_id,
+            name,
+            location,
+            industry,
+            logo,
+            cover,
+            about,
+        }, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                
+            }
+        })
+    },
+
     addJob: async function({
         company_id,
         title,

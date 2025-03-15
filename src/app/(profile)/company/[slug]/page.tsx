@@ -194,10 +194,7 @@ export default async function CompanyProfilePage(props: { params: tParams }) {
     <>
       <div className="max-w-4xl mx-auto space-y-8 py-8 max-md:px-4">
         <CompanyHeader companyData={data.company_info} allowEdit={allowEdit} />
-        <CompanyAbout
-          aboutData={data.company_info.about}
-          allowEdit={allowEdit}
-        />
+        <CompanyAbout companyData={data.company_info} allowEdit={allowEdit} />
         <CompanyJobs
           companyID={data.company_info.id}
           jobsData={data.company_jobs}

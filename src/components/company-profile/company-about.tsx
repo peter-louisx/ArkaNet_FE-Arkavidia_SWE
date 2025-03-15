@@ -19,15 +19,24 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { CompanyAPI } from "@/api/Company";
+import { toast } from "sonner";
 
 export default function CompanyAbout({
-  aboutData,
+  companyData,
   allowEdit = false,
 }: {
-  aboutData: string;
+  companyData: {
+    id: string;
+    name: string;
+    logo: string;
+    cover: string;
+    about: string;
+    industry: string;
+  };
   allowEdit?: boolean;
 }) {
-  const [about, setAbout] = useState(aboutData);
+  const [about, setAbout] = useState(companyData.about);
   const [isEditingAbout, setIsEditingAbout] = useState(false);
   const [editedAbout, setEditedAbout] = useState(about);
 
@@ -37,7 +46,22 @@ export default function CompanyAbout({
     setIsEditingAbout(true);
   };
 
-  const saveAbout = () => {
+  const saveAbout = async () => {
+    await CompanyAPI.updateProfile({
+      company_id: companyData.id,
+      name: companyData.name,
+      logo: null,
+      cover: null,
+      about: editedAbout,
+      industry: companyData.industry,
+    })
+      .then(() => {
+        toast.success("About updated successfully");
+      })
+      .catch((err) => {
+        toast.error("Failed to update about");
+      });
+
     setAbout(editedAbout);
     setIsEditingAbout(false);
   };

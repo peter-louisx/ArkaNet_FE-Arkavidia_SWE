@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Edit, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { set } from "date-fns";
+import { CompanyAPI } from "@/api/Company";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type ImageUploadType = "logo" | "cover";
 
@@ -32,10 +35,13 @@ export default function CompanyHeader({
     name: string;
     logo: string;
     cover: string;
+    about: string;
     industry: string;
   };
   allowEdit?: boolean;
 }) {
+  const router = useRouter();
+
   const formSchema = z.object({
     name: z.string().nonempty("Company name is required"),
     industry: z.string().nonempty("Industry is required"),
@@ -53,11 +59,16 @@ export default function CompanyHeader({
   const [company, setCompany] = useState(companyData);
   const [isEditingCompany, setIsEditingCompany] = useState(false);
 
+  useEffect(() => {
+    setCompany(companyData);
+  }, [companyData]);
+
   // Image upload state
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [uploadImageType, setUploadImageType] =
     useState<ImageUploadType>("logo");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | undefined>();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Company Info Handlers
@@ -81,6 +92,7 @@ export default function CompanyHeader({
       reader.onload = (e) => {
         if (e.target?.result) {
           setImagePreview(e.target.result as string);
+          setImageFile(file);
         }
       };
       reader.readAsDataURL(file);
@@ -91,11 +103,27 @@ export default function CompanyHeader({
     fileInputRef.current?.click();
   };
 
-  const saveImage = () => {
+  const saveImage = async () => {
     if (imagePreview) {
+      const imageBlob = await fetch(imagePreview).then((res) => res.blob());
       if (uploadImageType === "logo") {
+        await CompanyAPI.updateProfile({
+          company_id: company.id,
+          name: company.name,
+          industry: company.industry,
+          logo: uploadImageType === "logo" ? imageBlob : null,
+          cover: null,
+        });
+
         setCompany({ ...company, logo: imagePreview });
       } else {
+        await CompanyAPI.updateProfile({
+          company_id: company.id,
+          name: company.name,
+          industry: company.industry,
+          logo: null,
+          cover: uploadImageType === "cover" ? imageBlob : null,
+        });
         setCompany({ ...company, cover: imagePreview });
       }
     }
@@ -104,7 +132,23 @@ export default function CompanyHeader({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { name, industry } = values;
-    setCompany({ ...company, name, industry });
+
+    await CompanyAPI.updateProfile({
+      company_id: company.id,
+      name,
+      industry,
+      logo: null,
+      cover: null,
+    })
+      .then(() => {
+        toast.success("Company information updated successfully");
+        router.refresh();
+      })
+      .catch((error) => {
+        toast.error("Failed to update company information");
+      });
+
+    // setCompany({ ...company, name, industry });
     setIsEditingCompany(false);
   }
 
