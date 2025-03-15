@@ -113,6 +113,7 @@ export default function CompanyHeader({
           industry: company.industry,
           logo: uploadImageType === "logo" ? imageBlob : null,
           cover: null,
+          about: company.about,
         });
 
         setCompany({ ...company, logo: imagePreview });
@@ -123,6 +124,7 @@ export default function CompanyHeader({
           industry: company.industry,
           logo: null,
           cover: uploadImageType === "cover" ? imageBlob : null,
+          about: company.about,
         });
         setCompany({ ...company, cover: imagePreview });
       }
@@ -139,6 +141,7 @@ export default function CompanyHeader({
       industry,
       logo: null,
       cover: null,
+      about: company.about,
     })
       .then(() => {
         toast.success("Company information updated successfully");
