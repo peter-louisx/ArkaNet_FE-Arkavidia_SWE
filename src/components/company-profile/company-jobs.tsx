@@ -257,6 +257,7 @@ export default function CompanyJobs({
         });
     }
 
+    form.reset();
     setIsEditingJob(false);
   }
 
