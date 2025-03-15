@@ -76,6 +76,79 @@ export const UserAPI = {
         return axios.get(`/user/profile/${slug}`)
     },
 
+    addExperience: async function({
+        company_id,
+        title,
+        location,
+        start_date,
+        end_date,
+        description,
+    }: {
+        company_id: string,
+        title: string,
+        location: string,
+        start_date: string,
+        end_date: string | null,
+        description: string,
+    }){
+        return axios.post("/user/experience/add-experience", {
+            company_id,
+            title,
+            location,
+            start_date,
+            end_date,
+            description,
+        }, {
+            headers: {
+                Authorization: `Bearer ${await getAuthToken()}`
+            }
+        })
+    },
+
+    deleteExperience: async function({
+        id
+    }: {
+        id: string
+    }){
+        return axios.delete(`/user/experience/delete-experience/${id}`, {
+            headers: {
+                Authorization: `Bearer ${await getAuthToken()}`
+            }
+        })
+    },
+
+    updateExperience: async function({
+        experience_id,
+        company_id,
+        title,
+        location,
+        start_date,
+        end_date,
+        description,
+    }: {
+        experience_id: number,
+        company_id: string,
+        title: string,
+        location: string,
+        start_date: string,
+        end_date: string | null,
+        description: string,
+    }){
+        return axios.patch(`/user/experience/update-experience`, {
+            experience_id,
+            company_id,
+            title,
+            location,
+            start_date,
+            end_date,
+            description,
+        }, {
+            headers: {
+                Authorization: `Bearer ${await getAuthToken()}`
+            }
+        })
+    },
+
     addEducation: async function({
         school_name,
         degree,

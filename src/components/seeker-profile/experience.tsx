@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Briefcase,
   Building,
@@ -36,13 +36,17 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { DatePicker } from "../ui/date-picker";
+import { UserAPI } from "@/api/User";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { convertDateFormat } from "@/lib/utils";
 
 export default function Experience({
   experienceData,
   allowEdit = false,
 }: {
   experienceData: {
-    id: number;
+    id: string;
     title: string;
     company: string;
     company_id: string;
@@ -53,6 +57,7 @@ export default function Experience({
   }[];
   allowEdit?: boolean;
 }) {
+  const router = useRouter();
   const formSchema = z.object({
     title: z.string().nonempty(),
     company: z.string().nonempty(),
@@ -97,7 +102,7 @@ export default function Experience({
   // Experience State
   const [experiences, setExperiences] = useState<
     {
-      id: number;
+      id: string;
       title: string;
       company: string;
       location: string;
@@ -106,6 +111,10 @@ export default function Experience({
       description: string;
     }[]
   >(experienceData);
+
+  useEffect(() => {
+    setExperiences(experienceData);
+  }, [experienceData]);
 
   const [isEditingExperience, setIsEditingExperience] = useState(false);
   const [currentExperience, setCurrentExperience] = useState<number>(0);
@@ -126,45 +135,56 @@ export default function Experience({
     setIsEditingExperience(true);
   };
 
-  const deleteExperience = (id: number) => {
-    setExperiences(experiences.filter((e) => e.id !== id));
+  const deleteExperience = async (id: string) => {
+    await UserAPI.deleteExperience({
+      id,
+    })
+      .then(() => {
+        toast.success("Experience deleted successfully");
+        router.refresh();
+      })
+      .catch((err) => {
+        toast.error("Failed to delete experience");
+      });
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { title, company, location, startDate, endDate, description } =
       values;
     if (currentExperience) {
-      setExperiences(
-        experiences.map((e) =>
-          e.id === currentExperience
-            ? {
-                ...e,
-                title,
-                company:
-                  companies.find((c: any) => c.id === company)?.name || company,
-                location,
-                startDate: new Date(startDate),
-                endDate: endDate ? new Date(endDate) : null,
-                description,
-              }
-            : e
-        )
-      );
+      await UserAPI.updateExperience({
+        experience_id: currentExperience,
+        company_id: company,
+        title,
+        location,
+        start_date: convertDateFormat(startDate),
+        end_date: endDate ? convertDateFormat(endDate) : null,
+        description,
+      })
+        .then(() => {
+          toast.success("Experience updated successfully");
+          router.refresh();
+        })
+        .catch((err) => {
+          toast.error("Failed to update experience");
+        });
       setCurrentExperience(0);
     } else {
-      setExperiences([
-        ...experiences,
-        {
-          id: Date.now(),
-          title,
-          company:
-            companies.find((c: any) => c.id === company)?.name || company,
-          location,
-          startDate: new Date(startDate),
-          endDate: endDate ? new Date(endDate) : null,
-          description,
-        },
-      ]);
+      await UserAPI.addExperience({
+        company_id: company,
+        title,
+        location,
+        start_date: convertDateFormat(startDate),
+        end_date: endDate != null ? convertDateFormat(endDate) : null,
+        description,
+      })
+        .then(() => {
+          toast.success("Experience added successfully");
+          router.refresh();
+        })
+        .catch((err) => {
+          toast.error("Failed to add experience");
+        });
     }
 
     setIsEditingExperience(false);

@@ -37,6 +37,7 @@ import { set } from "date-fns";
 import { UserAPI } from "@/api/User";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { convertDateFormat } from "@/lib/utils";
 
 export default function Education({
   educationData,
@@ -123,8 +124,8 @@ export default function Education({
         school_name: school,
         degree,
         field_of_study: field,
-        start_date: startDate.toISOString().split("T")[0],
-        end_date: endDate.toISOString().split("T")[0],
+        start_date: convertDateFormat(startDate),
+        end_date: convertDateFormat(endDate),
       })
         .then((res) => {
           toast.success("Education updated successfully");
@@ -138,8 +139,8 @@ export default function Education({
         school_name: school,
         degree,
         field_of_study: field,
-        start_date: startDate.toISOString().split("T")[0],
-        end_date: endDate.toISOString().split("T")[0],
+        start_date: convertDateFormat(startDate),
+        end_date: convertDateFormat(endDate),
       })
         .then((res) => {
           toast.success("Education added successfully");
