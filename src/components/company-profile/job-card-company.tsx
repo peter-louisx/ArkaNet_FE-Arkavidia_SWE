@@ -43,7 +43,7 @@ export function JobCardCompany({
                 </div>
                 <div className="flex items-center">
                   <Briefcase className="h-4 w-4 mr-1" />
-                  <span>{job.type}</span>
+                  <span>{job.job_type}</span>
                 </div>
                 <div className="flex items-center">
                   <DollarSign className="h-4 w-4 mr-1" />

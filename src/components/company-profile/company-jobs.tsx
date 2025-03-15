@@ -42,7 +42,7 @@ export default function CompanyJobs({
     title: string;
     location: string;
     location_type: string;
-    type: string;
+    job_type: string;
     experience: string;
     max_salary: number;
     min_salary: number;
@@ -234,7 +234,7 @@ export default function CompanyJobs({
           id: jobs.length + 1,
           title: job_title,
           location: job_location,
-          type: job_type,
+          job_type: job_type,
           location_type: location_type,
           experience: experience,
           min_salary: min_salary,
