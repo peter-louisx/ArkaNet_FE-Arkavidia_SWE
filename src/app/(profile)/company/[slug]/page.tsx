@@ -1,6 +1,7 @@
 import CompanyHeader from "@/components/company-profile/company-header";
 import CompanyAbout from "@/components/company-profile/company-about";
 import CompanyJobs from "@/components/company-profile/company-jobs";
+import { CompanyAPI } from "@/api/Company";
 
 const company = {
   headline: {
@@ -12,17 +13,8 @@ const company = {
 
     about:
       "TechCorp Inc. is a leading technology company specializing in cloud solutions, software development, and digital transformation. We help businesses of all sizes leverage technology to drive growth and innovation. Our team of experts is dedicated to delivering high-quality solutions that meet the unique needs of our clients.",
-    specialties: [
-      "Cloud Computing",
-      "Software Development",
-      "AI & Machine Learning",
-      "Digital Transformation",
-      "Enterprise Solutions",
-    ],
   },
-  about:
-    "TechCorp Inc. is a leading technology company specializing in cloud solutions, software development, and digital transformation. We help businesses of all sizes leverage technology to drive growth and innovation. Our team of experts is dedicated to delivering high-quality solutions that meet the unique needs of our clients.",
-  jobs: [
+  company_jobs: [
     {
       id: 1,
       title: "Senior Frontend Developer",
@@ -32,7 +24,6 @@ const company = {
       experience: "Senior Level",
       min_salary: 120000,
       max_salary: 150000,
-      salary: "$120,000 - $150,000",
       posted: "03-10-2025",
       description:
         "We're looking for a Senior Frontend Developer with 5+ years of experience in React, TypeScript, and modern frontend frameworks.",
@@ -155,16 +146,59 @@ const company = {
     },
   ],
 };
+type tParams = Promise<{ slug: string }>;
+export default async function CompanyProfilePage(props: { params: tParams }) {
+  const { slug } = await props.params;
 
-export default function CompanyProfilePage() {
+  const data = await CompanyAPI.getProfile({ slug: slug }).then((res) => {
+    let { success, message, data } = res.data;
+
+    data.company_jobs = data.company_jobs.map((application: any) => {
+      application.applications = [
+        {
+          id: 1,
+          jobId: 1,
+          applicant: {
+            name: "Jane Smith",
+            title: "Senior Frontend Developer",
+            photo: "/placeholder.svg?height=48&width=48",
+          },
+          date: "2023-05-15",
+          status: "Under Review",
+          resume: "resume-jane-smith.pdf",
+          coverLetter: true,
+        },
+        {
+          id: 2,
+          jobId: 1,
+          applicant: {
+            name: "Michael Johnson",
+            title: "Frontend Engineer",
+            photo: "/placeholder.svg?height=48&width=48",
+          },
+          date: "2023-05-14",
+          status: "Under Review",
+          resume: "resume-michael-johnson.pdf",
+          coverLetter: true,
+        },
+      ];
+      return application;
+    });
+
+    return data;
+  });
+
   const allowEdit = true;
 
   return (
     <>
       <div className="max-w-4xl mx-auto space-y-8 py-8 max-md:px-4">
-        <CompanyHeader companyData={company.headline} allowEdit={allowEdit} />
-        <CompanyAbout aboutData={company.about} allowEdit={allowEdit} />
-        <CompanyJobs jobsData={company.jobs} allowEdit={allowEdit} />
+        <CompanyHeader companyData={data.company_info} allowEdit={allowEdit} />
+        <CompanyAbout
+          aboutData={data.company_info.about}
+          allowEdit={allowEdit}
+        />
+        <CompanyJobs jobsData={data.company_jobs} allowEdit={allowEdit} />
       </div>
     </>
   );

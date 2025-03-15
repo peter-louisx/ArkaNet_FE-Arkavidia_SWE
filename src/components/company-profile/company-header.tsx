@@ -33,7 +33,6 @@ export default function CompanyHeader({
     logo: string;
     cover: string;
     industry: string;
-    specialties: string[];
   };
   allowEdit?: boolean;
 }) {
