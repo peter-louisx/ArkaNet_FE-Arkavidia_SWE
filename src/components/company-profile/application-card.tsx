@@ -76,9 +76,9 @@ export function ApplicationCard({
         <div className="flex gap-2">
           <Select
             defaultValue={application.status}
-            onValueChange={(value) => {
-              changeApplicationStatus(application.id, value);
-            }}
+            // onValueChange={(value) => {
+            //   changeApplicationStatus(application.id, value);
+            // }}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Update status" />

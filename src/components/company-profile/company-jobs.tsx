@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
@@ -30,16 +29,15 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { JobCardCompany as JobCard } from "./job-card-company";
-import { ApplicationCard } from "./application-card";
 import SkillInput from "../skills/skill-input";
 import { CompanyAPI } from "@/api/Company";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { parse } from "path";
 
 export default function CompanyJobs({
   jobsData,
   companyID,
+  company_slug,
   allowEdit = false,
 }: {
   companyID: string;
@@ -71,6 +69,7 @@ export default function CompanyJobs({
       status: string;
     }[];
   }[];
+  company_slug: string;
   allowEdit?: boolean;
 }) {
   const router = useRouter();
@@ -114,7 +113,6 @@ export default function CompanyJobs({
   const [currentJob, setCurrentJob] = useState<any>(0);
   const [jobSearch, setJobSearch] = useState("");
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
-  const [showApplications, setShowApplications] = useState(false);
 
   useEffect(() => {
     setJobs(jobsData);
@@ -128,11 +126,6 @@ export default function CompanyJobs({
       job.description.toLowerCase().includes(jobSearch.toLowerCase())
   );
 
-  // Get applications for selected job
-  const jobApplications =
-    jobs.find((job) => job.id === selectedJobId)?.applications || [];
-
-  // Job Handlers
   const addNewJob = () => {
     setIsEditingJob(true);
   };
@@ -155,12 +148,6 @@ export default function CompanyJobs({
     setJobs(jobs.filter((job) => job.id !== id));
   };
 
-  const viewApplications = (jobId: number) => {
-    setSelectedJobId(jobId);
-    setShowApplications(true);
-  };
-
-  // Add this with the other functions
   const addSkill = (skillID: string, skillName: string) => {
     if (
       skillID &&
@@ -180,18 +167,6 @@ export default function CompanyJobs({
         },
       ]);
     }
-  };
-
-  const changeApplicationStatus = (applicationId: number, status: string) => {
-    setJobs(
-      jobs.map((job) => ({
-        ...job,
-        applications: job.applications.map((app: any) => ({
-          ...app,
-          status: app.id === applicationId ? status : app.status,
-        })),
-      }))
-    );
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -314,8 +289,8 @@ export default function CompanyJobs({
                     job={job}
                     onEdit={() => editJob(job)}
                     onDelete={() => deleteJob(job.id)}
-                    onViewApplications={() => viewApplications(job.id)}
                     allowEdit={allowEdit}
+                    company_slug={company_slug}
                   />
                 ))
               )}
@@ -556,101 +531,6 @@ export default function CompanyJobs({
                   </DialogFooter>
                 </form>
               </Form>
-            </DialogContent>
-          </Dialog>
-          {/* Applications Dialog */}
-          <Dialog open={showApplications} onOpenChange={setShowApplications}>
-            <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-hidden flex flex-col">
-              <DialogHeader>
-                <DialogTitle>
-                  Applications for{" "}
-                  {jobs.find((job) => job.id === selectedJobId)?.title}
-                </DialogTitle>
-                <DialogDescription>
-                  Review and manage candidate applications
-                </DialogDescription>
-              </DialogHeader>
-              <div className="py-4 overflow-y-auto pr-1">
-                {jobApplications.length === 0 ? (
-                  <div className="text-center py-8">
-                    <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                    <h3 className="text-lg font-medium mb-2">
-                      No applications yet
-                    </h3>
-                    <p className="text-muted-foreground">
-                      There are no applications for this job posting yet.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <Tabs defaultValue="all">
-                      <TabsList className="mb-4">
-                        <TabsTrigger value="all">
-                          All ({jobApplications.length})
-                        </TabsTrigger>
-                        <TabsTrigger value="review">Under Review</TabsTrigger>
-                        <TabsTrigger value="interview">Interview</TabsTrigger>
-                        <TabsTrigger value="rejected">Rejected</TabsTrigger>
-                      </TabsList>
-
-                      <TabsContent value="all" className="space-y-4">
-                        {jobApplications.map((application) => (
-                          <ApplicationCard
-                            key={application.id}
-                            application={application}
-                            changeApplicationStatus={changeApplicationStatus}
-                          />
-                        ))}
-                      </TabsContent>
-
-                      <TabsContent value="review" className="space-y-4">
-                        {jobApplications
-                          .filter((app) => app.status === "Under Review")
-                          .map((application) => (
-                            <ApplicationCard
-                              key={application.id}
-                              application={application}
-                              changeApplicationStatus={changeApplicationStatus}
-                            />
-                          ))}
-                      </TabsContent>
-
-                      <TabsContent value="interview" className="space-y-4">
-                        {jobApplications
-                          .filter(
-                            (app) =>
-                              app.status === "Interview Scheduled" ||
-                              app.status === "Screening"
-                          )
-                          .map((application) => (
-                            <ApplicationCard
-                              key={application.id}
-                              application={application}
-                              changeApplicationStatus={changeApplicationStatus}
-                            />
-                          ))}
-                      </TabsContent>
-
-                      <TabsContent value="rejected" className="space-y-4">
-                        {jobApplications
-                          .filter((app) => app.status === "Rejected")
-                          .map((application) => (
-                            <ApplicationCard
-                              key={application.id}
-                              application={application}
-                              changeApplicationStatus={changeApplicationStatus}
-                            />
-                          ))}
-                      </TabsContent>
-                    </Tabs>
-                  </div>
-                )}
-              </div>
-              <DialogFooter>
-                <Button onClick={() => setShowApplications(false)}>
-                  Close
-                </Button>
-              </DialogFooter>
             </DialogContent>
           </Dialog>
         </>

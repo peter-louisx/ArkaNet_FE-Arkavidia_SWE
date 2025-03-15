@@ -54,5 +54,13 @@ export const JobAPI = {
                 Authorization: `Bearer ${await getAuthToken()}`
             }
         })
-    }
+    },
+
+    getApplications: async function(id: string){
+        return axios.get(`/job/applicants/${id}`, {
+            headers: {
+                Authorization: `Bearer ${await getAuthToken()}`
+            }
+        })
+    },
 }

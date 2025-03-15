@@ -1,6 +1,7 @@
 import { Card, CardContent, CardFooter } from "../ui/card";
 import { formatNumberCommas } from "@/lib/utils";
 import { countTimeAfterDate } from "@/lib/utils";
+import Link from "next/link";
 import {
   MapPin,
   Briefcase,
@@ -17,16 +18,16 @@ import { Button } from "../ui/button";
 
 export function JobCardCompany({
   job,
+  company_slug,
   onEdit,
   onDelete,
-  onViewApplications,
   allowEdit,
 }: {
   job: any;
   onEdit: () => void;
   onDelete: () => void;
-  onViewApplications: () => void;
   allowEdit: boolean;
+  company_slug: string;
 }) {
   return (
     <Card className="overflow-hidden hover:shadow-sm transition-shadow">
@@ -110,9 +111,9 @@ export function JobCardCompany({
           </span>
         </div>
         {allowEdit && (
-          <Button size="sm" onClick={onViewApplications}>
-            View Applications
-          </Button>
+          <Link href={`/company/${company_slug}/applicants/${job.id}`}>
+            <Button size="sm">View Applications</Button>
+          </Link>
         )}
       </CardFooter>
     </Card>

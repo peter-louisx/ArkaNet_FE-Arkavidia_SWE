@@ -199,6 +199,7 @@ export default async function CompanyProfilePage(props: { params: tParams }) {
           companyID={data.company_info.id}
           jobsData={data.company_jobs}
           allowEdit={allowEdit}
+          company_slug={slug}
         />
       </div>
     </>
