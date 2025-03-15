@@ -21,12 +21,15 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Logout from "./logout";
+import { getUserCookie } from "@/lib/session";
 
-export default function Sidebar({
+export default async function Sidebar({
   isAuthenticated,
 }: {
   isAuthenticated: boolean;
 }) {
+  const user = await getUserCookie();
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -45,7 +48,7 @@ export default function Sidebar({
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-primary/10 overflow-hidden">
                   <Image
-                    src="https://img.freepik.com/free-photo/young-adult-man-wearing-hoodie-beanie_23-2149393636.jpg"
+                    src={user.profile_picture || "./avatar.png"}
                     width={48}
                     height={48}
                     alt="Profile"
@@ -54,7 +57,10 @@ export default function Sidebar({
                   />
                 </div>
                 <div>
-                  <h3 className="font-semibold">John Doe</h3>
+                  <h3 className="font-semibold">{user.name}</h3>
+                  <p className="text-xs text-muted-foreground">
+                    {user.current_title}
+                  </p>
                 </div>
               </div>
             </div>
@@ -84,7 +90,7 @@ export default function Sidebar({
                     <MobileNavItem
                       icon={<User />}
                       label="View Profile"
-                      href="/seeker/afsdf"
+                      href={"/seeker/" + user.slug}
                     />
                     <Logout />
                   </>
