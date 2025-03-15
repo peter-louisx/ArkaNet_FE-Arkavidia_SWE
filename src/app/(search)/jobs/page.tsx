@@ -245,7 +245,7 @@ export default function JobsPage() {
 
         {/* Job Listings */}
 
-        {!loading && filteredJobs.length > 0 && (
+        {!loading && (
           <div className="lg:col-span-3 space-y-4">
             <div className="flex items-center justify-between bg-white rounded-lg shadow-sm p-4 max-md:flex-col max-md:gap-3">
               <h1 className="text-xl font-bold">

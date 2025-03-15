@@ -22,7 +22,7 @@ export default function JobCard({ job }: { job: any }) {
         <div className="p-6">
           <div className="flex items-start gap-4 max-md:flex-col">
             <Link
-              href={"/company/afsdf"}
+              href={"/company/" + job.company_slug}
               className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0 flex items-center justify-center"
             >
               <Image
@@ -88,9 +88,11 @@ export default function JobCard({ job }: { job: any }) {
         </div>
       </CardContent>
       <CardFooter className="flex justify-end  bg-muted/10 ">
-        <Button size="sm" className={"opacity-80"}>
-          Apply Now
-        </Button>
+        <Link href={"/job/" + job.id}>
+          <Button size="sm" className={"opacity-80"}>
+            View Details
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
   );

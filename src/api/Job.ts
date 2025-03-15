@@ -1,7 +1,11 @@
 import { getAuthToken } from "@/lib/session"
 import axios from "./axios"
+import { get } from "http"
 
 export const JobAPI = {
+    getJob: async function(id: string){
+        return axios.get(`/job/detail/${id}`)
+    },
     searchJobs: async function({
         title,
         location_type,
