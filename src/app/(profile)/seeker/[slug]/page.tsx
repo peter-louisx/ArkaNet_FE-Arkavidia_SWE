@@ -87,9 +87,10 @@ export default async function Page(props: { params: tParams }) {
     const { success, message, data } = res.data;
     data.experiences.forEach((experience: any) => {
       experience.startDate = new Date(experience.startDate);
-      experience.endDate = experience.endDate
-        ? new Date(experience.endDate)
-        : null;
+      experience.endDate =
+        experience.endDate == "01-01-1970"
+          ? null
+          : new Date(experience.endDate);
     });
 
     data.educations.forEach((education: any) => {

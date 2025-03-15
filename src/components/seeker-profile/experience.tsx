@@ -158,7 +158,7 @@ export default function Experience({
         title,
         location,
         start_date: convertDateFormat(startDate),
-        end_date: endDate ? convertDateFormat(endDate) : null,
+        end_date: endDate ? convertDateFormat(endDate) : "1970-01-01",
         description,
       })
         .then(() => {
@@ -175,7 +175,7 @@ export default function Experience({
         title,
         location,
         start_date: convertDateFormat(startDate),
-        end_date: endDate != null ? convertDateFormat(endDate) : null,
+        end_date: endDate != null ? convertDateFormat(endDate) : "1970-01-01",
         description,
       })
         .then(() => {
