@@ -116,7 +116,7 @@ export default async function Page(props: { params: tParams }) {
 
         {/* About */}
         <About
-          aboutData={profileData.personal_info.about}
+          personalInfoData={profileData.personal_info}
           allowEdit={allowEdit}
         />
 

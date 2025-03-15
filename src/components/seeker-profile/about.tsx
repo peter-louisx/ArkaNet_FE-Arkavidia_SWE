@@ -20,15 +20,25 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { UserAPI } from "@/api/User";
+import { toast } from "sonner";
+import { set } from "date-fns";
 
 export default function About({
-  aboutData,
+  personalInfoData,
   allowEdit = false,
 }: {
-  aboutData: string;
+  personalInfoData: {
+    name: string;
+    headline: string;
+    location: string;
+    cover: string;
+    profilePicture: string;
+    about: string;
+  };
   allowEdit?: boolean;
 }) {
-  const [about, setAbout] = useState(aboutData);
+  const [about, setAbout] = useState(personalInfoData.about);
   const [isEditingAbout, setIsEditingAbout] = useState(false);
   const [editedAbout, setEditedAbout] = useState(about);
 
@@ -38,8 +48,24 @@ export default function About({
     setIsEditingAbout(true);
   };
 
-  const saveAbout = () => {
+  const saveAbout = async () => {
     setAbout(editedAbout);
+    await UserAPI.updateProfile({
+      about: editedAbout,
+      address: personalInfoData.location,
+      headline: null,
+      current_title: personalInfoData.headline,
+      name: personalInfoData.name,
+      profile_picture: null,
+    })
+      .then((res) => {
+        toast.success("About updated successfully");
+      })
+      .catch((err) => {
+        toast.error("Failed to update about");
+      });
+
+    setEditedAbout("");
     setIsEditingAbout(false);
   };
   return (

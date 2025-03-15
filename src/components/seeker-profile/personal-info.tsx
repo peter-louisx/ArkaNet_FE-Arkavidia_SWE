@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Briefcase, Edit, MapPin, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormField } from "@/components/ui/form";
+import { UserAPI } from "@/api/User";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type ImageUploadType = "logo" | "cover";
 
@@ -32,10 +35,16 @@ export default function PersonalInfo({
     location: string;
     cover: string;
     profilePicture: string;
+    about: string;
   };
   allowEdit?: boolean;
 }) {
+  const router = useRouter();
   const [personalInfo, setPersonalInfo] = useState(personalInfoData);
+
+  useEffect(() => {
+    setPersonalInfo(personalInfoData);
+  }, [personalInfoData]);
 
   const formSchema = z.object({
     name: z.string(),
@@ -54,12 +63,22 @@ export default function PersonalInfo({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { name, headline, location } = values;
-    setPersonalInfo({
-      ...personalInfo,
+    await UserAPI.updateProfile({
       name,
-      headline,
-      location,
-    });
+      current_title: headline,
+      profile_picture: null,
+      headline: null,
+      about: personalInfoData.about,
+      address: location,
+    })
+      .then(() => {
+        toast.success("Personal information updated successfully");
+        router.refresh();
+      })
+      .catch((err) => {
+        toast.error("Failed to update personal information");
+      });
+
     setIsEditingPersonalInfo(false);
   }
 
@@ -100,12 +119,42 @@ export default function PersonalInfo({
     fileInputRef.current?.click();
   };
 
-  const saveImage = () => {
+  const saveImage = async () => {
     if (imagePreview) {
+      const imageBlob = await fetch(imagePreview).then((res) => res.blob());
+
       if (uploadImageType === "logo") {
-        setPersonalInfo({ ...personalInfo, profilePicture: imagePreview });
+        await UserAPI.updateProfile({
+          profile_picture: imageBlob,
+          name: personalInfo.name,
+          current_title: personalInfo.headline,
+          headline: null,
+          about: personalInfo.about,
+          address: personalInfo.location,
+        })
+          .then(() => {
+            toast.success("Profile picture updated successfully");
+            router.refresh();
+          })
+          .catch((err) => {
+            toast.error("Failed to update profile picture");
+          });
       } else {
-        setPersonalInfo({ ...personalInfo, cover: imagePreview });
+        await UserAPI.updateProfile({
+          profile_picture: null,
+          name: personalInfo.name,
+          current_title: personalInfo.headline,
+          headline: imageBlob,
+          about: personalInfo.about,
+          address: personalInfo.location,
+        })
+          .then(() => {
+            toast.success("Cover image updated successfully");
+            router.refresh();
+          })
+          .catch((err) => {
+            toast.error("Failed to update cover image");
+          });
       }
     }
     setIsUploadingImage(false);
@@ -145,7 +194,7 @@ export default function PersonalInfo({
               <div className="relative">
                 <div className="w-32 h-32 rounded-full border-4 border-white bg-muted overflow-hidden">
                   <Image
-                    src="/placeholder.svg?height=128&width=128"
+                    src={personalInfo.profilePicture || "/placeholder.svg"}
                     width={128}
                     height={128}
                     alt="Profile"

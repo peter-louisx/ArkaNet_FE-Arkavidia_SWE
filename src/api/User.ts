@@ -76,6 +76,37 @@ export const UserAPI = {
         return axios.get(`/user/profile/${slug}`)
     },
 
+    updateProfile: async function({
+        name,
+        headline,
+        about,
+        address,
+        current_title,
+        profile_picture,
+    }: {
+        name: string,
+        about: string,
+        address: string,
+        current_title: string,
+        profile_picture: Blob | null,
+        headline: Blob | null
+    }){
+        return axios.post("/user/update-profile", {
+            name,
+            headline,
+            location,
+            about,
+            address,
+            current_title,
+            profile_picture,
+        }, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${await getAuthToken()}`
+            }
+        })
+    },
+
     addExperience: async function({
         company_id,
         title,

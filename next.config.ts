@@ -19,6 +19,19 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
         search: "",
+      },
+      {
+        protocol: "https",
+        hostname: "arkavidia-fp.s3.ap-southeast-3.amazonaws.com",
+        port: "",
+        pathname: "/**",
+        search: "",
+      },{
+        protocol: "https",
+        hostname: "fpswe.s3.ap-southeast-1.amazonaws.com",
+        port: "",
+        pathname: "/**",
+        search: "",
       }
     ],
   },
