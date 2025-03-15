@@ -12,15 +12,29 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { JobAPI } from "@/api/Job";
+import { toast } from "sonner";
 
 export function ApplyCard({ job }: { job: any }) {
+  const [applied, setApplied] = useState(false);
   const [isApplying, setIsApplying] = useState(false);
   const [applicationData, setApplicationData] = useState({
     resume: null as File | null,
   });
 
-  const handleApply = () => {
-    setIsApplying(false);
+  const handleApply = async () => {
+    await JobAPI.applyJob({
+      job_id: job.id,
+      resume: applicationData.resume!,
+    })
+      .then(() => {
+        toast.success("Application submitted successfully");
+        setIsApplying(false);
+        setApplied(true);
+      })
+      .catch(() => {
+        toast.error("Failed to submit application");
+      });
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,8 +47,9 @@ export function ApplyCard({ job }: { job: any }) {
   };
   return (
     <>
-      <Button onClick={() => setIsApplying(true)}>Apply for this job</Button>
-
+      <Button disabled={applied} onClick={() => setIsApplying(true)}>
+        {applied ? "Applied" : "Apply"}
+      </Button>
       <Dialog open={isApplying} onOpenChange={setIsApplying}>
         <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-hidden flex flex-col">
           <DialogHeader>
@@ -56,7 +71,7 @@ export function ApplyCard({ job }: { job: any }) {
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                Accepted formats: PDF, DOCX, DOC (Max 5MB)
+                Accepted formats: PDF (Max 5MB)
               </p>
             </div>
           </div>

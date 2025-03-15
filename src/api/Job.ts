@@ -37,5 +37,22 @@ export const JobAPI = {
                 sort_by
             }
         })
+    },
+    applyJob: async function({
+        job_id,
+        resume
+    }: {
+        job_id: string
+        resume: Blob
+    }){
+        return axios.post(`/job/apply`, {
+            resume,
+            job_id
+        }, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${await getAuthToken()}`
+            }
+        })
     }
 }
