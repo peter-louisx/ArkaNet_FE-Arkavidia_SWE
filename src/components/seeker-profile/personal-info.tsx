@@ -167,7 +167,7 @@ export default function PersonalInfo({
           <div className="relative bg-primary/10 rounded-t-lg ">
             <div className="h-56">
               <Image
-                src={personalInfo.cover || "/placeholder.svg"}
+                src={personalInfo.cover || "./avatar.png"}
                 layout="fill"
                 objectFit="cover"
                 alt="Cover"

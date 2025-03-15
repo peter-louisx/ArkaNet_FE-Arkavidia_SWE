@@ -18,7 +18,7 @@ export default async function Profile() {
         <div className="flex flex-col items-center px-3 py-1 hover:bg-muted rounded-md cursor-pointer">
           <div className="w-6 h-6 rounded-full bg-muted-foreground/20 overflow-hidden">
             <Image
-              src="https://img.freepik.com/free-photo/young-adult-man-wearing-hoodie-beanie_23-2149393636.jpg"
+              src={user.profile_picture || "./avatar.png"}
               width={24}
               height={24}
               alt="Profile"
@@ -37,7 +37,7 @@ export default async function Profile() {
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-primary/10 overflow-hidden">
               <Image
-                src="https://img.freepik.com/free-photo/young-adult-man-wearing-hoodie-beanie_23-2149393636.jpg"
+                src={user.profile_picture || "./avatar.png"}
                 width={40}
                 height={40}
                 alt="Profile"
