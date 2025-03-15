@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Briefcase, Plus, Search, Users, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -32,11 +32,17 @@ import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { JobCardCompany as JobCard } from "./job-card-company";
 import { ApplicationCard } from "./application-card";
 import SkillInput from "../skills/skill-input";
+import { CompanyAPI } from "@/api/Company";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { parse } from "path";
 
 export default function CompanyJobs({
   jobsData,
+  companyID,
   allowEdit = false,
 }: {
+  companyID: string;
   jobsData: {
     id: number;
     title: string;
@@ -67,14 +73,16 @@ export default function CompanyJobs({
   }[];
   allowEdit?: boolean;
 }) {
+  const router = useRouter();
+
   const formSchema = z.object({
     job_title: z.string().nonempty(),
     job_location: z.string().nonempty(),
     job_type: z.string().nonempty(),
     location_type: z.string().nonempty(),
     experience: z.string().nonempty(),
-    min_salary: z.number(),
-    max_salary: z.number(),
+    min_salary: z.string(),
+    max_salary: z.string(),
     job_description: z.string().nonempty(),
     skills: z.array(
       z.object({
@@ -93,8 +101,8 @@ export default function CompanyJobs({
       job_type: "",
       location_type: "",
       experience: "",
-      min_salary: 0,
-      max_salary: 0,
+      min_salary: "",
+      max_salary: "",
       job_description: "",
       skills: [],
     },
@@ -103,10 +111,14 @@ export default function CompanyJobs({
   // Jobs state
   const [jobs, setJobs] = useState(jobsData);
   const [isEditingJob, setIsEditingJob] = useState(false);
-  const [currentJob, setCurrentJob] = useState<any>(null);
+  const [currentJob, setCurrentJob] = useState<any>(0);
   const [jobSearch, setJobSearch] = useState("");
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
   const [showApplications, setShowApplications] = useState(false);
+
+  useEffect(() => {
+    setJobs(jobsData);
+  }, [jobsData]);
 
   // Filter jobs based on search
   const filteredJobs = jobs.filter(
@@ -122,18 +134,6 @@ export default function CompanyJobs({
 
   // Job Handlers
   const addNewJob = () => {
-    setCurrentJob({
-      id: Date.now(),
-      title: "",
-      location: "",
-      type: "Full-time",
-      salary: "",
-      posted: "Just now",
-      description: "",
-      skills: [],
-      isRemote: false,
-      applications: 0,
-    });
     setIsEditingJob(true);
   };
 
@@ -141,11 +141,11 @@ export default function CompanyJobs({
     setCurrentJob(job.id);
     form.setValue("job_title", job.title);
     form.setValue("job_location", job.location);
-    form.setValue("job_type", job.type);
+    form.setValue("job_type", job.job_type);
     form.setValue("location_type", job.location_type);
     form.setValue("experience", job.experience);
-    form.setValue("min_salary", job.min_salary);
-    form.setValue("max_salary", job.max_salary);
+    form.setValue("min_salary", job.min_salary.toString());
+    form.setValue("max_salary", job.max_salary.toString());
     form.setValue("job_description", job.description);
     form.setValue("skills", job.skills);
     setIsEditingJob(true);
@@ -208,43 +208,53 @@ export default function CompanyJobs({
     } = values;
 
     if (currentJob) {
-      setJobs(
-        jobs.map((job) =>
-          job.id === currentJob
-            ? {
-                ...job,
-                title: job_title,
-                location: job_location,
-                type: job_type,
-                location_type: location_type,
-                experience: experience,
-                min_salary: min_salary,
-                max_salary: max_salary,
-                description: job_description,
-                skills: skills,
-              }
-            : job
-        )
-      );
+      await CompanyAPI.updateJob({
+        company_id: companyID,
+        job_id: currentJob,
+        title: job_title,
+        description: job_description,
+        location: job_location,
+        location_type: location_type,
+        job_type: job_type,
+        min_salary: parseInt(min_salary),
+        max_salary: parseInt(max_salary),
+        experience: experience,
+        skills: skills.map(
+          (s: { id: string | null; skill_id: string; name: string }) =>
+            s.skill_id
+        ),
+      })
+        .then((res) => {
+          toast.success("Job updated successfully");
+          router.refresh();
+        })
+        .catch((err) => {
+          toast.error("Failed to update job");
+        });
       setCurrentJob(0);
     } else {
-      setJobs([
-        ...jobs,
-        {
-          id: jobs.length + 1,
-          title: job_title,
-          location: job_location,
-          job_type: job_type,
-          location_type: location_type,
-          experience: experience,
-          min_salary: min_salary,
-          max_salary: max_salary,
-          posted: "Just now",
-          description: job_description,
-          skills: skills,
-          applications: [],
-        },
-      ]);
+      await CompanyAPI.addJob({
+        company_id: companyID,
+        title: job_title,
+        description: job_description,
+        location: job_location,
+        location_type: location_type,
+        job_type: job_type,
+        min_salary: parseInt(min_salary),
+        max_salary: parseInt(max_salary),
+        experience: experience,
+        skills: skills.map(
+          (s: { id: string | null; skill_id: string; name: string }) =>
+            s.skill_id
+        ),
+      })
+        .then((res) => {
+          toast.success("Job added successfully");
+          router.refresh();
+        })
+        .catch((err) => {
+          toast.error("Failed to add job");
+        });
     }
 
     setIsEditingJob(false);
@@ -329,204 +339,206 @@ export default function CompanyJobs({
               </DialogHeader>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                  {currentJob && (
-                    <div className="grid gap-4 py-4   pr-4 pl-2">
-                      <FormField
-                        control={form.control}
-                        name="job_title"
-                        render={({ field }) => (
-                          <div className="grid gap-2">
-                            <Label htmlFor="title">Job Title</Label>
-                            <Input id="title" {...field} />
-                            <FormMessage />
-                          </div>
-                        )}
-                      />
+                  <div className="grid gap-4 py-4   pr-4 pl-2">
+                    <FormField
+                      control={form.control}
+                      name="job_title"
+                      render={({ field }) => (
+                        <div className="grid gap-2">
+                          <Label htmlFor="title">Job Title</Label>
+                          <Input id="title" {...field} />
+                          <FormMessage />
+                        </div>
+                      )}
+                    />
 
-                      <FormField
-                        control={form.control}
-                        name="job_location"
-                        render={({ field }) => (
-                          <div className="grid gap-2">
-                            <Label htmlFor="location">Location</Label>
-                            <Input id="location" {...field} />
-                            <FormMessage />
-                          </div>
-                        )}
-                      />
+                    <FormField
+                      control={form.control}
+                      name="job_location"
+                      render={({ field }) => (
+                        <div className="grid gap-2">
+                          <Label htmlFor="location">Location</Label>
+                          <Input id="location" {...field} />
+                          <FormMessage />
+                        </div>
+                      )}
+                    />
 
-                      <FormField
-                        control={form.control}
-                        name="job_type"
-                        render={({ field }) => (
-                          <div className="grid gap-2">
-                            <Label htmlFor="type">Job Type</Label>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
+                    <FormField
+                      control={form.control}
+                      name="job_type"
+                      render={({ field }) => (
+                        <div className="grid gap-2">
+                          <Label htmlFor="type">Job Type</Label>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select job type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {jobTypes.map((type) => (
+                                <SelectItem key={type} value={type}>
+                                  {type}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </div>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="location_type"
+                      render={({ field }) => (
+                        <div className="grid gap-2">
+                          <Label htmlFor="type">Location Type</Label>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select location type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {locationTypes.map((type) => (
+                                <SelectItem key={type} value={type}>
+                                  {type}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </div>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="experience"
+                      render={({ field }) => (
+                        <div className="grid gap-2">
+                          <Label htmlFor="type">Experience Level</Label>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select experience level" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {experienceLevels.map((type) => (
+                                <SelectItem key={type} value={type}>
+                                  {type}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </div>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="min_salary"
+                      render={({ field }) => (
+                        <div className="grid gap-2">
+                          <Label htmlFor="salary">Minimum Salary</Label>
+                          <Input
+                            id="salary"
+                            type="number"
+                            {...field}
+                            placeholder="e.g., $80,000"
+                          />
+                          <FormMessage />
+                        </div>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="max_salary"
+                      render={({ field }) => (
+                        <div className="grid gap-2">
+                          <Label htmlFor="salary">Maximum Salary</Label>
+                          <Input
+                            id="salary"
+                            type="number"
+                            {...field}
+                            placeholder="e.g., $100,000"
+                          />
+                          <FormMessage />
+                        </div>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="job_description"
+                      render={({ field }) => (
+                        <div className="grid gap-2">
+                          <Label htmlFor="description">Job Description</Label>
+                          <Textarea
+                            id="description"
+                            {...field}
+                            className="min-h-[150px]"
+                          />
+                          <FormMessage />
+                        </div>
+                      )}
+                    />
+
+                    <div className="grid gap-2">
+                      <Label htmlFor="skills">Required Skills</Label>
+                      <div className="flex flex-wrap gap-2 mb-2">
+                        {form.watch("skills").map(
+                          (
+                            skill: {
+                              id: string | null;
+                              skill_id: string;
+                              name: string;
+                            },
+                            index: number
+                          ) => (
+                            <Badge
+                              key={index}
+                              variant="secondary"
+                              className="group py-1.5 px-3"
                             >
-                              <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select job type" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {jobTypes.map((type) => (
-                                  <SelectItem key={type} value={type}>
-                                    {type}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </div>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="location_type"
-                        render={({ field }) => (
-                          <div className="grid gap-2">
-                            <Label htmlFor="type">Location Type</Label>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select location type" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {locationTypes.map((type) => (
-                                  <SelectItem key={type} value={type}>
-                                    {type}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </div>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="experience"
-                        render={({ field }) => (
-                          <div className="grid gap-2">
-                            <Label htmlFor="type">Experience Level</Label>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select experience level" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {experienceLevels.map((type) => (
-                                  <SelectItem key={type} value={type}>
-                                    {type}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </div>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="min_salary"
-                        render={({ field }) => (
-                          <div className="grid gap-2">
-                            <Label htmlFor="salary">Minimum Salary</Label>
-                            <Input
-                              id="salary"
-                              type="number"
-                              {...field}
-                              placeholder="e.g., $80,000"
-                            />
-                            <FormMessage />
-                          </div>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="max_salary"
-                        render={({ field }) => (
-                          <div className="grid gap-2">
-                            <Label htmlFor="salary">Maximum Salary</Label>
-                            <Input
-                              id="salary"
-                              type="number"
-                              {...field}
-                              placeholder="e.g., $100,000"
-                            />
-                            <FormMessage />
-                          </div>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="job_description"
-                        render={({ field }) => (
-                          <div className="grid gap-2">
-                            <Label htmlFor="description">Job Description</Label>
-                            <Textarea
-                              id="description"
-                              {...field}
-                              className="min-h-[150px]"
-                            />
-                            <FormMessage />
-                          </div>
-                        )}
-                      />
-
-                      <div className="grid gap-2">
-                        <Label htmlFor="skills">Required Skills</Label>
-                        <div className="flex flex-wrap gap-2 mb-2">
-                          {form.watch("skills").map(
-                            (
-                              skill: {
-                                id: string | null;
-                                skill_id: string;
-                                name: string;
-                              },
-                              index: number
-                            ) => (
-                              <Badge
-                                key={index}
-                                variant="secondary"
-                                className="group py-1.5 px-3"
+                              {skill.name}
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  form.setValue(
+                                    "skills",
+                                    form
+                                      .getValues("skills")
+                                      .filter(
+                                        (s: {
+                                          id: string | null;
+                                          skill_id: string;
+                                          name: string;
+                                        }) => s.skill_id !== skill.skill_id
+                                      )
+                                  );
+                                }}
+                                className="ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
                               >
-                                {skill.name}
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    form.setValue(
-                                      "skills",
-                                      form
-                                        .getValues("skills")
-                                        .filter(
-                                          (s, i) =>
-                                            s.skill_id !== skill.skill_id
-                                        )
-                                    );
-                                  }}
-                                  className="ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                                >
-                                  <X className="h-3 w-3" />
-                                </button>
-                              </Badge>
-                            )
-                          )}
-                        </div>
-                        <div className="flex gap-2">
-                          <SkillInput addSkill={addSkill} />
-                        </div>
+                                <X className="h-3 w-3" />
+                              </button>
+                            </Badge>
+                          )
+                        )}
+                      </div>
+                      <div className="flex gap-2">
+                        <SkillInput addSkill={addSkill} />
                       </div>
                     </div>
-                  )}
+                  </div>
+
                   <DialogFooter>
                     <Button
                       variant="outline"
