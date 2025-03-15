@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +13,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import SkillInput from "../skills/skill-input";
+import { UserAPI } from "@/api/User";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function Skills({
   skillsData,
@@ -33,9 +36,14 @@ export default function Skills({
       skill_id: string;
     }[]
   >(skillsData);
+  const router = useRouter();
+
+  useEffect(() => {
+    setSkills(skillsData);
+  }, [skillsData]);
 
   // Update the addSkill function
-  const addSkill = (skillID: string, skillName: string) => {
+  const addSkill = async (skillID: string, skillName: string) => {
     if (skillID && !skills.some((skill) => skill.skill_id === skillID)) {
       const newSkillObject: {
         skill_id: string;
@@ -44,13 +52,32 @@ export default function Skills({
         skill_id: skillID,
         name: skillName,
       };
-      setSkills([...skills, newSkillObject]);
+
+      await UserAPI.addSkill({
+        skill_id: skillID,
+      })
+        .then((res) => {
+          toast.success("Skill added successfully");
+          router.refresh();
+        })
+        .catch((err) => {
+          toast.error("Failed to add skill");
+        });
     }
   };
 
   // Update the removeSkill function
-  const removeSkill = (id: string) => {
-    setSkills(skills.filter((skill) => skill.skill_id !== id));
+  const removeSkill = async (id: string) => {
+    await UserAPI.deleteSkill({
+      id,
+    })
+      .then((res) => {
+        toast.success("Skill deleted successfully");
+        router.refresh();
+      })
+      .catch((err) => {
+        toast.error("Failed to delete skill");
+      });
   };
   return (
     <>
@@ -72,7 +99,7 @@ export default function Skills({
                   {skill.name}
                   {allowEdit && (
                     <button
-                      onClick={() => removeSkill(skill.skill_id)}
+                      onClick={() => removeSkill(skill.id ?? "")}
                       className="ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <X className="h-3 w-3" />

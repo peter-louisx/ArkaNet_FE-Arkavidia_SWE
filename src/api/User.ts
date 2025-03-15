@@ -142,4 +142,30 @@ export const UserAPI = {
             }
         })
     },
+
+    addSkill: async function({
+        skill_id,
+    }: {
+        skill_id: string,
+    }){
+        return axios.post("/user/skills/add-skill", {
+            skill_id,
+        }, {
+            headers: {
+                Authorization: `Bearer ${await getAuthToken()}`
+            }
+        })
+    },
+
+    deleteSkill: async function({
+        id
+    }: {
+        id: string
+    }){
+        return axios.delete(`/user/skills/delete-skill/${id}`, {
+            headers: {
+                Authorization: `Bearer ${await getAuthToken()}`
+            }
+        })
+    }
 }
