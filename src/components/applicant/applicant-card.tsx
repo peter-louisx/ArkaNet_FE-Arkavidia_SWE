@@ -1,5 +1,5 @@
 import { Applicant } from "@/types/applicant/types";
-import { Mail, MoreVertical, Calendar } from "lucide-react";
+import { Mail, MoreVertical, Calendar, Paperclip } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -62,10 +62,19 @@ export function ApplicantCard({ applicant }: { applicant: Applicant }) {
             </div>
           </div>
         </div>
-        <Button size="sm" variant="outline" className="ml-4">
-          <Mail className="h-4 w-4 mr-2" />
-          Contact
-        </Button>
+        <div className="flex flex-col">
+          <Button size="sm" variant="outline" className="ml-4">
+            <Mail className="h-4 w-4 mr-2" />
+            Contact
+          </Button>
+
+          <Link href={applicant.resume_url} target="_blank">
+            <Button size="sm" variant="outline" className="mt-2 ml-4">
+              <Paperclip className="h-4 w-4 mr-2" />
+              Resume
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );

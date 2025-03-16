@@ -6,4 +6,5 @@ export type Applicant = {
     status: string;
     applied_at: string;
     slug: string;
+    resume_url: string;
 }

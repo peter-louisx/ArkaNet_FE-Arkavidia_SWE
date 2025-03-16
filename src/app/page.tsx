@@ -17,10 +17,10 @@ export default function Home() {
               Connect with professionals, discover opportunities, and grow your
               career with the world's largest professional network.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col justify-center sm:flex-row gap-4">
               <Link
                 href="/login"
-                className="bg-primary text-white px-8 py-3 rounded-lg"
+                className="bg-primary text-white px-8 py-3 rounded-lg text-center"
               >
                 Join Now
               </Link>
