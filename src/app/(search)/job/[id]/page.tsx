@@ -21,6 +21,7 @@ import { formatNumberCommas } from "@/lib/utils";
 import { JobAPI } from "@/api/Job";
 import { redirect } from "next/navigation";
 import { verifySession } from "@/lib/session";
+import { COMPANY_PICTURE } from "@/lib/image-placeholder";
 
 type tParams = Promise<{ id: string }>;
 
@@ -62,7 +63,7 @@ export default async function Page(props: { params: tParams }) {
                   <div className="flex items-start gap-4">
                     <div className="w-16 h-16 rounded-md bg-muted overflow-hidden flex-shrink-0">
                       <Image
-                        src={job.logo || "/placeholder.svg"}
+                        src={job.logo || COMPANY_PICTURE}
                         width={64}
                         height={64}
                         alt={`${job.company} logo`}

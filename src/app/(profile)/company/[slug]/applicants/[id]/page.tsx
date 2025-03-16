@@ -10,7 +10,7 @@ import { JobAPI } from "@/api/Job";
 import { toast } from "sonner";
 import { Applicant } from "@/types/applicant/types";
 import { ApplicantCard } from "@/components/applicant/applicant-card";
-import { statusConfig } from "@/lib/applicant-status";
+import { showErrorToast } from "@/lib/show-toast";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -43,7 +43,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         setLoading(false);
       })
       .catch((err) => {
-        toast.error("Failed to fetch applications");
+        showErrorToast("Failed to fetch applications");
       });
   };
 
