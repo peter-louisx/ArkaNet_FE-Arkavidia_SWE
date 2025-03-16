@@ -10,23 +10,23 @@ const axios = Axios.create({
   },
 });
 
-// axios.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   async (error) => {
-//     if (
-//       error?.response?.status === 401 &&
-//       window?.location?.pathname !== "/login"
-//     ) {
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    if (
+      error?.response?.status === 401 &&
+      window?.location?.pathname !== "/login"
+    ) {
 
-//       await deleteSession();
-//       localStorage.clear();
-//       return window.location.replace("/login");
-//     }
+      await deleteSession();
+      localStorage.clear();
+      return window.location.replace("/login");
+    }
 
-//     throw error;
-//   }
-// );
+    throw error;
+  }
+);
 
 export default axios;

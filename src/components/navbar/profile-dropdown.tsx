@@ -55,7 +55,11 @@ export default async function Profile() {
           </div>
           <div className="mt-2 flex justify-center px-2">
             <Link
-              href={"/seeker/" + user.slug}
+              href={
+                user.role === "user"
+                  ? "/seeker/" + user.slug
+                  : "/company/" + user.slug
+              }
               className="w-full mt-2 border rounded-md p-1 text-md text-center shadow-sm hover:bg-muted bg-white"
             >
               View Profile
