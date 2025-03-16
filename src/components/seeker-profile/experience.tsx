@@ -75,20 +75,8 @@ export default function Experience({
 
   const companies = [
     {
-      id: "a5d5769a-e911-40b0-8099-b50135c207e5",
+      id: "161c2c4d-e961-4cc8-b9d4-25c502505580",
       name: "Google",
-    },
-    {
-      id: "077a8d39-6ddb-4473-96be-65a017ea9d3c",
-      name: "Facebook",
-    },
-    {
-      id: "b488d163-ecad-419c-bf42-ecf36dee1709",
-      name: "Microsoft",
-    },
-    {
-      id: "30d65c83-7d89-4f9a-a5ee-5139eae5af73",
-      name: "Amazon",
     },
   ];
 
