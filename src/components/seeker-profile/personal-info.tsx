@@ -23,6 +23,7 @@ import { UserAPI } from "@/api/User";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { SeekerPersonalInfo } from "@/types/seeker/types";
 
 type ImageUploadType = "logo" | "cover";
 
@@ -30,14 +31,7 @@ export default function PersonalInfo({
   personalInfoData,
   allowEdit = false,
 }: {
-  personalInfoData: {
-    name: string;
-    headline: string;
-    location: string;
-    cover: string;
-    profilePicture: string;
-    about: string;
-  };
+  personalInfoData: SeekerPersonalInfo;
   allowEdit?: boolean;
 }) {
   const router = useRouter();

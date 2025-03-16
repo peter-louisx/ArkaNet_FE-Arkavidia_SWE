@@ -1,22 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Calendar,
-  Edit,
-  GraduationCap,
-  Plus,
-  School,
-  Trash2,
-} from "lucide-react";
+import { Calendar, Edit, GraduationCap, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -33,25 +20,17 @@ import { z } from "zod";
 import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { DatePicker } from "../ui/date-picker";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { set } from "date-fns";
 import { UserAPI } from "@/api/User";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { convertDateFormat } from "@/lib/utils";
+import { SeekerEducation } from "@/types/seeker/types";
 
 export default function Education({
   educationData,
   allowEdit = false,
 }: {
-  educationData: {
-    id: number;
-    school: string;
-    degree: string;
-    field: string;
-    startDate: Date;
-    endDate: Date;
-    description: string;
-  }[];
+  educationData: SeekerEducation[];
   allowEdit?: boolean;
 }) {
   const router = useRouter();
@@ -78,18 +57,15 @@ export default function Education({
     },
   });
 
-  // Education State
   const [education, setEducation] = useState(educationData);
+  const [isEditingEducation, setIsEditingEducation] = useState<boolean>(false);
+  const [currentEducation, setCurrentEducation] = useState<string>("");
 
   useEffect(() => {
     setEducation(educationData);
   }, [educationData]);
 
-  const [isEditingEducation, setIsEditingEducation] = useState(false);
-  const [currentEducation, setCurrentEducation] = useState<number>(0);
-
-  // Education Handlers
-  const editEducation = (edu: any) => {
+  const editEducation = (edu: SeekerEducation) => {
     setCurrentEducation(edu.id);
     form.setValue("school", edu.school);
     form.setValue("degree", edu.degree);
@@ -104,7 +80,7 @@ export default function Education({
     setIsEditingEducation(true);
   };
 
-  const deleteEducation = (id: number) => {
+  const deleteEducation = (id: string) => {
     UserAPI.deleteEducation({ id })
       .then(() => {
         toast.success("Education deleted successfully");
@@ -299,7 +275,7 @@ export default function Education({
                     variant="outline"
                     type="button"
                     onClick={() => {
-                      setCurrentEducation(0);
+                      setCurrentEducation("");
                       setIsEditingEducation(false);
                       form.reset();
                     }}

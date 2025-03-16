@@ -157,7 +157,7 @@ export const UserAPI = {
         end_date,
         description,
     }: {
-        experience_id: number,
+        experience_id: string,
         company_id: string,
         title: string,
         location: string,
@@ -209,7 +209,7 @@ export const UserAPI = {
     deleteEducation: async function({
         id
     }: {
-        id: number
+        id: string
     }){
         return axios.delete(`/user/education/delete-education/${id}`, {
             headers: {
@@ -226,7 +226,7 @@ export const UserAPI = {
         start_date,
         end_date,
     }: {
-        id: number,
+        id: string,
         school_name: string,
         degree: string,
         field_of_study: string,

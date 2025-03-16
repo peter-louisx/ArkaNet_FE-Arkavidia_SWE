@@ -16,33 +16,22 @@ import SkillInput from "../skills/skill-input";
 import { UserAPI } from "@/api/User";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { SeekerSkill } from "@/types/seeker/types";
 
 export default function Skills({
   skillsData,
   allowEdit = false,
 }: {
-  skillsData: {
-    id?: string;
-    skill_id: string;
-    name: string;
-  }[];
+  skillsData: SeekerSkill[];
   allowEdit?: boolean;
 }) {
-  // Skills State
-  const [skills, setSkills] = useState<
-    {
-      id?: string;
-      name: string;
-      skill_id: string;
-    }[]
-  >(skillsData);
   const router = useRouter();
+  const [skills, setSkills] = useState<SeekerSkill[]>(skillsData);
 
   useEffect(() => {
     setSkills(skillsData);
   }, [skillsData]);
 
-  // Update the addSkill function
   const addSkill = async (skillID: string, skillName: string) => {
     if (skillID && !skills.some((skill) => skill.skill_id === skillID)) {
       const newSkillObject: {
@@ -66,7 +55,6 @@ export default function Skills({
     }
   };
 
-  // Update the removeSkill function
   const removeSkill = async (id: string) => {
     await UserAPI.deleteSkill({
       id,
@@ -79,6 +67,7 @@ export default function Skills({
         toast.error("Failed to delete skill");
       });
   };
+
   return (
     <>
       <Card>

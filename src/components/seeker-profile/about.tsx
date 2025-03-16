@@ -1,16 +1,9 @@
 "use client";
 
 import { useState } from "react";
-
 import { Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
@@ -22,26 +15,19 @@ import {
 } from "@/components/ui/dialog";
 import { UserAPI } from "@/api/User";
 import { toast } from "sonner";
+import { SeekerPersonalInfo } from "@/types/seeker/types";
 
 export default function About({
   personalInfoData,
   allowEdit = false,
 }: {
-  personalInfoData: {
-    name: string;
-    headline: string;
-    location: string;
-    cover: string;
-    profilePicture: string;
-    about: string;
-  };
+  personalInfoData: SeekerPersonalInfo;
   allowEdit?: boolean;
 }) {
-  const [about, setAbout] = useState(personalInfoData.about);
-  const [isEditingAbout, setIsEditingAbout] = useState(false);
-  const [editedAbout, setEditedAbout] = useState(about);
+  const [about, setAbout] = useState<string>(personalInfoData.about);
+  const [isEditingAbout, setIsEditingAbout] = useState<boolean>(false);
+  const [editedAbout, setEditedAbout] = useState<string>(about);
 
-  // About Handlers
   const openEditAbout = () => {
     setEditedAbout(about);
     setIsEditingAbout(true);
@@ -84,8 +70,6 @@ export default function About({
           <p className="whitespace-pre-wrap">{about}</p>
         </CardContent>
       </Card>
-      {/* About Edit Dialog */}
-
       {allowEdit && (
         <Dialog open={isEditingAbout} onOpenChange={setIsEditingAbout}>
           <DialogContent className="sm:max-w-[600px]">

@@ -40,24 +40,17 @@ import { UserAPI } from "@/api/User";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { convertDateFormat } from "@/lib/utils";
+import { SeekerExperience } from "@/types/seeker/types";
 
 export default function Experience({
   experienceData,
   allowEdit = false,
 }: {
-  experienceData: {
-    id: string;
-    title: string;
-    company: string;
-    company_id: string;
-    location: string;
-    startDate: Date;
-    endDate: Date | null;
-    description: string;
-  }[];
+  experienceData: SeekerExperience[];
   allowEdit?: boolean;
 }) {
   const router = useRouter();
+
   const formSchema = z.object({
     title: z.string().nonempty(),
     company: z.string().nonempty(),
@@ -99,28 +92,19 @@ export default function Experience({
     },
   ];
 
-  // Experience State
-  const [experiences, setExperiences] = useState<
-    {
-      id: string;
-      title: string;
-      company: string;
-      location: string;
-      startDate: Date;
-      endDate: Date | null;
-      description: string;
-    }[]
-  >(experienceData);
+  const [experiences, setExperiences] =
+    useState<SeekerExperience[]>(experienceData);
 
   useEffect(() => {
     setExperiences(experienceData);
   }, [experienceData]);
 
-  const [isEditingExperience, setIsEditingExperience] = useState(false);
-  const [currentExperience, setCurrentExperience] = useState<number>(0);
+  const [isEditingExperience, setIsEditingExperience] =
+    useState<boolean>(false);
+  const [currentExperience, setCurrentExperience] = useState<string>("");
 
   // Experience Handlers
-  const editExperience = (experience: any) => {
+  const editExperience = (experience: SeekerExperience) => {
     setCurrentExperience(experience.id);
     form.setValue("title", experience.title);
     form.setValue("company", experience.company_id);
@@ -168,7 +152,7 @@ export default function Experience({
         .catch((err) => {
           toast.error("Failed to update experience");
         });
-      setCurrentExperience(0);
+      setCurrentExperience("");
     } else {
       await UserAPI.addExperience({
         company_id: company,
@@ -385,7 +369,7 @@ export default function Experience({
                     type="button"
                     onClick={() => {
                       setIsEditingExperience(false);
-                      setCurrentExperience(0);
+                      setCurrentExperience("");
                       form.reset();
                     }}
                   >
