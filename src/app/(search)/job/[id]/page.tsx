@@ -7,6 +7,7 @@ import {
   DollarSign,
   MapPin,
   Locate,
+  Loader2Icon,
 } from "lucide-react";
 import {
   Card,
@@ -22,13 +23,14 @@ import { JobAPI } from "@/api/Job";
 import { redirect } from "next/navigation";
 import { verifySession } from "@/lib/session";
 import { COMPANY_PICTURE } from "@/lib/image-placeholder";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type tParams = Promise<{ id: string }>;
 
 export default async function Page(props: { params: tParams }) {
   const { id } = await props.params;
 
-  const { isAuthenticated } = await verifySession();
+  const { isAuthenticated, user } = await verifySession();
 
   const job = await JobAPI.getJob(id)
     .then((res) => {
@@ -61,14 +63,17 @@ export default async function Page(props: { params: tParams }) {
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-16 h-16 rounded-md bg-muted overflow-hidden flex-shrink-0">
-                      <Image
-                        src={job.logo || COMPANY_PICTURE}
-                        width={64}
-                        height={64}
-                        alt={`${job.company} logo`}
-                        className="object-cover"
-                      />
+                    <div className="w-16 h-16 rounded-md  overflow-hidden flex-shrink-0">
+                      <Avatar className="w-full h-full">
+                        <AvatarImage
+                          src={job.logo || COMPANY_PICTURE}
+                          alt={job.company}
+                        />
+                        <AvatarFallback>
+                          {" "}
+                          <Loader2Icon className="h-4 w-4 animate-spin" />{" "}
+                        </AvatarFallback>
+                      </Avatar>
                     </div>
                     <div className="flex-1">
                       <h1 className="text-2xl font-bold">{job.title}</h1>
@@ -109,7 +114,9 @@ export default async function Page(props: { params: tParams }) {
                   </div>
 
                   <div className="flex flex-wrap gap-3 mt-6">
-                    {isAuthenticated && <ApplyCard job={job} />}
+                    {isAuthenticated && user.role == "user" && (
+                      <ApplyCard job={job} />
+                    )}
                   </div>
                 </CardContent>
               </Card>

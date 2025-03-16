@@ -163,7 +163,7 @@ export default function CompanyHeader({
           {/* Cover Photo */}
           <div className="relative h-56 bg-primary/10 rounded-t-lg">
             <Image
-              src={company.cover || COMPANY_PICTURE}
+              src={company.cover || HEADER_PICTURE}
               alt={`${company.name} cover`}
               fill
               className="object-cover rounded-t-lg"
@@ -188,7 +188,7 @@ export default function CompanyHeader({
                 <div className="w-32 h-32 rounded-full border-4 border-white bg-white overflow-hidden">
                   <Avatar className="w-full h-full">
                     <AvatarImage
-                      src={company.logo || PROFILE_PICTURE}
+                      src={company.logo || COMPANY_PICTURE}
                       alt={company.name}
                     />
                     <AvatarFallback>

@@ -6,11 +6,15 @@ import Skills from "@/components/seeker-profile/skills";
 import { UserAPI } from "@/api/User";
 import { getUserCookie } from "@/lib/session";
 import { redirect } from "next/navigation";
+import { verifySession } from "@/lib/session";
 
 type tParams = Promise<{ slug: string }>;
 
 export default async function Page(props: { params: tParams }) {
   const { slug } = await props.params;
+
+  const { isAuthenticated, user } = await verifySession();
+
   const profileData = await UserAPI.getProfile({
     slug: slug,
   })
@@ -35,9 +39,7 @@ export default async function Page(props: { params: tParams }) {
       redirect("/404");
     });
 
-  const allowEdit = await getUserCookie().then((user) => {
-    return user.slug === slug;
-  });
+  const allowEdit = isAuthenticated && user.slug == slug && user.role == "user";
 
   return (
     <div className="container mx-auto px-4 py-8">

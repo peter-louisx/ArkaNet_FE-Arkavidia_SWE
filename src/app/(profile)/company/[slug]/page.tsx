@@ -53,7 +53,8 @@ export default async function CompanyProfilePage(props: { params: tParams }) {
       redirect("/404");
     });
 
-  const allowEdit = isAuthenticated;
+  const allowEdit =
+    isAuthenticated && user.slug == slug && user.role == "company";
 
   return (
     <>

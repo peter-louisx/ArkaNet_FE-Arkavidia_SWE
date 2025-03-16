@@ -32,8 +32,12 @@ export function JobCardCompany({
   return (
     <Card className="overflow-hidden hover:shadow-sm transition-shadow">
       <CardContent className="p-0">
-        <div className="p-6">
-          <div className="flex items-start justify-between max-md:flex-col max-md:gap-4">
+        <div className="p-6 py-3">
+          <div className="flex items-start gap-4 max-md:flex-col max-md:gap-4">
+            <div className="w-12 h-12 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
+              <Briefcase className="h-6 w-6 text-primary" />
+            </div>
+
             <div>
               <h2 className="text-lg font-semibold">{job.title}</h2>
 
@@ -68,8 +72,6 @@ export function JobCardCompany({
                 </div>
               </div>
 
-              <p className="mt-3 text-sm line-clamp-2">{job.description}</p>
-
               <div className="flex flex-wrap gap-2 mt-3">
                 {job.skills.map((skill: CompanySkill) => (
                   <Badge
@@ -100,13 +102,17 @@ export function JobCardCompany({
           </div>
         </div>
       </CardContent>
-      {allowEdit && (
-        <CardFooter className="flex justify-end p-4 bg-muted/10 border-t max-md:flex-col max-md:gap-4">
+      <CardFooter className="flex justify-end gap-2 p-4 bg-muted/10 border-t max-md:flex-col max-md:gap-4">
+        {allowEdit && (
           <Link href={`/company/${company_slug}/applicants/${job.id}`}>
             <Button size="sm">View Applications</Button>
           </Link>
-        </CardFooter>
-      )}
+        )}
+
+        <Link href={`/job/${job.id}`}>
+          <Button size="sm">View Details</Button>
+        </Link>
+      </CardFooter>
     </Card>
   );
 }
