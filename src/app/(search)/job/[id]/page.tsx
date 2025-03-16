@@ -19,6 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { ApplyCard } from "@/components/job/apply-card";
 import { formatNumberCommas } from "@/lib/utils";
 import { JobAPI } from "@/api/Job";
+import { redirect } from "next/navigation";
 
 const jobDetails = {
   id: "1",
@@ -83,10 +84,14 @@ type tParams = Promise<{ id: string }>;
 export default async function Page(props: { params: tParams }) {
   const { id } = await props.params;
 
-  const job = await JobAPI.getJob(id).then((res) => {
-    const { success, message, data } = res.data;
-    return data;
-  });
+  const job = await JobAPI.getJob(id)
+    .then((res) => {
+      const { success, message, data } = res.data;
+      return data;
+    })
+    .catch((err) => {
+      redirect("/404");
+    });
 
   return (
     <>
