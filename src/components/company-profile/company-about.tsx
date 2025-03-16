@@ -3,13 +3,7 @@
 import { useState } from "react";
 import { Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
@@ -21,26 +15,19 @@ import {
 } from "@/components/ui/dialog";
 import { CompanyAPI } from "@/api/Company";
 import { toast } from "sonner";
+import { CompanyHeader } from "@/types/company/types";
 
 export default function CompanyAbout({
   companyData,
   allowEdit = false,
 }: {
-  companyData: {
-    id: string;
-    name: string;
-    logo: string;
-    cover: string;
-    about: string;
-    industry: string;
-  };
+  companyData: CompanyHeader;
   allowEdit?: boolean;
 }) {
-  const [about, setAbout] = useState(companyData.about);
-  const [isEditingAbout, setIsEditingAbout] = useState(false);
-  const [editedAbout, setEditedAbout] = useState(about);
+  const [about, setAbout] = useState<string>(companyData.about);
+  const [isEditingAbout, setIsEditingAbout] = useState<boolean>(false);
+  const [editedAbout, setEditedAbout] = useState<string>(about);
 
-  // About Handlers
   const openEditAbout = () => {
     setEditedAbout(about);
     setIsEditingAbout(true);

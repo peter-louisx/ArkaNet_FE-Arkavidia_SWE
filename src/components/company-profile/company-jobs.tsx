@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Briefcase, Plus, Search, Users, X } from "lucide-react";
+import { Briefcase, Plus, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -33,6 +33,7 @@ import SkillInput from "../skills/skill-input";
 import { CompanyAPI } from "@/api/Company";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { CompanyJob } from "@/types/company/types";
 
 export default function CompanyJobs({
   jobsData,
@@ -41,34 +42,7 @@ export default function CompanyJobs({
   allowEdit = false,
 }: {
   companyID: string;
-  jobsData: {
-    id: number;
-    title: string;
-    location: string;
-    location_type: string;
-    job_type: string;
-    experience: string;
-    max_salary: number;
-    min_salary: number;
-    posted: string;
-    description: string;
-    skills: {
-      id: string | null;
-      skill_id: string;
-      name: string;
-    }[];
-    applications: {
-      id: number;
-      jobId: number;
-      applicant: {
-        name: string;
-        title: string;
-        photo: string;
-      };
-      date: string;
-      status: string;
-    }[];
-  }[];
+  jobsData: CompanyJob[];
   company_slug: string;
   allowEdit?: boolean;
 }) {
@@ -107,18 +81,15 @@ export default function CompanyJobs({
     },
   });
 
-  // Jobs state
   const [jobs, setJobs] = useState(jobsData);
   const [isEditingJob, setIsEditingJob] = useState(false);
-  const [currentJob, setCurrentJob] = useState<any>(0);
+  const [currentJob, setCurrentJob] = useState<string>("");
   const [jobSearch, setJobSearch] = useState("");
-  const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
 
   useEffect(() => {
     setJobs(jobsData);
   }, [jobsData]);
 
-  // Filter jobs based on search
   const filteredJobs = jobs.filter(
     (job) =>
       job.title.toLowerCase().includes(jobSearch.toLowerCase()) ||
@@ -130,7 +101,7 @@ export default function CompanyJobs({
     setIsEditingJob(true);
   };
 
-  const editJob = (job: any) => {
+  const editJob = (job: CompanyJob) => {
     setCurrentJob(job.id);
     form.setValue("job_title", job.title);
     form.setValue("job_location", job.location);
@@ -144,7 +115,7 @@ export default function CompanyJobs({
     setIsEditingJob(true);
   };
 
-  const deleteJob = (id: number) => {
+  const deleteJob = (id: string) => {
     setJobs(jobs.filter((job) => job.id !== id));
   };
 
@@ -206,7 +177,7 @@ export default function CompanyJobs({
         .catch((err) => {
           toast.error("Failed to update job");
         });
-      setCurrentJob(0);
+      setCurrentJob("");
     } else {
       await CompanyAPI.addJob({
         company_id: companyID,
@@ -301,14 +272,11 @@ export default function CompanyJobs({
 
       {allowEdit && (
         <>
-          {" "}
           {/* Job Edit Dialog */}
           <Dialog open={isEditingJob} onOpenChange={setIsEditingJob}>
             <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-y-scroll flex flex-col">
               <DialogHeader>
-                <DialogTitle>
-                  {currentJob?.id ? "Edit Job" : "Add Job"}
-                </DialogTitle>
+                <DialogTitle>{currentJob ? "Edit Job" : "Add Job"}</DialogTitle>
                 <DialogDescription>
                   Create or update job listing details
                 </DialogDescription>
@@ -522,7 +490,7 @@ export default function CompanyJobs({
                       onClick={() => {
                         form.reset();
                         setIsEditingJob(false);
-                        setCurrentJob(0);
+                        setCurrentJob("");
                       }}
                     >
                       Cancel

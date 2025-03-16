@@ -23,6 +23,7 @@ import { CompanyAPI } from "@/api/Company";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { CompanyHeader as CompanyHeaderType } from "@/types/company/types";
 
 type ImageUploadType = "logo" | "cover";
 
@@ -30,14 +31,7 @@ export default function CompanyHeader({
   companyData,
   allowEdit = false,
 }: {
-  companyData: {
-    id: string;
-    name: string;
-    logo: string;
-    cover: string;
-    about: string;
-    industry: string;
-  };
+  companyData: CompanyHeaderType;
   allowEdit?: boolean;
 }) {
   const router = useRouter();
@@ -55,30 +49,24 @@ export default function CompanyHeader({
     },
   });
 
-  // Company state
-  const [company, setCompany] = useState(companyData);
-  const [isEditingCompany, setIsEditingCompany] = useState(false);
+  const [company, setCompany] = useState<CompanyHeaderType>(companyData);
+  const [isEditingCompany, setIsEditingCompany] = useState<boolean>(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [uploadImageType, setUploadImageType] =
+    useState<ImageUploadType>("logo");
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setCompany(companyData);
   }, [companyData]);
 
-  // Image upload state
-  const [isUploadingImage, setIsUploadingImage] = useState(false);
-  const [uploadImageType, setUploadImageType] =
-    useState<ImageUploadType>("logo");
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<File | undefined>();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Company Info Handlers
   const openEditCompany = () => {
     form.setValue("name", company.name);
     form.setValue("industry", company.industry);
     setIsEditingCompany(true);
   };
 
-  // Image Upload Handlers
   const openImageUpload = (type: ImageUploadType) => {
     setUploadImageType(type);
     setImagePreview(null);
@@ -92,7 +80,6 @@ export default function CompanyHeader({
       reader.onload = (e) => {
         if (e.target?.result) {
           setImagePreview(e.target.result as string);
-          setImageFile(file);
         }
       };
       reader.readAsDataURL(file);
@@ -151,7 +138,6 @@ export default function CompanyHeader({
         toast.error("Failed to update company information");
       });
 
-    // setCompany({ ...company, name, industry });
     setIsEditingCompany(false);
   }
 
@@ -182,7 +168,6 @@ export default function CompanyHeader({
 
           {/* Company Info */}
           <div className="p-6 pt-0 relative">
-            {/* Centered Company Logo */}
             <div className="flex justify-center -mt-16 mb-6">
               <div className="relative">
                 <div className="w-32 h-32 rounded-full border-4 border-white bg-white overflow-hidden">
@@ -298,7 +283,7 @@ export default function CompanyHeader({
                     <p className="text-sm text-muted-foreground text-center">
                       Click to upload, or drag and drop
                       <br />
-                      PNG, JPG, GIF up to 5MB
+                      PNG, JPG, GIF
                     </p>
                   </div>
                 )}

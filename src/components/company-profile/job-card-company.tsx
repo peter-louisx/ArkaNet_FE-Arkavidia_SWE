@@ -9,12 +9,12 @@ import {
   Clock,
   SquareKanban,
   Locate,
-  Users,
   Edit,
   Trash2,
 } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
+import { CompanyJob, CompanySkill } from "@/types/company/types";
 
 export function JobCardCompany({
   job,
@@ -23,7 +23,7 @@ export function JobCardCompany({
   onDelete,
   allowEdit,
 }: {
-  job: any;
+  job: CompanyJob;
   onEdit: () => void;
   onDelete: () => void;
   allowEdit: boolean;
@@ -71,17 +71,15 @@ export function JobCardCompany({
               <p className="mt-3 text-sm line-clamp-2">{job.description}</p>
 
               <div className="flex flex-wrap gap-2 mt-3">
-                {job.skills.map(
-                  (skill: { id: string; skill_id: string; name: string }) => (
-                    <Badge
-                      key={skill.skill_id}
-                      variant="secondary"
-                      className="text-xs"
-                    >
-                      {skill.name}
-                    </Badge>
-                  )
-                )}
+                {job.skills.map((skill: CompanySkill) => (
+                  <Badge
+                    key={skill.skill_id}
+                    variant="secondary"
+                    className="text-xs"
+                  >
+                    {skill.name}
+                  </Badge>
+                ))}
               </div>
             </div>
             {allowEdit && (
@@ -102,14 +100,7 @@ export function JobCardCompany({
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between p-4 bg-muted/10 border-t max-md:flex-col max-md:gap-4">
-        <div className="flex items-center text-sm">
-          <Users className="h-4 w-4 mr-1 text-muted-foreground" />
-          <span>
-            {job.applications.length} application
-            {job.applications.length !== 1 ? "s" : ""}
-          </span>
-        </div>
+      <CardFooter className="flex justify-end p-4 bg-muted/10 border-t max-md:flex-col max-md:gap-4">
         {allowEdit && (
           <Link href={`/company/${company_slug}/applicants/${job.id}`}>
             <Button size="sm">View Applications</Button>
