@@ -18,18 +18,12 @@ import {
 export function JobFilters({
   filters,
   setFilters,
-  setJobType,
-  setExperienceLevel,
   resetFilters,
-  setLocationType,
   isMobile = false,
   fetchJobs,
 }: {
   filters: any;
   setFilters: any;
-  setJobType: (type: string) => void;
-  setLocationType: (type: string) => void;
-  setExperienceLevel: (level: string) => void;
   resetFilters: () => void;
   isMobile?: boolean;
   fetchJobs?: () => void;
@@ -48,7 +42,12 @@ export function JobFilters({
                   <Checkbox
                     id={`${idPrefix}job-type-${type}`}
                     checked={filters.jobType === type}
-                    onCheckedChange={() => setJobType(type)}
+                    onCheckedChange={() => {
+                      setFilters({
+                        ...filters,
+                        jobType: filters.jobType === type ? "" : type,
+                      });
+                    }}
                   />
                   <Label htmlFor={`${idPrefix}job-type-${type}`}>{type}</Label>
                 </div>
@@ -66,7 +65,12 @@ export function JobFilters({
                   <Checkbox
                     id={`${idPrefix}location-type-${type}`}
                     checked={filters.locationType === type}
-                    onCheckedChange={() => setLocationType(type)}
+                    onCheckedChange={() => {
+                      setFilters({
+                        ...filters,
+                        locationType: filters.locationType === type ? "" : type,
+                      });
+                    }}
                   />
                   <Label htmlFor={`${idPrefix}location-type-${type}`}>
                     {type}
@@ -86,7 +90,13 @@ export function JobFilters({
                   <Checkbox
                     id={`${idPrefix}exp-level-${level}`}
                     checked={filters.experienceLevel === level}
-                    onCheckedChange={() => setExperienceLevel(level)}
+                    onCheckedChange={() => {
+                      setFilters({
+                        ...filters,
+                        experienceLevel:
+                          filters.experienceLevel === level ? "" : level,
+                      });
+                    }}
                   />
                   <Label htmlFor={`${idPrefix}exp-level-${level}`}>
                     {level}

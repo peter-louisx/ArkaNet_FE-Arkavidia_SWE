@@ -79,27 +79,6 @@ export default function JobsPage() {
     fetchJobs();
   };
 
-  const setJobType = (type: string) => {
-    setFilters({
-      ...filters,
-      jobType: filters.jobType === type ? "" : type,
-    });
-  };
-
-  const setLocationType = (type: string) => {
-    setFilters({
-      ...filters,
-      locationType: filters.locationType === type ? "" : type,
-    });
-  };
-
-  const setExperienceLevel = (level: string) => {
-    setFilters({
-      ...filters,
-      experienceLevel: filters.experienceLevel === level ? "" : level,
-    });
-  };
-
   return (
     <div className="p-10 max-md:px-2">
       {/* Search and Filter Bar */}
@@ -135,9 +114,6 @@ export default function JobsPage() {
                   <JobFilters
                     filters={filters}
                     setFilters={setFilters}
-                    setJobType={setJobType}
-                    setExperienceLevel={setExperienceLevel}
-                    setLocationType={setLocationType}
                     resetFilters={resetFilters}
                     isMobile={true}
                   />
@@ -156,10 +132,7 @@ export default function JobsPage() {
             <JobFilters
               filters={filters}
               setFilters={setFilters}
-              setJobType={setJobType}
-              setExperienceLevel={setExperienceLevel}
               resetFilters={resetFilters}
-              setLocationType={setLocationType}
               fetchJobs={fetchJobs}
             />
           </div>
