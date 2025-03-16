@@ -24,6 +24,7 @@ import { JobFilters } from "@/components/search/job-filters";
 import { JobAPI } from "@/api/Job";
 import { toast } from "sonner";
 import { Job, JobFilters as JobFiltersType } from "@/types/job/types";
+import { showErrorToast } from "@/lib/show-toast";
 
 export default function JobsPage() {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -58,7 +59,7 @@ export default function JobsPage() {
       })
       .catch((err) => {
         setLoading(false);
-        toast.error("Failed to fetch jobs");
+        showErrorToast("Failed to fetch jobs. Please try again later.");
       });
   };
 
