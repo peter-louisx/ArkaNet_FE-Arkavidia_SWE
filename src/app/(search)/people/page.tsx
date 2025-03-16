@@ -28,6 +28,7 @@ import {
   datePosted,
   locationTypes,
 } from "@/lib/jobs-filters";
+import { Job } from "@/types/job/types";
 
 // Mock job data
 const jobListings = [
@@ -274,7 +275,7 @@ export default function JobsPage() {
 
         {/* Job Listings */}
         <div className="lg:col-span-3 space-y-4">
-          {filteredJobs.length === 0 ? (
+          {/* {filteredJobs.length === 0 ? (
             <div className="bg-white rounded-lg shadow-sm p-8 text-center">
               <Briefcase className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
               <h2 className="text-xl font-semibold mb-2">No jobs found</h2>
@@ -284,8 +285,8 @@ export default function JobsPage() {
               <Button onClick={resetFilters}>Reset Filters</Button>
             </div>
           ) : (
-            filteredJobs.map((job) => <JobCard key={job.id} job={job} />)
-          )}
+            filteredJobs.map((job: Job) => <JobCard key={job.id} job={job} />)
+          )} */}
 
           {/* Pagination */}
           {filteredJobs.length > 0 && (

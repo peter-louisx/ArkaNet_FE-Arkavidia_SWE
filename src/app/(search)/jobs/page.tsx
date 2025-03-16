@@ -23,93 +23,21 @@ import JobCard from "@/components/jobs/job-card";
 import { JobFilters } from "@/components/search/job-filters";
 import { JobAPI } from "@/api/Job";
 import { toast } from "sonner";
-
-// // Mock job data
-// const jobListings = [
-//   {
-//     id: 1,
-//     title: "Senior Frontend Developer",
-//     experience: "Senior Level",
-//     company: "TechCorp Inc.",
-//     logo: "https://karirlab-prod-bucket.s3.ap-southeast-1.amazonaws.com/files/privates/aHR0cHM6Ly9jZG4uc2VqdXRhY2l0YS5pZC82Mjk5ODAyNmI5ZGRjNTAwMTM4NDBiMTAvT3RoZXJzLzFhOTM0MTYwLWI3YmYtNDMyYi1iNzk3LWVmMTc0NmMwMjU4NC5wbmc%3D.png",
-//     location: "San Francisco, CA",
-//     location_type: "Remote",
-//     type: "Full-time",
-//     min_salary: 120000,
-//     max_salary: 150000,
-//     posted: "03-10-2025",
-//     description:
-//       "We're looking for a Senior Frontend Developer with 5+ years of experience in React, TypeScript, and modern frontend frameworks.",
-//     skills: ["React", "TypeScript", "Next.js", "CSS"],
-//   },
-//   {
-//     id: 2,
-//     title: "Backend Engineer",
-//     experience: "Mid Level",
-//     location_type: "Remote",
-//     company: "InnovateTech",
-//     logo: "/placeholder.svg?height=40&width=40",
-//     location: "Austin, TX",
-//     type: "Full-time",
-//     min_salary: 110000,
-//     max_salary: 140000,
-//     posted: "03-10-2025",
-//     description:
-//       "Join our backend team to build scalable APIs and microservices using Node.js and Python.",
-//     skills: ["Node.js", "Python", "AWS", "MongoDB"],
-//   },
-//   {
-//     id: 3,
-//     title: "UX/UI Designer",
-//     location_type: "Remote",
-//     experience: "Entry Level",
-//     company: "DesignHub",
-//     logo: "/placeholder.svg?height=40&width=40",
-//     location: "New York, NY",
-//     type: "Contract",
-//     min_salary: 90000,
-//     max_salary: 120000,
-//     posted: "02-10-2025",
-
-//     description:
-//       "Create beautiful and intuitive user interfaces for web and mobile applications.",
-//     skills: ["Figma", "Adobe XD", "UI Design", "Prototyping"],
-//   },
-//   {
-//     id: 4,
-//     title: "DevOps Engineer",
-//     location_type: "Remote",
-//     min_salary: 90000,
-//     max_salary: 120000,
-//     experience: "Mid Level",
-//     company: "CloudSystems",
-//     logo: "/placeholder.svg?height=40&width=40",
-//     location: "Seattle, WA",
-//     type: "Full-time",
-//     posted: "01-10-2025",
-
-//     description:
-//       "Manage our cloud infrastructure and CI/CD pipelines to ensure smooth deployments.",
-//     skills: ["AWS", "Docker", "Kubernetes", "CI/CD"],
-//   },
-// ];
+import { Job, JobFilters as JobFiltersType } from "@/types/job/types";
 
 export default function JobsPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filters, setFilters] = useState({
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [filters, setFilters] = useState<JobFiltersType>({
     jobType: "",
     experienceLevel: "",
     locationType: "",
     datePosted: "",
     salaryRange: [0, 200000],
-    remoteOnly: false,
-    easyApplyOnly: false,
-    featuredOnly: false,
     sortBy: "",
   });
-  const [filteredJobs, setFilteredJobs] = useState([]);
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
+  const [showMobileFilters, setShowMobileFilters] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchJobs = async () => {
     setLoading(true);
@@ -138,7 +66,6 @@ export default function JobsPage() {
     fetchJobs();
   }, [filters.sortBy]);
 
-  // Reset filters
   const resetFilters = () => {
     setSearchTerm("");
     setFilters({
@@ -147,15 +74,11 @@ export default function JobsPage() {
       locationType: "",
       datePosted: "",
       salaryRange: [0, 200000],
-      remoteOnly: false,
-      easyApplyOnly: false,
-      featuredOnly: false,
       sortBy: "",
     });
     fetchJobs();
   };
 
-  // Set job type filter
   const setJobType = (type: string) => {
     setFilters({
       ...filters,
@@ -170,7 +93,6 @@ export default function JobsPage() {
     });
   };
 
-  // Set experience level filter
   const setExperienceLevel = (level: string) => {
     setFilters({
       ...filters,
