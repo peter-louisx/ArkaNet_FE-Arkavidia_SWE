@@ -22,9 +22,11 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
   const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
+  const router = useRouter();
 
   const formSchema: z.ZodSchema = z.object({
     name: z.string().min(3),
@@ -69,6 +71,7 @@ export default function Register() {
       .then((res) => {
         const { success, message, data } = res.data;
         showSuccessToast("Registration successful");
+        router.push("/seeker/login");
       })
       .catch((err) => {
         showErrorToast("Registration failed. Please check your credentials");

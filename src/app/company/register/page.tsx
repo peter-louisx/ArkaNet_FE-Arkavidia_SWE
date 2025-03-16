@@ -21,9 +21,11 @@ import { CompanyAPI } from "@/api/Company";
 import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 import { useState } from "react";
 import { Loader2Icon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
   const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
+  const router = useRouter();
 
   const formSchema: z.ZodSchema = z.object({
     name: z.string().min(3),
@@ -64,6 +66,7 @@ export default function Register() {
     })
       .then((res) => {
         showSuccessToast("Company registered successfully");
+        router.push("/company/login");
       })
       .catch((err) => {
         showErrorToast("Company registration failed");
