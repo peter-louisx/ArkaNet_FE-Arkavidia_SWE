@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { JobAPI } from "@/api/Job";
 import { toast } from "sonner";
+import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 
 export function ApplyCard({ job }: { job: any }) {
   const [applied, setApplied] = useState(false);
@@ -28,12 +29,12 @@ export function ApplyCard({ job }: { job: any }) {
       resume: applicationData.resume!,
     })
       .then(() => {
-        toast.success("Application submitted successfully");
+        showSuccessToast("Application submitted successfully");
         setIsApplying(false);
         setApplied(true);
       })
       .catch(() => {
-        toast.error("Failed to submit application");
+        showErrorToast("Failed to submit application");
       });
   };
 

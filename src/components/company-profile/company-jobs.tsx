@@ -31,9 +31,9 @@ import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { JobCardCompany as JobCard } from "./job-card-company";
 import SkillInput from "../skills/skill-input";
 import { CompanyAPI } from "@/api/Company";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { CompanyJob } from "@/types/company/types";
+import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 
 export default function CompanyJobs({
   jobsData,
@@ -171,11 +171,11 @@ export default function CompanyJobs({
         ),
       })
         .then((res) => {
-          toast.success("Job updated successfully");
+          showSuccessToast("Job updated successfully");
           router.refresh();
         })
         .catch((err) => {
-          toast.error("Failed to update job");
+          showErrorToast("Failed to update job");
         });
       setCurrentJob("");
     } else {
@@ -195,11 +195,11 @@ export default function CompanyJobs({
         ),
       })
         .then((res) => {
-          toast.success("Job added successfully");
+          showSuccessToast("Job added successfully");
           router.refresh();
         })
         .catch((err) => {
-          toast.error("Failed to add job");
+          showErrorToast("Failed to add job");
         });
     }
 

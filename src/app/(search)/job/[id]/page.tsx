@@ -22,64 +22,6 @@ import { JobAPI } from "@/api/Job";
 import { redirect } from "next/navigation";
 import { verifySession } from "@/lib/session";
 
-const jobDetails = {
-  id: "1",
-  title: "Senior Frontend Developer",
-  company: "TechCorp Inc.",
-  company_slug: "techcorp",
-  logo: "/placeholder.svg?height=80&width=80",
-  location: "San Francisco, CA",
-  location_type: "onsite",
-  type: "Full-time",
-  min_salary: 120000,
-  max_salary: 140000,
-  posted: "2 days ago",
-  description: `
-      <p>TechCorp Inc. is looking for a Senior Frontend Developer to join our growing team. You will be responsible for building and maintaining user interfaces for our web applications.</p>
-      
-      <h3>Responsibilities:</h3>
-      <ul>
-        <li>Develop and implement user interface components using React.js and related technologies</li>
-        <li>Optimize applications for maximum speed and scalability</li>
-        <li>Collaborate with back-end developers and designers to improve usability</li>
-        <li>Help maintain code quality, organization, and automatization</li>
-        <li>Mentor junior developers and review code</li>
-      </ul>
-      
-      <h3>Requirements:</h3>
-      <ul>
-        <li>5+ years of experience in frontend development</li>
-        <li>Strong proficiency in JavaScript, including DOM manipulation and the JavaScript object model</li>
-        <li>Thorough understanding of React.js and its core principles</li>
-        <li>Experience with popular React.js workflows (such as Redux)</li>
-        <li>Familiarity with newer specifications of ECMAScript</li>
-        <li>Experience with data structure libraries (e.g., Immutable.js)</li>
-        <li>Knowledge of isomorphic React is a plus</li>
-        <li>Understanding of server-side rendering</li>
-      </ul>
-      
-      <h3>Benefits:</h3>
-      <ul>
-        <li>Competitive salary and equity options</li>
-        <li>Health, dental, and vision insurance</li>
-        <li>401(k) with company match</li>
-        <li>Flexible work hours and remote work options</li>
-        <li>Professional development budget</li>
-        <li>Paid time off and parental leave</li>
-      </ul>
-    `,
-  skills: [
-    "React",
-    "TypeScript",
-    "Next.js",
-    "CSS",
-    "Redux",
-    "JavaScript",
-    "HTML",
-    "Git",
-  ],
-};
-
 type tParams = Promise<{ id: string }>;
 
 export default async function Page(props: { params: tParams }) {

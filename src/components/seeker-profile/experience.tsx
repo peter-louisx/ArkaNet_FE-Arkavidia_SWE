@@ -41,6 +41,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { convertDateFormat } from "@/lib/utils";
 import { SeekerExperience } from "@/types/seeker/types";
+import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 
 export default function Experience({
   experienceData,
@@ -112,11 +113,11 @@ export default function Experience({
       id,
     })
       .then(() => {
-        toast.success("Experience deleted successfully");
+        showSuccessToast("Experience deleted successfully");
         router.refresh();
       })
       .catch((err) => {
-        toast.error("Failed to delete experience");
+        showErrorToast("Failed to delete experience");
       });
   };
 
@@ -134,11 +135,11 @@ export default function Experience({
         description,
       })
         .then(() => {
-          toast.success("Experience updated successfully");
+          showSuccessToast("Experience updated successfully");
           router.refresh();
         })
         .catch((err) => {
-          toast.error("Failed to update experience");
+          showErrorToast("Failed to update experience");
         });
       setCurrentExperience("");
     } else {
@@ -151,11 +152,11 @@ export default function Experience({
         description,
       })
         .then(() => {
-          toast.success("Experience added successfully");
+          showSuccessToast("Experience added successfully");
           router.refresh();
         })
         .catch((err) => {
-          toast.error("Failed to add experience");
+          showErrorToast("Failed to add experience");
         });
     }
 

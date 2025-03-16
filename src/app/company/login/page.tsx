@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
+import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 
 export default function Page() {
   const router = useRouter();
@@ -57,13 +58,13 @@ export default function Page() {
             })
           ),
         ]).then(() => {
-          toast("Login successful");
+          showSuccessToast("Login successful");
           router.push("/company/" + data.slug);
           router.refresh();
         });
       })
       .catch((err) => {
-        toast("Login failed. Please check your credentials");
+        showErrorToast("Login failed. Please check your credentials");
       });
   }
 
@@ -118,7 +119,10 @@ export default function Page() {
                   )}
                 />
               </div>
-              <Button className="w-full h-12 text-base" type="submit">
+              <Button
+                className="w-full h-12 text-base cursor-pointer"
+                type="submit"
+              >
                 Sign in
               </Button>
               <div className="relative flex items-center gap-4 py-2">
@@ -129,14 +133,14 @@ export default function Page() {
               <Link
                 href="/company/register"
                 type="button"
-                className="w-full h-12 text-base bg-white flex items-center justify-center rounded-lg shadow-sm"
+                className="w-full h-12 text-base bg-white flex items-center justify-center rounded-lg shadow-sm hover:bg-gray-100 transition-colors"
               >
                 Join now
               </Link>
               <Link
                 href="/seeker/login"
                 type="button"
-                className="w-full h-12 text-base bg-white flex items-center justify-center rounded-lg shadow-sm"
+                className="w-full h-12 text-base bg-white flex items-center justify-center rounded-lg shadow-sm hover:bg-gray-100 transition-colors"
               >
                 Seeker Login
               </Link>

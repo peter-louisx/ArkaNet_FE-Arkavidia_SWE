@@ -12,7 +12,6 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,6 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { CompanyAPI } from "@/api/Company";
+import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 
 export default function Register() {
   const formSchema = z.object({
@@ -52,10 +52,10 @@ export default function Register() {
       industry,
     })
       .then((res) => {
-        toast.success("Company registered successfully");
+        showSuccessToast("Company registered successfully");
       })
       .catch((err) => {
-        toast.error("Company registration failed");
+        showErrorToast("Company registration failed");
       });
   }
 
@@ -172,7 +172,10 @@ export default function Register() {
                 />
               </div>
 
-              <Button className="w-full h-12 text-base" type="submit">
+              <Button
+                className="w-full h-12 text-base cursor-pointer"
+                type="submit"
+              >
                 Sign Up
               </Button>
               <div className="relative flex items-center gap-4 py-2">
@@ -182,13 +185,13 @@ export default function Register() {
               </div>
               <Link
                 href="/company/login"
-                className="text-base flex items-center justify-center  "
+                className="w-full h-12 text-base bg-white flex items-center justify-center rounded-lg shadow-sm hover:bg-gray-100 transition-colors"
               >
                 Already have an account? Sign in
               </Link>
               <Link
                 href="/seeker/register"
-                className="text-base flex items-center justify-center  "
+                className="w-full h-12 text-base bg-white flex items-center justify-center rounded-lg shadow-sm hover:bg-gray-100 transition-colors"
               >
                 Register as a job seeker
               </Link>

@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CompanyHeader as CompanyHeaderType } from "@/types/company/types";
+import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 
 type ImageUploadType = "logo" | "cover";
 
@@ -101,9 +102,13 @@ export default function CompanyHeader({
           logo: uploadImageType === "logo" ? imageBlob : null,
           cover: null,
           about: company.about,
-        });
-
-        setCompany({ ...company, logo: imagePreview });
+        })
+          .then(() => {
+            showSuccessToast("Company logo updated successfully");
+          })
+          .catch(() => {
+            showErrorToast("Failed to update company logo");
+          });
       } else {
         await CompanyAPI.updateProfile({
           company_id: company.id,
@@ -112,8 +117,13 @@ export default function CompanyHeader({
           logo: null,
           cover: uploadImageType === "cover" ? imageBlob : null,
           about: company.about,
-        });
-        setCompany({ ...company, cover: imagePreview });
+        })
+          .then(() => {
+            showSuccessToast("Cover image updated successfully");
+          })
+          .catch(() => {
+            showErrorToast("Failed to update cover image");
+          });
       }
     }
     setIsUploadingImage(false);
@@ -131,11 +141,11 @@ export default function CompanyHeader({
       about: company.about,
     })
       .then(() => {
-        toast.success("Company information updated successfully");
+        showSuccessToast("Company information updated successfully");
         router.refresh();
       })
       .catch((error) => {
-        toast.error("Failed to update company information");
+        showErrorToast("Failed to update company information");
       });
 
     setIsEditingCompany(false);

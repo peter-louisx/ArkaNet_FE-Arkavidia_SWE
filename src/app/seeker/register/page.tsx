@@ -21,6 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 
 export default function Register() {
   const formSchema = z.object({
@@ -57,10 +58,10 @@ export default function Register() {
     })
       .then((res) => {
         const { success, message, data } = res.data;
-        toast("Registration successful");
+        showSuccessToast("Registration successful");
       })
       .catch((err) => {
-        toast("Registration failed. Please check your credentials");
+        showErrorToast("Registration failed. Please check your credentials");
       });
   }
 
@@ -196,7 +197,10 @@ export default function Register() {
                   )}
                 />
               </div>
-              <Button className="w-full h-12 text-base" type="submit">
+              <Button
+                className="w-full h-12 text-base cursor-pointer"
+                type="submit"
+              >
                 Sign Up
               </Button>
               <div className="relative flex items-center gap-4 py-2">
@@ -206,13 +210,13 @@ export default function Register() {
               </div>
               <Link
                 href="/seeker/login"
-                className="text-base flex items-center justify-center  "
+                className="w-full h-12 text-base bg-white flex items-center justify-center rounded-lg shadow-sm hover:bg-gray-100 transition-colors"
               >
                 Already have an account? Sign in
               </Link>
               <Link
                 href="/company/register"
-                className="text-base flex items-center justify-center  "
+                className="w-full h-12 text-base bg-white flex items-center justify-center rounded-lg shadow-sm hover:bg-gray-100 transition-colors"
               >
                 Register as a company
               </Link>

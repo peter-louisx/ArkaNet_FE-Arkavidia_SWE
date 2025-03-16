@@ -16,6 +16,7 @@ import {
 import { CompanyAPI } from "@/api/Company";
 import { toast } from "sonner";
 import { CompanyHeader } from "@/types/company/types";
+import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 
 export default function CompanyAbout({
   companyData,
@@ -43,10 +44,10 @@ export default function CompanyAbout({
       industry: companyData.industry,
     })
       .then(() => {
-        toast.success("About updated successfully");
+        showSuccessToast("About updated successfully");
       })
       .catch((err) => {
-        toast.error("Failed to update about");
+        showErrorToast("Failed to update about");
       });
 
     setAbout(editedAbout);

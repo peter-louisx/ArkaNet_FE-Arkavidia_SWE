@@ -17,6 +17,7 @@ import { UserAPI } from "@/api/User";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { SeekerSkill } from "@/types/seeker/types";
+import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 
 export default function Skills({
   skillsData,
@@ -34,23 +35,15 @@ export default function Skills({
 
   const addSkill = async (skillID: string, skillName: string) => {
     if (skillID && !skills.some((skill) => skill.skill_id === skillID)) {
-      const newSkillObject: {
-        skill_id: string;
-        name: string;
-      } = {
-        skill_id: skillID,
-        name: skillName,
-      };
-
       await UserAPI.addSkill({
         skill_id: skillID,
       })
         .then((res) => {
-          toast.success("Skill added successfully");
+          showSuccessToast("Skill added successfully");
           router.refresh();
         })
         .catch((err) => {
-          toast.error("Failed to add skill");
+          showErrorToast("Failed to add skill");
         });
     }
   };
@@ -60,11 +53,11 @@ export default function Skills({
       id,
     })
       .then((res) => {
-        toast.success("Skill deleted successfully");
+        showSuccessToast("Skill deleted successfully");
         router.refresh();
       })
       .catch((err) => {
-        toast.error("Failed to delete skill");
+        showErrorToast("Failed to delete skill");
       });
   };
 

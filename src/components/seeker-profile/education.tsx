@@ -25,6 +25,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { convertDateFormat } from "@/lib/utils";
 import { SeekerEducation } from "@/types/seeker/types";
+import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 
 export default function Education({
   educationData,
@@ -83,11 +84,11 @@ export default function Education({
   const deleteEducation = (id: string) => {
     UserAPI.deleteEducation({ id })
       .then(() => {
-        toast.success("Education deleted successfully");
+        showSuccessToast("Education deleted successfully");
         router.refresh();
       })
       .catch(() => {
-        toast.error("Failed to delete education");
+        showErrorToast("Failed to delete education");
       });
   };
 
@@ -104,11 +105,11 @@ export default function Education({
         end_date: convertDateFormat(endDate),
       })
         .then((res) => {
-          toast.success("Education updated successfully");
+          showSuccessToast("Education updated successfully");
           router.refresh();
         })
         .catch((err) => {
-          toast.error("Failed to update education");
+          showErrorToast("Failed to update education");
         });
     } else {
       await UserAPI.addEducation({
@@ -119,11 +120,11 @@ export default function Education({
         end_date: convertDateFormat(endDate),
       })
         .then((res) => {
-          toast.success("Education added successfully");
+          showSuccessToast("Education added successfully");
           router.refresh();
         })
         .catch((err) => {
-          toast.error("Failed to add education");
+          showErrorToast("Failed to add education");
         });
     }
 

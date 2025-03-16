@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { Briefcase, Edit, Loader2Icon, MapPin, Upload } from "lucide-react";
+import { Edit, Loader2Icon, MapPin, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,10 +20,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormField } from "@/components/ui/form";
 import { UserAPI } from "@/api/User";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SeekerPersonalInfo } from "@/types/seeker/types";
+import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 
 type ImageUploadType = "logo" | "cover";
 
@@ -55,27 +55,6 @@ export default function PersonalInfo({
       location: personalInfoData.location,
     },
   });
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    const { name, headline, location } = values;
-    await UserAPI.updateProfile({
-      name,
-      current_title: headline,
-      profile_picture: null,
-      headline: null,
-      about: personalInfoData.about,
-      address: location,
-    })
-      .then(() => {
-        toast.success("Personal information updated successfully");
-        router.refresh();
-      })
-      .catch((err) => {
-        toast.error("Failed to update personal information");
-      });
-
-    setIsEditingPersonalInfo(false);
-  }
 
   const [isEditingPersonalInfo, setIsEditingPersonalInfo] = useState(false);
 
@@ -128,11 +107,11 @@ export default function PersonalInfo({
           address: personalInfo.location,
         })
           .then(() => {
-            toast.success("Profile picture updated successfully");
+            showSuccessToast("Profile picture updated successfully");
             router.refresh();
           })
           .catch((err) => {
-            toast.error("Failed to update profile picture");
+            showErrorToast("Failed to update profile picture");
           });
       } else {
         await UserAPI.updateProfile({
@@ -144,16 +123,37 @@ export default function PersonalInfo({
           address: personalInfo.location,
         })
           .then(() => {
-            toast.success("Cover image updated successfully");
+            showSuccessToast("Cover image updated successfully");
             router.refresh();
           })
           .catch((err) => {
-            toast.error("Failed to update cover image");
+            showErrorToast("Failed to update cover image");
           });
       }
     }
     setIsUploadingImage(false);
   };
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { name, headline, location } = values;
+    await UserAPI.updateProfile({
+      name,
+      current_title: headline,
+      profile_picture: null,
+      headline: null,
+      about: personalInfoData.about,
+      address: location,
+    })
+      .then(() => {
+        showSuccessToast("Personal information updated successfully");
+        router.refresh();
+      })
+      .catch((err) => {
+        showErrorToast("Failed to update personal information");
+      });
+
+    setIsEditingPersonalInfo(false);
+  }
 
   return (
     <>
@@ -162,7 +162,7 @@ export default function PersonalInfo({
           <div className="relative bg-primary/10 rounded-t-lg ">
             <div className="h-56">
               <Image
-                src={personalInfo.cover || "./avatar.png"}
+                src={personalInfo.cover}
                 layout="fill"
                 objectFit="cover"
                 alt="Cover"

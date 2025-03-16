@@ -16,6 +16,7 @@ import {
 import { UserAPI } from "@/api/User";
 import { toast } from "sonner";
 import { SeekerPersonalInfo } from "@/types/seeker/types";
+import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 
 export default function About({
   personalInfoData,
@@ -44,10 +45,10 @@ export default function About({
       profile_picture: null,
     })
       .then((res) => {
-        toast.success("About updated successfully");
+        showSuccessToast("About updated successfully");
       })
       .catch((err) => {
-        toast.error("Failed to update about");
+        showErrorToast("Failed to update about");
       });
 
     setEditedAbout("");
