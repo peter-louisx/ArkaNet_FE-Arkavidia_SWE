@@ -39,7 +39,7 @@ import { DatePicker } from "../ui/date-picker";
 import { UserAPI } from "@/api/User";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { convertDateFormat } from "@/lib/utils";
+import { convertDateFormat, convertDateFormatToMonthYear } from "@/lib/utils";
 import { SeekerExperience } from "@/types/seeker/types";
 import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 
@@ -219,8 +219,10 @@ export default function Experience({
                   <div className="flex items-center text-muted-foreground">
                     <CalendarIcon className="h-4 w-4 mr-1" />
                     <span>
-                      {experience.startDate?.toLocaleDateString() || "Present"}{" "}
-                      - {experience.endDate?.toLocaleDateString() || "Present"}
+                      {convertDateFormatToMonthYear(experience.startDate)} -{" "}
+                      {experience.endDate
+                        ? convertDateFormatToMonthYear(experience.endDate)
+                        : "Present"}
                     </span>
                   </div>
                   <div className="flex items-center text-muted-foreground">
@@ -303,7 +305,7 @@ export default function Experience({
                     )}
                   />
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
                     <div className="grid gap-2">
                       <DatePicker
                         form={form}

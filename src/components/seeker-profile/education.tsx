@@ -23,7 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserAPI } from "@/api/User";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { convertDateFormat } from "@/lib/utils";
+import { convertDateFormat, convertDateFormatToMonthYear } from "@/lib/utils";
 import { SeekerEducation } from "@/types/seeker/types";
 import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 
@@ -183,8 +183,8 @@ export default function Education({
                   <div className="flex items-center text-muted-foreground">
                     <Calendar className="h-4 w-4 mr-1" />
                     <span>
-                      {edu.startDate.toLocaleDateString()} -{" "}
-                      {edu.endDate.toLocaleDateString()}
+                      {convertDateFormatToMonthYear(edu.startDate)} -{" "}
+                      {convertDateFormatToMonthYear(edu.endDate)}
                     </span>
                   </div>
                   <p className="mt-2 text-muted-foreground">
@@ -252,10 +252,16 @@ export default function Education({
                         form={form}
                         name="startDate"
                         label="Start Date"
+                        allowOverToday={true}
                       />
                     </div>
                     <div className="grid gap-2">
-                      <DatePicker form={form} name="endDate" label="End Date" />
+                      <DatePicker
+                        form={form}
+                        name="endDate"
+                        label="End Date"
+                        allowOverToday={true}
+                      />
                     </div>
                   </div>
 

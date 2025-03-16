@@ -17,8 +17,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { get } from "http";
 import { useEffect, useState } from "react";
+
+export const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 export function DatePicker({
   form,
@@ -26,18 +40,24 @@ export function DatePicker({
   label,
   description = "",
   disabled = false,
+  allowOverToday = false,
 }: {
   form: any;
   name: string;
   label: string;
   description?: string;
   disabled?: boolean;
+  allowOverToday?: boolean;
 }) {
   const convertedDate = new Date(form.getValues(name));
+  const currentDate = new Date();
 
   let getDay = "";
   let getMonth = "";
   let getYear = "";
+  let currentDay = currentDate.getDate().toString();
+  let currentMonth = (currentDate.getMonth() + 1).toString();
+  let currentYear = currentDate.getFullYear().toString();
 
   if (convertedDate.getFullYear() == 1970) {
     getDay = "";
@@ -49,34 +69,32 @@ export function DatePicker({
     getYear = convertedDate.getFullYear().toString();
   }
 
-  const [day, setDay] = useState(getDay);
+  const [day, setDay] = useState("1");
   const [month, setMonth] = useState(getMonth);
   const [year, setYear] = useState(getYear);
 
+  console.log(getYear, currentYear);
+
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
-  const months = Array.from({ length: 12 }, (_, i) => i + 1);
+  const months = Array.from(
+    {
+      length:
+        allowOverToday || getYear != currentYear
+          ? 12
+          : new Date().getMonth() + 1,
+    },
+    (_, i) => i + 1
+  );
   const years = Array.from(
-    { length: new Date().getFullYear() - 1970 + 1 },
-    (_, i) => 1970 + i
+    {
+      length: allowOverToday
+        ? new Date().getFullYear() - 1980 + 1 + 10
+        : new Date().getFullYear() - 1980 + 1,
+    },
+    (_, i) => 1980 + i
   );
 
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
   useEffect(() => {
-    console.log(day, month, year);
     if (day != "" && month != "" && year != "") {
       const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
       form.setValue(name, date);
@@ -92,7 +110,7 @@ export function DatePicker({
           <FormLabel>{label}</FormLabel>
           <FormControl>
             <div className="flex space-x-2">
-              <Select
+              {/* <Select
                 onValueChange={(value) => setDay(value)}
                 disabled={disabled}
                 value={day}
@@ -110,14 +128,14 @@ export function DatePicker({
                     ))}
                   </SelectGroup>
                 </SelectContent>
-              </Select>
+              </Select> */}
 
               <Select
                 onValueChange={(value) => setMonth(value)}
                 disabled={disabled}
                 value={month}
               >
-                <SelectTrigger>
+                <SelectTrigger className="w-1/2">
                   <SelectValue placeholder="Month" />
                 </SelectTrigger>
                 <SelectContent>
@@ -132,11 +150,17 @@ export function DatePicker({
               </Select>
 
               <Select
-                onValueChange={(value) => setYear(value)}
+                onValueChange={(value) => {
+                  setYear(value);
+
+                  if (!allowOverToday && value == currentYear) {
+                    setMonth(currentMonth);
+                  }
+                }}
                 disabled={disabled}
                 value={year}
               >
-                <SelectTrigger>
+                <SelectTrigger className="w-1/2">
                   <SelectValue placeholder="Year" />
                 </SelectTrigger>
                 <SelectContent>

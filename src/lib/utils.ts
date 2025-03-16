@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { monthNames } from "@/components/ui/date-picker";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -39,5 +40,10 @@ export function countTimeAfterDate(date: string){
 
 export function convertDateFormat(date: Date){
   const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  return formattedDate;
+}
+
+export function convertDateFormatToMonthYear(date: Date){
+  const formattedDate = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
   return formattedDate;
 }
