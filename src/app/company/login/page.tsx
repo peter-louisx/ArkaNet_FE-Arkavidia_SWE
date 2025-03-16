@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { CompanyAPI } from "@/api/Company";
 import { setAuthToken, setUserCookie } from "@/lib/session";
-import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -20,8 +19,11 @@ import {
 } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
+import { useState } from "react";
+import { Loader2Icon } from "lucide-react";
 
 export default function Page() {
+  const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
   const router = useRouter();
   const formSchema = z.object({
     email: z.string().email(),
@@ -38,6 +40,8 @@ export default function Page() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { email, password } = values;
+
+    setLoadingSubmit(true);
 
     await CompanyAPI.login({
       email,
@@ -65,6 +69,9 @@ export default function Page() {
       })
       .catch((err) => {
         showErrorToast("Login failed. Please check your credentials");
+      })
+      .finally(() => {
+        setLoadingSubmit(false);
       });
   }
 
@@ -122,7 +129,9 @@ export default function Page() {
               <Button
                 className="w-full h-12 text-base cursor-pointer"
                 type="submit"
+                disabled={loadingSubmit}
               >
+                {loadingSubmit ? <Loader2Icon className="animate-spin" /> : ""}
                 Sign in
               </Button>
               <div className="relative flex items-center gap-4 py-2">

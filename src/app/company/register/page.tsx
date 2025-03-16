@@ -5,7 +5,6 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -20,8 +19,12 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { CompanyAPI } from "@/api/Company";
 import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
+import { useState } from "react";
+import { Loader2Icon } from "lucide-react";
 
 export default function Register() {
+  const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
+
   const formSchema = z.object({
     name: z.string().min(3),
     email: z.string().email(),
@@ -43,6 +46,7 @@ export default function Register() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { name, email, password, about, industry } = values;
+    setLoadingSubmit(true);
 
     await CompanyAPI.register({
       name,
@@ -56,6 +60,9 @@ export default function Register() {
       })
       .catch((err) => {
         showErrorToast("Company registration failed");
+      })
+      .finally(() => {
+        setLoadingSubmit(false);
       });
   }
 
@@ -175,7 +182,9 @@ export default function Register() {
               <Button
                 className="w-full h-12 text-base cursor-pointer"
                 type="submit"
+                disabled={loadingSubmit}
               >
+                {loadingSubmit ? <Loader2Icon className="animate-spin" /> : ""}
                 Sign Up
               </Button>
               <div className="relative flex items-center gap-4 py-2">

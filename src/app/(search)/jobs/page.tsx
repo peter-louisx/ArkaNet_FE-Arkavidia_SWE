@@ -22,7 +22,6 @@ import {
 import JobCard from "@/components/jobs/job-card";
 import { JobFilters } from "@/components/search/job-filters";
 import { JobAPI } from "@/api/Job";
-import { toast } from "sonner";
 import { Job, JobFilters as JobFiltersType } from "@/types/job/types";
 import { showErrorToast } from "@/lib/show-toast";
 
