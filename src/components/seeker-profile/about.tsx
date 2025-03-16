@@ -67,7 +67,7 @@ export default function About({
           )}
         </CardHeader>
         <CardContent>
-          <p className="whitespace-pre-wrap">{about}</p>
+          <p className="whitespace-normal break-words">{about}</p>
         </CardContent>
       </Card>
       {allowEdit && (
