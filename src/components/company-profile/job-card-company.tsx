@@ -100,13 +100,13 @@ export function JobCardCompany({
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-end p-4 bg-muted/10 border-t max-md:flex-col max-md:gap-4">
-        {allowEdit && (
+      {allowEdit && (
+        <CardFooter className="flex justify-end p-4 bg-muted/10 border-t max-md:flex-col max-md:gap-4">
           <Link href={`/company/${company_slug}/applicants/${job.id}`}>
             <Button size="sm">View Applications</Button>
           </Link>
-        )}
-      </CardFooter>
+        </CardFooter>
+      )}
     </Card>
   );
 }

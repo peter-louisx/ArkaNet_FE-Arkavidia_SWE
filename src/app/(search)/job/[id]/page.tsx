@@ -20,6 +20,7 @@ import { ApplyCard } from "@/components/job/apply-card";
 import { formatNumberCommas } from "@/lib/utils";
 import { JobAPI } from "@/api/Job";
 import { redirect } from "next/navigation";
+import { verifySession } from "@/lib/session";
 
 const jobDetails = {
   id: "1",
@@ -83,6 +84,8 @@ type tParams = Promise<{ id: string }>;
 
 export default async function Page(props: { params: tParams }) {
   const { id } = await props.params;
+
+  const { isAuthenticated } = await verifySession();
 
   const job = await JobAPI.getJob(id)
     .then((res) => {
@@ -163,7 +166,7 @@ export default async function Page(props: { params: tParams }) {
                   </div>
 
                   <div className="flex flex-wrap gap-3 mt-6">
-                    <ApplyCard job={job} />
+                    {isAuthenticated && <ApplyCard job={job} />}
                   </div>
                 </CardContent>
               </Card>

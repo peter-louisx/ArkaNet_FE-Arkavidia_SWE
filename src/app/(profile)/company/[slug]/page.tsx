@@ -3,10 +3,13 @@ import CompanyAbout from "@/components/company-profile/company-about";
 import CompanyJobs from "@/components/company-profile/company-jobs";
 import { CompanyAPI } from "@/api/Company";
 import { redirect } from "next/navigation";
+import { verifySession } from "@/lib/session";
 
 type tParams = Promise<{ slug: string }>;
 export default async function CompanyProfilePage(props: { params: tParams }) {
   const { slug } = await props.params;
+
+  const { isAuthenticated, user } = await verifySession();
 
   const data = await CompanyAPI.getProfile({ slug: slug })
     .then((res) => {
@@ -50,7 +53,7 @@ export default async function CompanyProfilePage(props: { params: tParams }) {
       redirect("/404");
     });
 
-  const allowEdit = true;
+  const allowEdit = isAuthenticated;
 
   return (
     <>
