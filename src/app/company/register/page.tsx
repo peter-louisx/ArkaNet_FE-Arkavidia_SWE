@@ -25,12 +25,18 @@ import { Loader2Icon } from "lucide-react";
 export default function Register() {
   const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
 
-  const formSchema = z.object({
+  const formSchema: z.ZodSchema = z.object({
     name: z.string().min(3),
     email: z.string().email(),
     password: z.string().min(6),
-    about: z.string().min(100),
+    about: z.string(),
     industry: z.string().min(1),
+    confirm_password: z
+      .string()
+      .min(6)
+      .refine((data) => {
+        return data === form.getValues().password;
+      }, "Passwords do not match"),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,6 +47,7 @@ export default function Register() {
       password: "",
       about: "",
       industry: "",
+      confirm_password: "",
     },
   });
 
@@ -128,6 +135,27 @@ export default function Register() {
                       <FormControl>
                         <Input
                           placeholder="Enter your password"
+                          className="h-12"
+                          type="password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div>
+                <FormField
+                  control={form.control}
+                  name="confirm_password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirm Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Re-enter your password"
                           className="h-12"
                           type="password"
                           {...field}

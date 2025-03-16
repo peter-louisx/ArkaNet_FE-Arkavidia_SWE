@@ -117,13 +117,17 @@ export default function Home() {
             find your next opportunity.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="px-8">
-              Join now
-            </Button>
+            <Link href="/seeker/register">
+              <Button size="lg" className="px-8">
+                Join now
+              </Button>
+            </Link>
 
-            <Button size="lg" variant="outline" className="px-8">
-              Sign in
-            </Button>
+            <Link href="/seeker/login">
+              <Button size="lg" variant="outline" className="px-8">
+                Sign in
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
