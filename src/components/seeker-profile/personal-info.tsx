@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SeekerPersonalInfo } from "@/types/seeker/types";
 import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
+import { HEADER_PICTURE, PROFILE_PICTURE } from "@/lib/image-placeholder";
 
 type ImageUploadType = "logo" | "cover";
 
@@ -162,7 +163,7 @@ export default function PersonalInfo({
           <div className="relative bg-primary/10 rounded-t-lg ">
             <div className="h-56">
               <Image
-                src={personalInfo.cover}
+                src={personalInfo.cover || HEADER_PICTURE}
                 layout="fill"
                 objectFit="cover"
                 alt="Cover"
@@ -190,7 +191,7 @@ export default function PersonalInfo({
                 <div className="w-32 h-32 rounded-full border-4 border-white bg-muted overflow-hidden">
                   <Avatar className="w-full h-full">
                     <AvatarImage
-                      src={personalInfo.profilePicture || "./avatar.png"}
+                      src={personalInfo.profilePicture || PROFILE_PICTURE}
                       alt={personalInfo.name}
                     />
                     <AvatarFallback>

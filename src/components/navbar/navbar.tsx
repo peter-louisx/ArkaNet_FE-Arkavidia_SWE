@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Button } from "../ui/button";
-import { Briefcase, Users, MessageSquare, Bell, Search } from "lucide-react";
+import { Briefcase, Users, MessageSquare, Bell } from "lucide-react";
 import Sidebar from "./sidebar";
 import Profile from "./profile-dropdown";
 import { verifySession } from "@/lib/session";

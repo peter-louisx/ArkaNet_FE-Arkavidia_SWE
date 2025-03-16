@@ -9,6 +9,7 @@ import {
 import Logout from "./logout";
 import { getUserCookie } from "@/lib/session";
 import { GeneralProfile } from "@/types/seeker/types";
+import { PROFILE_PICTURE, COMPANY_PICTURE } from "@/lib/image-placeholder";
 
 export default async function Profile() {
   const user: GeneralProfile = await getUserCookie();
@@ -20,7 +21,10 @@ export default async function Profile() {
           <div className="w-6 h-6 rounded-full bg-muted-foreground/20 overflow-hidden">
             <Avatar className="w-full h-full">
               <AvatarImage
-                src={user.profile_picture || "./avatar.png"}
+                src={
+                  user.profile_picture ||
+                  (user.role === "user" ? PROFILE_PICTURE : COMPANY_PICTURE)
+                }
                 alt={user.name}
               />
               <AvatarFallback>
@@ -40,10 +44,16 @@ export default async function Profile() {
             <div className="w-10 h-10 rounded-full bg-primary/10 overflow-hidden">
               <Avatar className="w-full h-full">
                 <AvatarImage
-                  src={user.profile_picture || "./avatar.png"}
+                  src={
+                    user.profile_picture ||
+                    (user.role === "user" ? PROFILE_PICTURE : COMPANY_PICTURE)
+                  }
                   alt="@shadcn"
                 />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarFallback>
+                  {" "}
+                  <Loader2Icon className="h-4 w-4 animate-spin" />
+                </AvatarFallback>
               </Avatar>
             </div>
             <div>

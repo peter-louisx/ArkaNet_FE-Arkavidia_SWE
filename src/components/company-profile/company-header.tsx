@@ -25,6 +25,11 @@ import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CompanyHeader as CompanyHeaderType } from "@/types/company/types";
 import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
+import {
+  COMPANY_PICTURE,
+  HEADER_PICTURE,
+  PROFILE_PICTURE,
+} from "@/lib/image-placeholder";
 
 type ImageUploadType = "logo" | "cover";
 
@@ -158,7 +163,7 @@ export default function CompanyHeader({
           {/* Cover Photo */}
           <div className="relative h-56 bg-primary/10 rounded-t-lg">
             <Image
-              src={company.cover || "/placeholder.svg"}
+              src={company.cover || COMPANY_PICTURE}
               alt={`${company.name} cover`}
               fill
               className="object-cover rounded-t-lg"
@@ -181,17 +186,9 @@ export default function CompanyHeader({
             <div className="flex justify-center -mt-16 mb-6">
               <div className="relative">
                 <div className="w-32 h-32 rounded-full border-4 border-white bg-white overflow-hidden">
-                  <Image
-                    src={company.logo || "/placeholder.svg"}
-                    width={128}
-                    height={128}
-                    alt={`${company.name} logo`}
-                    className="object-cover"
-                  />
-
                   <Avatar className="w-full h-full">
                     <AvatarImage
-                      src={company.logo || "/placeholder.svg"}
+                      src={company.logo || PROFILE_PICTURE}
                       alt={company.name}
                     />
                     <AvatarFallback>

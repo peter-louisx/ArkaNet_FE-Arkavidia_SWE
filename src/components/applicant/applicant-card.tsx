@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { statusConfig } from "@/lib/applicant-status";
+import { PROFILE_PICTURE } from "@/lib/image-placeholder";
 
 export function ApplicantCard({ applicant }: { applicant: Applicant }) {
   return (
@@ -18,7 +19,10 @@ export function ApplicantCard({ applicant }: { applicant: Applicant }) {
       <div className="flex items-start gap-4">
         <Link href={`/seeker/${applicant.slug}`}>
           <Avatar className="h-10 w-10">
-            <AvatarImage src={applicant.profile_picture} alt={applicant.name} />
+            <AvatarImage
+              src={applicant.profile_picture || PROFILE_PICTURE}
+              alt={applicant.name}
+            />
             <AvatarFallback>{applicant.name.charAt(0)}</AvatarFallback>
           </Avatar>
         </Link>

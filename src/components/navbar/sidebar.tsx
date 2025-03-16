@@ -19,6 +19,7 @@ import Logout from "./logout";
 import { getUserCookie } from "@/lib/session";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { GeneralProfile } from "@/types/seeker/types";
+import { PROFILE_PICTURE, COMPANY_PICTURE } from "@/lib/image-placeholder";
 
 export default async function Sidebar({
   isAuthenticated,
@@ -46,7 +47,12 @@ export default async function Sidebar({
                 <div className="w-12 h-12 rounded-full bg-primary/10 overflow-hidden">
                   <Avatar className="w-full h-full">
                     <AvatarImage
-                      src={user.profile_picture || "./avatar.png"}
+                      src={
+                        user.profile_picture ||
+                        (user.role === "user"
+                          ? PROFILE_PICTURE
+                          : COMPANY_PICTURE)
+                      }
                       alt={user.name}
                     />
                     <AvatarFallback>

@@ -16,6 +16,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { countTimeAfterDate, formatNumberCommas } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Job } from "@/types/job/types";
+import { COMPANY_PICTURE } from "@/lib/image-placeholder";
 
 export default function JobCard({ job }: { job: Job }) {
   return (
@@ -29,7 +30,7 @@ export default function JobCard({ job }: { job: Job }) {
             >
               <Avatar className="w-full h-full">
                 <AvatarImage
-                  src={job.logo || "/placeholder.svg"}
+                  src={job.logo || COMPANY_PICTURE}
                   alt={job.company}
                 />
                 <AvatarFallback>
