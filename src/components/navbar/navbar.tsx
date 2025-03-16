@@ -3,7 +3,6 @@ import { Button } from "../ui/button";
 import { Briefcase, Users, MessageSquare, Bell, Search } from "lucide-react";
 import Sidebar from "./sidebar";
 import Profile from "./profile-dropdown";
-import SearchBar from "./search-bar";
 import { verifySession } from "@/lib/session";
 
 export default async function Navbar() {
@@ -16,7 +15,6 @@ export default async function Navbar() {
           <Link href="/" className="text-2xl font-bold text-primary">
             ArkaNet
           </Link>
-          {/* <SearchBar /> */}
         </div>
         <nav className="hidden md:flex items-center gap-1">
           <NavItem icon={<Briefcase />} label="Jobs" href="/jobs" />
@@ -24,7 +22,6 @@ export default async function Navbar() {
 
           {isAuthenticated && (
             <>
-              {" "}
               <NavItem icon={<MessageSquare />} label="Messaging" />
               <NavItem icon={<Bell />} label="Notifications" />
               <Profile />{" "}
@@ -41,9 +38,6 @@ export default async function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2 md:hidden">
-          <Button variant="ghost" size="icon">
-            <Search className="h-5 w-5" />
-          </Button>
           <Sidebar isAuthenticated={isAuthenticated} />
         </div>
       </div>

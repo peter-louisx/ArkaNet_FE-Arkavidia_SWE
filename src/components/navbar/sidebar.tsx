@@ -1,18 +1,13 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import {
   Briefcase,
   Users,
   MessageSquare,
   Bell,
-  ChevronDown,
-  Search,
   User,
-  Settings,
-  LogOut,
   Menu,
+  Loader2Icon,
 } from "lucide-react";
 import {
   Sheet,
@@ -22,13 +17,15 @@ import {
 } from "@/components/ui/sheet";
 import Logout from "./logout";
 import { getUserCookie } from "@/lib/session";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { GeneralProfile } from "@/types/seeker/types";
 
 export default async function Sidebar({
   isAuthenticated,
 }: {
   isAuthenticated: boolean;
 }) {
-  const user = await getUserCookie();
+  const user: GeneralProfile = await getUserCookie();
 
   return (
     <Sheet>
@@ -47,14 +44,16 @@ export default async function Sidebar({
             <div className="border-b p-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-primary/10 overflow-hidden">
-                  <Image
-                    src={user.profile_picture || "./avatar.png"}
-                    width={48}
-                    height={48}
-                    alt="Profile"
-                    className="object-cover h-full"
-                    priority
-                  />
+                  <Avatar className="w-full h-full">
+                    <AvatarImage
+                      src={user.profile_picture || "./avatar.png"}
+                      alt={user.name}
+                    />
+                    <AvatarFallback>
+                      {" "}
+                      <Loader2Icon className="h-8 w-8 animate-spin" />
+                    </AvatarFallback>
+                  </Avatar>
                 </div>
                 <div>
                   <h3 className="font-semibold">{user.name}</h3>

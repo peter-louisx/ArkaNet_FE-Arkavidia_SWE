@@ -19,11 +19,7 @@ export async function middleware(request: NextRequest) {
   if(authRoutes.includes(request.nextUrl.pathname) && !isAuthenticated) {
     return NextResponse.redirect(new URL("/login", request.nextUrl))
   }
-
-  if(request.nextUrl.pathname === '/' && isAuthenticated) {
-    return NextResponse.redirect(new URL("/seeker/" + user.slug, request.nextUrl))
-  }
-
+  
   return NextResponse.next()
 }
  

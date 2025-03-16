@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { Briefcase, Edit, MapPin, Upload } from "lucide-react";
+import { Briefcase, Edit, Loader2Icon, MapPin, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -22,6 +22,7 @@ import { Form, FormField } from "@/components/ui/form";
 import { UserAPI } from "@/api/User";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type ImageUploadType = "logo" | "cover";
 
@@ -193,13 +194,15 @@ export default function PersonalInfo({
             <div className="flex justify-center -mt-16 mb-6">
               <div className="relative">
                 <div className="w-32 h-32 rounded-full border-4 border-white bg-muted overflow-hidden">
-                  <Image
-                    src={personalInfo.profilePicture || "/placeholder.svg"}
-                    width={128}
-                    height={128}
-                    alt="Profile"
-                    className="object-cover"
-                  />
+                  <Avatar className="w-full h-full">
+                    <AvatarImage
+                      src={personalInfo.profilePicture || "./avatar.png"}
+                      alt={personalInfo.name}
+                    />
+                    <AvatarFallback>
+                      <Loader2Icon className="h-8 w-8 animate-spin" />
+                    </AvatarFallback>
+                  </Avatar>
                 </div>
                 {allowEdit && (
                   <Button

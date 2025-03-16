@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { Edit, Upload } from "lucide-react";
+import { Edit, Upload, Loader2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -19,10 +19,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormField, FormMessage } from "@/components/ui/form";
-import { set } from "date-fns";
 import { CompanyAPI } from "@/api/Company";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type ImageUploadType = "logo" | "cover";
 
@@ -193,6 +193,16 @@ export default function CompanyHeader({
                     alt={`${company.name} logo`}
                     className="object-cover"
                   />
+
+                  <Avatar className="w-full h-full">
+                    <AvatarImage
+                      src={company.logo || "/placeholder.svg"}
+                      alt={company.name}
+                    />
+                    <AvatarFallback>
+                      <Loader2Icon className="h-8 w-8 animate-spin" />
+                    </AvatarFallback>
+                  </Avatar>
                 </div>
                 {allowEdit && (
                   <Button

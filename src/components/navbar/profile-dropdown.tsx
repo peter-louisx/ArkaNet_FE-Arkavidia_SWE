@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
-import { ChevronDown, LogOut } from "lucide-react";
+import { ChevronDown, Loader2Icon } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Popover,
   PopoverContent,
@@ -8,23 +8,25 @@ import {
 } from "@/components/ui/popover";
 import Logout from "./logout";
 import { getUserCookie } from "@/lib/session";
+import { GeneralProfile } from "@/types/seeker/types";
 
 export default async function Profile() {
-  const user = await getUserCookie();
+  const user: GeneralProfile = await getUserCookie();
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <div className="flex flex-col items-center px-3 py-1 hover:bg-muted rounded-md cursor-pointer">
           <div className="w-6 h-6 rounded-full bg-muted-foreground/20 overflow-hidden">
-            <Image
-              src={user.profile_picture || "./avatar.png"}
-              width={24}
-              height={24}
-              alt="Profile"
-              className="object-cover h-full"
-              priority
-            />
+            <Avatar className="w-full h-full">
+              <AvatarImage
+                src={user.profile_picture || "./avatar.png"}
+                alt={user.name}
+              />
+              <AvatarFallback>
+                <Loader2Icon className="h-4 w-4 animate-spin" />
+              </AvatarFallback>
+            </Avatar>
           </div>
           <div className="flex items-center text-xs">
             <span>Me</span>
@@ -36,14 +38,13 @@ export default async function Profile() {
         <div className="p-3 border-b">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-primary/10 overflow-hidden">
-              <Image
-                src={user.profile_picture || "./avatar.png"}
-                width={40}
-                height={40}
-                alt="Profile"
-                className="object-cover h-full"
-                priority
-              />
+              <Avatar className="w-full h-full">
+                <AvatarImage
+                  src={user.profile_picture || "./avatar.png"}
+                  alt="@shadcn"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
             </div>
             <div>
               <h3 className="font-semibold text-sm">{user.name}</h3>
