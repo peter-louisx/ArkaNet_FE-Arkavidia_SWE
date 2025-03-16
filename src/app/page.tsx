@@ -19,7 +19,7 @@ export default function Home() {
             </p>
             <div className="flex flex-col max-md:justify-center sm:flex-row gap-4">
               <Link
-                href="/login"
+                href="/seeker/login"
                 className="bg-primary text-white px-8 py-3 rounded-lg text-center"
               >
                 Join Now

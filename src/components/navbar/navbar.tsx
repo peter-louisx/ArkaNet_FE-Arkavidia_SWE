@@ -29,7 +29,7 @@ export default async function Navbar() {
           )}
           {!isAuthenticated && (
             <Link
-              href={"/login"}
+              href={"/seeker/login"}
               className="bg-primary px-4 py-2 text-white rounded-md"
             >
               Login

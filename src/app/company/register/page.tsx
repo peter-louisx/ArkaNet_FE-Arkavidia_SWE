@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { UserAPI } from "@/api/User";
-import { setAuthToken, setUserCookie } from "@/lib/session";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -13,57 +12,50 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useRouter } from "next/navigation";
+import { Textarea } from "@/components/ui/textarea";
+import { CompanyAPI } from "@/api/Company";
 
-export default function Page() {
-  const router = useRouter();
+export default function Register() {
   const formSchema = z.object({
+    name: z.string().min(3),
     email: z.string().email(),
     password: z.string().min(6),
+    about: z.string().min(100),
+    industry: z.string().min(1),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
+      about: "",
+      industry: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const { email, password } = values;
+    const { name, email, password, about, industry } = values;
 
-    await UserAPI.login({
+    await CompanyAPI.register({
+      name,
       email,
       password,
+      about,
+      industry,
     })
       .then((res) => {
-        const { success, message, data } = res.data;
-
-        Promise.all([
-          setAuthToken(data.token),
-          setUserCookie(
-            JSON.stringify({
-              name: data.name,
-              current_title: data.current_title,
-              slug: data.slug,
-              role: data.role,
-              profile_picture: data.profile_picture,
-            })
-          ),
-        ]).then(() => {
-          toast("Login successful");
-          router.push("/seeker/" + data.slug);
-          router.refresh();
-        });
+        toast.success("Company registered successfully");
       })
       .catch((err) => {
-        toast("Login failed. Please check your credentials");
+        toast.error("Company registration failed");
       });
   }
 
@@ -72,14 +64,34 @@ export default function Page() {
       <div className="container mx-auto px-14 grid md:grid-cols-2 gap-8 items-center">
         <div className="space-y-6">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900">
-            Login
+            Register
           </h1>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-4 max-w-md"
             >
-              <div className="relative">
+              <div>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter your company name"
+                          className="h-12"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div>
                 <FormField
                   control={form.control}
                   name="email"
@@ -98,7 +110,8 @@ export default function Page() {
                   )}
                 />
               </div>
-              <div className="relative">
+
+              <div>
                 <FormField
                   control={form.control}
                   name="password"
@@ -118,8 +131,49 @@ export default function Page() {
                   )}
                 />
               </div>
+
+              <div>
+                <FormField
+                  control={form.control}
+                  name="about"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>About</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Tell us about your company"
+                          className="h-12 bg-white"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div>
+                <FormField
+                  control={form.control}
+                  name="industry"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Industry</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter your industry"
+                          className="h-12"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
               <Button className="w-full h-12 text-base" type="submit">
-                Sign in
+                Sign Up
               </Button>
               <div className="relative flex items-center gap-4 py-2">
                 <div className="flex-1 border-t"></div>
@@ -127,20 +181,25 @@ export default function Page() {
                 <div className="flex-1 border-t"></div>
               </div>
               <Link
-                href="/register"
-                type="button"
-                className="w-full h-12 text-base bg-white flex items-center justify-center rounded-lg shadow-sm"
+                href="/company/login"
+                className="text-base flex items-center justify-center  "
               >
-                Join now
+                Already have an account? Sign in
+              </Link>
+              <Link
+                href="/seeker/register"
+                className="text-base flex items-center justify-center  "
+              >
+                Register as a job seeker
               </Link>
             </form>
           </Form>
         </div>
-        <div className="hidden md:block">
+        <div className="hidden md:block mb-10">
           <Image
-            src="/login/login.svg"
-            width={570}
-            height={570}
+            src="/login/company.svg"
+            width={500}
+            height={500}
             alt="Professional networking"
             className="object-cover rounded-lg"
             priority

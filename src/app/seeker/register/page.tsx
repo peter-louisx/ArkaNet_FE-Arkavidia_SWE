@@ -205,10 +205,16 @@ export default function Register() {
                 <div className="flex-1 border-t"></div>
               </div>
               <Link
-                href="/login"
+                href="/seeker/login"
                 className="text-base flex items-center justify-center  "
               >
                 Already have an account? Sign in
+              </Link>
+              <Link
+                href="/company/register"
+                className="text-base flex items-center justify-center  "
+              >
+                Register as a company
               </Link>
             </form>
           </Form>

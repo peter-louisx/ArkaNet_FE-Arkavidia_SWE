@@ -2,11 +2,60 @@ import { getAuthToken } from "@/lib/session"
 import axios from "./axios"
 
 export const CompanyAPI = {
+    login: async function({
+        email,
+        password
+    }: {
+        email: string,
+        password: string
+    }) {
+        return axios.post("/company/login", {
+            email,
+            password
+        })
+    },
+    register: async function({
+        name,
+        email,
+        password,
+        about,
+        industry,
+    }: {
+        name: string,
+        email: string,
+        password: string,
+        about: string,
+        industry: string,
+    }) {
+        return axios.post("/company/register", {
+            name,
+            email,
+            password,
+            about,
+            industry,
+        })
+    },
+
     getProfile: async function({
         slug
     }: {
         slug: string
     }){
+        if(slug == 'avatar.png') return {
+            data: {
+                success: true,
+                data: {
+                    company_info: {
+                        name: 'Company Name',
+                        industry: 'Industry',
+                        logo: '/avatar.png',
+                        cover: '/cover.png',
+                        about: 'About the company'
+                    },
+                    company_jobs: []
+                }
+            }
+        }
         return axios.get(`/company/profile/${slug}`)
     },
 
@@ -37,6 +86,7 @@ export const CompanyAPI = {
         }, {
             headers: {
                 'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${await getAuthToken()}`
                 
             }
         })
@@ -77,6 +127,10 @@ export const CompanyAPI = {
             experience,
             skills,
             location_type
+        }, {
+            headers: {
+                Authorization: `Bearer ${await getAuthToken()}`
+            }
         })
     },
 
@@ -118,6 +172,10 @@ export const CompanyAPI = {
             experience,
             skills,
             location_type
+        }, {
+            headers: {
+                Authorization: `Bearer ${await getAuthToken()}`
+            }
         })
     }
 }
