@@ -29,75 +29,54 @@ import {
   locationTypes,
 } from "@/lib/jobs-filters";
 import { Job } from "@/types/job/types";
+import { COMPANY_PICTURE } from "@/lib/image-placeholder";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Loader2Icon } from "lucide-react";
+import Link from "next/link";
 
 // Mock job data
-const jobListings = [
+const PeopleListings = [
   {
     id: 1,
-    title: "Senior Frontend Developer",
-    experience: "Senior Level",
-    company: "TechCorp Inc.",
-    logo: "https://karirlab-prod-bucket.s3.ap-southeast-1.amazonaws.com/files/privates/aHR0cHM6Ly9jZG4uc2VqdXRhY2l0YS5pZC82Mjk5ODAyNmI5ZGRjNTAwMTM4NDBiMTAvT3RoZXJzLzFhOTM0MTYwLWI3YmYtNDMyYi1iNzk3LWVmMTc0NmMwMjU4NC5wbmc%3D.png",
-    location: "San Francisco, CA",
-    location_type: "Remote",
-    type: "Full-time",
-    min_salary: 120000,
-    max_salary: 150000,
-    posted: "03-10-2025",
-    description:
-      "We're looking for a Senior Frontend Developer with 5+ years of experience in React, TypeScript, and modern frontend frameworks.",
-    skills: ["React", "TypeScript", "Next.js", "CSS"],
+    name: "Nickolas ",
+    title: "Student at Universitas Indonesia",
   },
   {
     id: 2,
-    title: "Backend Engineer",
-    experience: "Mid Level",
-    location_type: "Remote",
-    company: "InnovateTech",
-    logo: "/placeholder.svg?height=40&width=40",
-    location: "Austin, TX",
-    type: "Full-time",
-    min_salary: 110000,
-    max_salary: 140000,
-    posted: "03-10-2025",
-    description:
-      "Join our backend team to build scalable APIs and microservices using Node.js and Python.",
-    skills: ["Node.js", "Python", "AWS", "MongoDB"],
+    name: "Don Joe",
+    title: "Student at Brawijaya University",
   },
   {
     id: 3,
-    title: "UX/UI Designer",
-    location_type: "Remote",
-    experience: "Entry Level",
-    company: "DesignHub",
-    logo: "/placeholder.svg?height=40&width=40",
-    location: "New York, NY",
-    type: "Contract",
-    min_salary: 90000,
-    max_salary: 120000,
-    posted: "02-10-2025",
-
-    description:
-      "Create beautiful and intuitive user interfaces for web and mobile applications.",
-    skills: ["Figma", "Adobe XD", "UI Design", "Prototyping"],
+    name: "John Doe",
+    title: "Student at Institut Teknologi Bandung",
   },
   {
     id: 4,
-    title: "DevOps Engineer",
-    location_type: "Remote",
-    min_salary: 90000,
-    max_salary: 120000,
-    experience: "Mid Level",
-    company: "CloudSystems",
-    logo: "/placeholder.svg?height=40&width=40",
-    location: "Seattle, WA",
-    type: "Full-time",
-    posted: "01-10-2025",
-
-    description:
-      "Manage our cloud infrastructure and CI/CD pipelines to ensure smooth deployments.",
-    skills: ["AWS", "Docker", "Kubernetes", "CI/CD"],
+    name: "Michael Doe",
+    title: "Student at Universitas Gadjah Mada",
   },
+   {
+    id: 5,
+    name: "Jason",
+    title: "Student at University of Toronto",
+  },
+  {
+    id: 6,
+    name: "Bambang",
+    title: "Student at Universitas Kadiri ",
+  },
+  {
+    id: 7,
+    name: "Leon",
+    title: "Student at Universitas Petra",
+  },
+  {
+    id: 8,
+    name: "Doe",
+    title: "Student at Universitas Gadjah Mada",
+  },
+
 ];
 
 // Combined Filters Component
@@ -152,29 +131,29 @@ function JobFilters({
   );
 }
 
-export default function JobsPage() {
+export default function PeoplePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState({
     jobTypes: [] as string[],
   });
-  const [filteredJobs, setFilteredJobs] = useState(jobListings);
+  const [filteredJobs, setFilteredJobs] = useState(PeopleListings);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   // Apply filters
   const applyFilters = () => {
-    const results = jobListings.filter((job) => {
+    const results = PeopleListings.filter((People) => {
       // Search term filter
       if (
         searchTerm &&
-        !job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        !job.company.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        !job.description.toLowerCase().includes(searchTerm.toLowerCase())
+        !People.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        !People.title.toLowerCase().includes(searchTerm.toLowerCase()) 
+        // && !job.description.toLowerCase().includes(searchTerm.toLowerCase())
       ) {
         return false;
       }
 
       // Job type filter
-      if (filters.jobTypes.length > 0 && !filters.jobTypes.includes(job.type)) {
+      if (filters.jobTypes.length > 0 && !filters.jobTypes.includes(People.title)) {
         return false;
       }
 
@@ -190,7 +169,7 @@ export default function JobsPage() {
     setFilters({
       jobTypes: [],
     });
-    setFilteredJobs(jobListings);
+    setFilteredJobs(PeopleListings);
   };
 
   // Toggle job type filter
@@ -259,34 +238,53 @@ export default function JobsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Filters Sidebar - Desktop */}
+        {/* Sidebar - Desktop */}
         <div className="hidden lg:block">
           <div className="bg-white rounded-lg shadow-sm p-4 sticky top-4">
-            <h2 className="font-semibold text-lg mb-4">Filters</h2>
-            <JobFilters
-              filters={filters}
-              setFilters={setFilters}
-              toggleJobType={toggleJobType}
-              applyFilters={applyFilters}
-              resetFilters={resetFilters}
-            />
+            <h2 className="font-semibold text-lg p-4">Our Network</h2>
+            <hr></hr>
+            <ul className="flex flex-col p-4 gap-4 text-lg text-gray-500 font-semibold">
+              <Link href=""><li>Connection</li></Link>
+              <Link href=""><li>Followers & Following</li></Link>
+              <Link href=""><li>Group</li></Link>
+              <Link href=""><li>Event</li></Link>
+              <Link href=""><li>Page</li></Link>
+              <Link href=""><li>bulletin</li></Link>
+            </ul>
+            
           </div>
         </div>
 
-        {/* Job Listings */}
+        {/* People Listings */}
         <div className="lg:col-span-3 space-y-4">
-          {/* {filteredJobs.length === 0 ? (
-            <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-              <Briefcase className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <h2 className="text-xl font-semibold mb-2">No jobs found</h2>
-              <p className="text-muted-foreground mb-4">
-                Try adjusting your search criteria or removing some filters.
-              </p>
-              <Button onClick={resetFilters}>Reset Filters</Button>
+          <div className="border-1 p-4 shadow-sm rounded-lg mx-auto">
+            <div className="flex justify-center items-center text-center">
+              <div className="grid grid-rows-5 grid-cols-5 grid-flow-col gap-10">
+                {filteredJobs.map((People) => (
+                  <div key={People.id} className="border-1 shadow-sm p-5 rounded-lg flex flex-col justify-center items-center ">
+                    <div className="w-16 h-16 rounded-md overflow-hidden flex-shrink-0 ">
+                        <Avatar className="w-full h-full ">
+                          <AvatarImage
+                            src={COMPANY_PICTURE}
+                          />
+                          <AvatarFallback>
+                            {" "}
+                            <Loader2Icon className="h-4 w-4 animate-spin" />{" "}
+                          </AvatarFallback>
+                        </Avatar>
+                      </div>
+                    <div className="mb-20 px-5">
+                      <p className="font-semibold">{People.name}</p>
+                      <p className="text-sm text-gray-500">{People.title}</p>
+                    </div>
+                    <Button className="px-16 rounded-full border-1 border-primary bg-white text-primary hover:bg-white">
+                    Hubungkan
+                  </Button>
+                  </div>
+                ))}
+              </div>
             </div>
-          ) : (
-            filteredJobs.map((job: Job) => <JobCard key={job.id} job={job} />)
-          )} */}
+          </div>
 
           {/* Pagination */}
           {filteredJobs.length > 0 && (
