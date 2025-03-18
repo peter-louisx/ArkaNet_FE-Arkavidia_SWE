@@ -273,7 +273,19 @@ export default function CompanyJobs({
       {allowEdit && (
         <>
           {/* Job Edit Dialog */}
-          <Dialog open={isEditingJob} onOpenChange={setIsEditingJob}>
+          <Dialog
+            open={isEditingJob}
+            onOpenChange={(open) => {
+              if (!open) {
+                form.reset();
+                setIsEditingJob(false);
+                setCurrentJob("");
+                return;
+              }
+
+              setIsEditingJob(open);
+            }}
+          >
             <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-y-scroll flex flex-col [&>button]:hidden">
               <DialogHeader>
                 <DialogTitle>{currentJob ? "Edit Job" : "Add Job"}</DialogTitle>

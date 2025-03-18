@@ -76,7 +76,7 @@ export default function Experience({
 
   const companies = [
     {
-      id: "161c2c4d-e961-4cc8-b9d4-25c502505580",
+      id: "32d25e64-b577-4cfb-8dc2-a0721cf67ead",
       name: "Google",
     },
   ];
@@ -242,7 +242,13 @@ export default function Experience({
       {allowEdit && (
         <Dialog
           open={isEditingExperience}
-          onOpenChange={setIsEditingExperience}
+          onOpenChange={(open) => {
+            if (!open) {
+              form.reset();
+              setIsEditingExperience(false);
+            }
+            setIsEditingExperience(open);
+          }}
         >
           <DialogContent className="sm:max-w-[600px] [&>button]:hidden">
             <DialogHeader>

@@ -197,7 +197,19 @@ export default function Education({
         </CardContent>
       </Card>
       {allowEdit && (
-        <Dialog open={isEditingEducation} onOpenChange={setIsEditingEducation}>
+        <Dialog
+          open={isEditingEducation}
+          onOpenChange={(open) => {
+            if (!open) {
+              setCurrentEducation("");
+              setIsEditingEducation(false);
+              form.reset();
+              return;
+            }
+
+            setIsEditingEducation(true);
+          }}
+        >
           <DialogContent className="sm:max-w-[600px] [&>button]:hidden">
             <DialogHeader>
               <DialogTitle>
