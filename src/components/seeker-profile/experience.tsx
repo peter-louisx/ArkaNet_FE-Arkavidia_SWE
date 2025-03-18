@@ -42,6 +42,7 @@ import { toast } from "sonner";
 import { convertDateFormat, convertDateFormatToMonthYear } from "@/lib/utils";
 import { SeekerExperience } from "@/types/seeker/types";
 import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
+import { CompanyAPI } from "@/api/Company";
 
 export default function Experience({
   experienceData,
@@ -74,12 +75,12 @@ export default function Experience({
     },
   });
 
-  const companies = [
+  const [companies, setCompanies] = useState<
     {
-      id: "32d25e64-b577-4cfb-8dc2-a0721cf67ead",
-      name: "Google",
-    },
-  ];
+      id: string;
+      name: string;
+    }[]
+  >([]);
 
   const [experiences, setExperiences] =
     useState<SeekerExperience[]>(experienceData);
@@ -87,6 +88,16 @@ export default function Experience({
   useEffect(() => {
     setExperiences(experienceData);
   }, [experienceData]);
+
+  useEffect(() => {
+    CompanyAPI.list()
+      .then((res) => {
+        setCompanies(res.data.data);
+      })
+      .catch((err) => {
+        showErrorToast("Failed to fetch companies");
+      });
+  }, []);
 
   const [isEditingExperience, setIsEditingExperience] =
     useState<boolean>(false);
@@ -285,7 +296,7 @@ export default function Experience({
                           defaultValue={field.value}
                         >
                           <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select job type" />
+                            <SelectValue placeholder="Select company" />
                           </SelectTrigger>
                           <SelectContent>
                             {companies.map((type) => (

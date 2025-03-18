@@ -59,6 +59,10 @@ export const CompanyAPI = {
         return axios.get(`/company/profile/${slug}`)
     },
 
+    list: async function(){
+        return axios.get(`/company/list`)
+    },
+
     updateProfile: async function({
         company_id,
         name,
