@@ -63,4 +63,18 @@ export const JobAPI = {
             }
         })
     },
+
+    changeApplicationStatus: async function(
+        id: string,
+        status: string
+  ){
+        return axios.post(`/job/update-application`, {
+            applicant_id: id,
+            status
+        }, {
+            headers: {
+                Authorization: `Bearer ${await getAuthToken()}`
+            }
+        })
+    }
 }

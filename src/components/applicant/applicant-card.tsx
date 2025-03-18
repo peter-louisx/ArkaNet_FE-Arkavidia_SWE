@@ -13,7 +13,13 @@ import {
 import { statusConfig } from "@/lib/applicant-status";
 import { PROFILE_PICTURE } from "@/lib/image-placeholder";
 
-export function ApplicantCard({ applicant }: { applicant: Applicant }) {
+export function ApplicantCard({
+  applicant,
+  changeApplicationStatus,
+}: {
+  applicant: Applicant;
+  changeApplicationStatus: (applicantionId: string, status: string) => void;
+}) {
   return (
     <div key={applicant.id} className="p-4 hover:bg-gray-50">
       <div className="flex items-start gap-4">
@@ -51,7 +57,15 @@ export function ApplicantCard({ applicant }: { applicant: Applicant }) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   {statusConfig.map((status) => (
-                    <DropdownMenuItem key={status.name}>
+                    <DropdownMenuItem
+                      key={status.name}
+                      onClick={() =>
+                        changeApplicationStatus(
+                          applicant.id.toString(),
+                          status.name
+                        )
+                      }
+                    >
                       {status.name}
                     </DropdownMenuItem>
                   ))}

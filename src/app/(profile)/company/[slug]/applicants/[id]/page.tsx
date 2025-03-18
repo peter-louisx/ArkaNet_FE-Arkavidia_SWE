@@ -47,6 +47,30 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       });
   };
 
+  const changeApplicationStatus = async (
+    applicantionId: string,
+    status: string
+  ) => {
+    await JobAPI.changeApplicationStatus(applicantionId, status)
+      .then((res) => {
+        const { success, message } = res.data;
+        if (success) {
+          toast.success(message);
+          fetchApplications();
+          setApplications((prev) =>
+            prev.map((app) =>
+              app.id === applicantionId ? { ...app, status } : app
+            )
+          );
+        } else {
+          showErrorToast(message);
+        }
+      })
+      .catch((err) => {
+        showErrorToast("Failed to change application status");
+      });
+  };
+
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
@@ -123,6 +147,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                       <ApplicantCard
                         key={application.id}
                         applicant={application}
+                        changeApplicationStatus={changeApplicationStatus}
                       />
                     ))
                   )}
