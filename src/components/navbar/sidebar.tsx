@@ -79,7 +79,11 @@ export default async function Sidebar({
               {isAuthenticated && (
                 <>
                   {" "}
-                  <MobileNavItem icon={<MessageSquare />} label="Messaging" />
+                  <MobileNavItem
+                    icon={<MessageSquare />}
+                    label="Messaging"
+                    href="/chats"
+                  />
                   <MobileNavItem icon={<Bell />} label="Notifications" />
                 </>
               )}

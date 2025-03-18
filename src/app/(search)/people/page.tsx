@@ -29,7 +29,7 @@ import {
   locationTypes,
 } from "@/lib/jobs-filters";
 import { Job } from "@/types/job/types";
-import { COMPANY_PICTURE } from "@/lib/image-placeholder";
+import { COMPANY_PICTURE, PROFILE_PICTURE } from "@/lib/image-placeholder";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader2Icon } from "lucide-react";
 import Link from "next/link";
@@ -56,7 +56,7 @@ const PeopleListings = [
     name: "Michael Doe",
     title: "Student at Universitas Gadjah Mada",
   },
-   {
+  {
     id: 5,
     name: "Jason",
     title: "Student at University of Toronto",
@@ -76,7 +76,6 @@ const PeopleListings = [
     name: "Doe",
     title: "Student at Universitas Gadjah Mada",
   },
-
 ];
 
 // Combined Filters Component
@@ -146,14 +145,17 @@ export default function PeoplePage() {
       if (
         searchTerm &&
         !People.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        !People.title.toLowerCase().includes(searchTerm.toLowerCase()) 
+        !People.title.toLowerCase().includes(searchTerm.toLowerCase())
         // && !job.description.toLowerCase().includes(searchTerm.toLowerCase())
       ) {
         return false;
       }
 
       // Job type filter
-      if (filters.jobTypes.length > 0 && !filters.jobTypes.includes(People.title)) {
+      if (
+        filters.jobTypes.length > 0 &&
+        !filters.jobTypes.includes(People.title)
+      ) {
         return false;
       }
 
@@ -244,14 +246,13 @@ export default function PeoplePage() {
             <h2 className="font-semibold text-lg p-4">Our Network</h2>
             <hr></hr>
             <ul className="flex flex-col p-4 gap-4 text-lg text-gray-500 font-semibold">
-              <Link href=""><li>Connection</li></Link>
-              <Link href=""><li>Followers & Following</li></Link>
-              <Link href=""><li>Group</li></Link>
-              <Link href=""><li>Event</li></Link>
-              <Link href=""><li>Page</li></Link>
-              <Link href=""><li>bulletin</li></Link>
+              <Link href="">
+                <li>Connection</li>
+              </Link>
+              <Link href="">
+                <li>Followers & Following</li>
+              </Link>
             </ul>
-            
           </div>
         </div>
 
@@ -259,27 +260,31 @@ export default function PeoplePage() {
         <div className="lg:col-span-3 space-y-4">
           <div className="border-1 p-4 shadow-sm rounded-lg mx-auto">
             <div className="flex justify-center items-center text-center">
-              <div className="grid grid-rows-5 grid-cols-5 grid-flow-col gap-10">
+              <div className="grid grid-cols-3 max-md:grid-cols-1 gap-10">
                 {filteredJobs.map((People) => (
-                  <div key={People.id} className="border-1 shadow-sm p-5 rounded-lg flex flex-col justify-center items-center ">
-                    <div className="w-16 h-16 rounded-md overflow-hidden flex-shrink-0 ">
-                        <Avatar className="w-full h-full ">
-                          <AvatarImage
-                            src={COMPANY_PICTURE}
-                          />
-                          <AvatarFallback>
-                            {" "}
-                            <Loader2Icon className="h-4 w-4 animate-spin" />{" "}
-                          </AvatarFallback>
-                        </Avatar>
-                      </div>
-                    <div className="mb-20 px-5">
+                  <div
+                    key={People.id}
+                    className="border-1 shadow-sm p-5 rounded-lg flex flex-col justify-between items-center "
+                  >
+                    <div className="rounded-md overflow-hidden flex-shrink-0 ">
+                      <Avatar className="w-16 h-16">
+                        <AvatarImage
+                          width={100}
+                          height={100}
+                          src={PROFILE_PICTURE}
+                        />
+                        <AvatarFallback>
+                          <Loader2Icon className="h-4 w-4 animate-spin" />{" "}
+                        </AvatarFallback>
+                      </Avatar>
+                    </div>
+                    <div className="px-5 mt-2">
                       <p className="font-semibold">{People.name}</p>
                       <p className="text-sm text-gray-500">{People.title}</p>
                     </div>
-                    <Button className="px-16 rounded-full border-1 border-primary bg-white text-primary hover:bg-white">
-                    Hubungkan
-                  </Button>
+                    <Button className="px-16 mt-2 rounded-full border-1 border-primary bg-white text-primary hover:bg-white">
+                      Hubungkan
+                    </Button>
                   </div>
                 ))}
               </div>

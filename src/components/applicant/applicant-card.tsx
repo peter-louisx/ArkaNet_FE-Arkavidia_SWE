@@ -1,3 +1,5 @@
+"use client";
+
 import { Applicant } from "@/types/applicant/types";
 import { Mail, MoreVertical, Calendar, Paperclip } from "lucide-react";
 import Link from "next/link";
@@ -12,6 +14,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { statusConfig } from "@/lib/applicant-status";
 import { PROFILE_PICTURE } from "@/lib/image-placeholder";
+import { ChatAPI } from "@/api/Chat";
+import { showErrorToast } from "@/lib/show-toast";
+import { useRouter } from "next/navigation";
 
 export function ApplicantCard({
   applicant,
@@ -20,6 +25,21 @@ export function ApplicantCard({
   applicant: Applicant;
   changeApplicationStatus: (applicantionId: string, status: string) => void;
 }) {
+  const router = useRouter();
+
+  const getChatRoom = async () => {
+    await ChatAPI.getChatRoom(applicant.user_id)
+      .then((res) => {
+        const { success, message, data } = res.data;
+        if (success) {
+          router.push(`/chat/${data.id}`);
+        }
+      })
+      .catch((err) => {
+        showErrorToast("Failed to fetch chat room");
+      });
+  };
+
   return (
     <div key={applicant.id} className="p-4 hover:bg-gray-50">
       <div className="flex items-start gap-4">
@@ -81,7 +101,12 @@ export function ApplicantCard({
           </div>
         </div>
         <div className="flex flex-col">
-          <Button size="sm" variant="outline" className="ml-4">
+          <Button
+            size="sm"
+            variant="outline"
+            className="ml-4"
+            onClick={getChatRoom}
+          >
             <Mail className="h-4 w-4 mr-2" />
             Contact
           </Button>

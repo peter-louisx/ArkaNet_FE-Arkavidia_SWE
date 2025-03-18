@@ -21,7 +21,11 @@ export default async function Navbar() {
 
           {isAuthenticated && (
             <>
-              <NavItem icon={<MessageSquare />} label="Messaging" />
+              <NavItem
+                icon={<MessageSquare />}
+                label="Messaging"
+                href="/chats"
+              />
               <NavItem icon={<Bell />} label="Notifications" />
               <Profile />{" "}
             </>
