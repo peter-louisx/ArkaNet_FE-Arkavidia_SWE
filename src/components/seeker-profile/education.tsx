@@ -198,7 +198,7 @@ export default function Education({
       </Card>
       {allowEdit && (
         <Dialog open={isEditingEducation} onOpenChange={setIsEditingEducation}>
-          <DialogContent className="sm:max-w-[600px]">
+          <DialogContent className="sm:max-w-[600px] [&>button]:hidden">
             <DialogHeader>
               <DialogTitle>
                 {currentEducation ? "Edit Education" : "Add Education"}

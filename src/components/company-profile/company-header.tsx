@@ -235,7 +235,7 @@ export default function CompanyHeader({
         <>
           {" "}
           <Dialog open={isUploadingImage} onOpenChange={setIsUploadingImage}>
-            <DialogContent className="sm:max-w-[500px]">
+            <DialogContent className="sm:max-w-[500px] [&>button]:hidden">
               <DialogHeader>
                 <DialogTitle>
                   {uploadImageType === "logo"
@@ -309,7 +309,7 @@ export default function CompanyHeader({
             </DialogContent>
           </Dialog>
           <Dialog open={isEditingCompany} onOpenChange={setIsEditingCompany}>
-            <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-hidden flex flex-col">
+            <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-hidden flex flex-col [&>button]:hidden">
               <DialogHeader>
                 <DialogTitle>Edit Company Information</DialogTitle>
                 <DialogDescription>

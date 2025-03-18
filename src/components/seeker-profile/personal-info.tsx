@@ -244,7 +244,7 @@ export default function PersonalInfo({
         <>
           {" "}
           <Dialog open={isUploadingImage} onOpenChange={setIsUploadingImage}>
-            <DialogContent className="sm:max-w-[500px]">
+            <DialogContent className="sm:max-w-[500px] [&>button]:hidden">
               <DialogHeader>
                 <DialogTitle>
                   {uploadImageType === "logo"

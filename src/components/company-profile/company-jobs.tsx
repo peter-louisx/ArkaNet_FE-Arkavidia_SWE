@@ -274,7 +274,7 @@ export default function CompanyJobs({
         <>
           {/* Job Edit Dialog */}
           <Dialog open={isEditingJob} onOpenChange={setIsEditingJob}>
-            <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-y-scroll flex flex-col">
+            <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-y-scroll flex flex-col [&>button]:hidden">
               <DialogHeader>
                 <DialogTitle>{currentJob ? "Edit Job" : "Add Job"}</DialogTitle>
                 <DialogDescription>

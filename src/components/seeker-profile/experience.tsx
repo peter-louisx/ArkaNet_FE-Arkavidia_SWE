@@ -244,7 +244,7 @@ export default function Experience({
           open={isEditingExperience}
           onOpenChange={setIsEditingExperience}
         >
-          <DialogContent className="sm:max-w-[600px]">
+          <DialogContent className="sm:max-w-[600px] [&>button]:hidden">
             <DialogHeader>
               <DialogTitle>
                 {currentExperience ? "Edit Experience" : "Add Experience"}

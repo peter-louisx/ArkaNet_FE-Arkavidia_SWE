@@ -75,7 +75,7 @@ export default function CompanyAbout({
 
       {allowEdit && (
         <Dialog open={isEditingAbout} onOpenChange={setIsEditingAbout}>
-          <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-hidden flex flex-col">
+          <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-hidden flex flex-col [&>button]:hidden">
             <DialogHeader>
               <DialogTitle>Edit About</DialogTitle>
               <DialogDescription>
