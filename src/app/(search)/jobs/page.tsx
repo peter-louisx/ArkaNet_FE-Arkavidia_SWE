@@ -91,6 +91,11 @@ export default function JobsPage() {
               placeholder="Search job titles, companies, or keywords"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  fetchJobs();
+                }
+              }}
             />
           </div>
           <div className=" flex gap-2">
