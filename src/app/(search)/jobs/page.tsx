@@ -219,6 +219,9 @@ export default function JobsPage() {
             <div>
               <Briefcase className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
               <h2 className="text-xl font-semibold mb-2">Loading jobs...</h2>
+              <p className="text-gray-500 text-sm mt-2">
+                Please wait while we fetch the data
+              </p>
             </div>
           </div>
         )}

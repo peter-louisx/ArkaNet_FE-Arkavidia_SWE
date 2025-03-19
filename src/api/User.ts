@@ -271,5 +271,17 @@ export const UserAPI = {
                 Authorization: `Bearer ${await getAuthToken()}`
             }
         })
+    },
+
+    search: async function({
+        keyword
+    }: {
+        keyword: string
+    }){
+        return axios.get(`/user/search`, {
+            params: {
+                keyword
+            }
+        })
     }
 }
