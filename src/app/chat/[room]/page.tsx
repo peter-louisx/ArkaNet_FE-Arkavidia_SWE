@@ -13,6 +13,8 @@ import { showErrorToast } from "@/lib/show-toast";
 import { ChatAPI } from "@/api/Chat";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { ChatContact, ChatMessage } from "@/types/chat/types";
+import { GeneralProfile } from "@/types/seeker/types";
 
 export default function Page({
   params,
@@ -20,20 +22,23 @@ export default function Page({
   params: Promise<{ room: string }>;
 }) {
   const { room } = use(params);
-  const [newMessage, setNewMessage] = useState("");
+  const [newMessage, setNewMessage] = useState<string>("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const socketRef = useRef<WebSocket | null>(null);
-  const [userInfo, setUserInfo] = useState<any>({});
-  const [contact, setContact] = useState<any>({});
+  const [userInfo, setUserInfo] = useState<GeneralProfile>({
+    name: "",
+    profile_picture: "",
+    role: "",
+    slug: "",
+    current_title: "",
+  });
+  const [contact, setContact] = useState<ChatContact>({
+    name: "",
+    avatar: "",
+  });
   const [loading, setLoading] = useState(true);
 
-  const [messages, setMessages] = useState<
-    {
-      message: string;
-      sender: string;
-      profile_picture: string;
-    }[]
-  >([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   //   useEffect(() => {
   //     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -49,7 +54,6 @@ export default function Page({
     socketRef.current.onmessage = (event) => {
       const message = JSON.parse(event.data);
 
-      console.log(message);
       setMessages((prevMessages) => [...prevMessages, message]);
     };
 

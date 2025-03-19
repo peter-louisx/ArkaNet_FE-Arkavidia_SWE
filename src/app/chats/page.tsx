@@ -6,17 +6,10 @@ import { useEffect, useState } from "react";
 import { ChatUserCard } from "@/components/chat/chat-user";
 import { ChatAPI } from "@/api/Chat";
 import { showErrorToast } from "@/lib/show-toast";
+import { ChatRoom } from "@/types/chat/types";
 
 export default function Page() {
-  const [chatRooms, setChatRooms] = useState<
-    {
-      id: string;
-      name: string;
-      profile_picture: string;
-      type: string;
-      slug: string;
-    }[]
-  >([]);
+  const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {

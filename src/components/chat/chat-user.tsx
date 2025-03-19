@@ -1,34 +1,16 @@
 "use client";
 
-import { Applicant } from "@/types/applicant/types";
-import { Mail, MoreVertical, Calendar, Paperclip, Cloud } from "lucide-react";
+import { Cloud } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { statusConfig } from "@/lib/applicant-status";
 import { COMPANY_PICTURE, PROFILE_PICTURE } from "@/lib/image-placeholder";
 import { ChatAPI } from "@/api/Chat";
 import { showErrorToast } from "@/lib/show-toast";
 import { useRouter } from "next/navigation";
+import { ChatRoom } from "@/types/chat/types";
 
-export function ChatUserCard({
-  user,
-}: {
-  user: {
-    id: string;
-    name: string;
-    profile_picture: string;
-    type: string;
-    slug: string;
-  };
-}) {
+export function ChatUserCard({ user }: { user: ChatRoom }) {
   const router = useRouter();
 
   const getChatRoom = async () => {
