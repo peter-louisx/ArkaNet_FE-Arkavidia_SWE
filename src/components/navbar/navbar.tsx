@@ -26,7 +26,11 @@ export default async function Navbar() {
                 label="Messaging"
                 href="/chats"
               />
-              <NavItem icon={<Bell />} label="Notifications" />
+              <NavItem
+                icon={<Bell />}
+                label="Notifications"
+                href="/notifications"
+              />
               <Profile />{" "}
             </>
           )}

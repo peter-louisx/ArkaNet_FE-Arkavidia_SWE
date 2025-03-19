@@ -84,7 +84,11 @@ export default async function Sidebar({
                     label="Messaging"
                     href="/chats"
                   />
-                  <MobileNavItem icon={<Bell />} label="Notifications" />
+                  <MobileNavItem
+                    icon={<Bell />}
+                    label="Notifications"
+                    href="/notifications"
+                  />
                 </>
               )}
             </div>
