@@ -125,7 +125,7 @@ export default function PeoplePage() {
         )}
 
         {/* People Listings */}
-        {!loading && (
+        {!loading && usersList.length > 0 && (
           <div className="lg:col-span-3 space-y-4 w-full">
             <div className="border-1 shadow-sm rounded-lg mx-auto py-12 px-8 max-md:px-5">
               <div className="flex justify-center items-center text-center">
@@ -171,20 +171,12 @@ export default function PeoplePage() {
           <div className="lg:col-span-3 space-y-4 w-full">
             <div className="border-1 shadow-sm rounded-lg mx-auto py-12 px-8 max-md:px-5">
               <div className="flex justify-center items-center text-center">
-                <div className="grid grid-cols-4 max-md:grid-cols-1 gap-10  w-full ">
-                  <div className="flex flex-col items-center justify-center">
-                    <img
-                      src="/images/empty.svg"
-                      alt="No People Found"
-                      className="h-32 w-32"
-                    />
-                    <h3 className="text-lg font-semibold mt-4">
-                      No People Found
-                    </h3>
-                    <p className="text-gray-500 text-sm mt-2">
-                      Try searching with different keywords
-                    </p>
-                  </div>
+                <div className="min-h-[300px] w-full flex flex-col items-center justify-center">
+                  <User2Icon className="h-16 w-16 text-muted-foreground" />
+                  <h2 className="text-lg font-semibold mt-4">Not found</h2>
+                  <p className="text-gray-500 text-sm mt-2">
+                    Please try adjusting your keyword
+                  </p>
                 </div>
               </div>
             </div>
