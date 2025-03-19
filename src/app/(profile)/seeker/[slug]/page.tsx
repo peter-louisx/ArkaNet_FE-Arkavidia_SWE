@@ -48,6 +48,7 @@ export default async function Page(props: { params: tParams }) {
         <PersonalInfo
           personalInfoData={profileData.personal_info}
           allowEdit={allowEdit}
+          canChat={isAuthenticated}
         />
 
         {/* About */}

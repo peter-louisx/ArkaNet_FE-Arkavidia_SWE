@@ -24,6 +24,10 @@ export default function Page() {
       .then((res) => {
         const { success, message, data } = res.data;
 
+        if (data == null) {
+          setLoading(false);
+          return;
+        }
         setChatRooms(data);
         setLoading(false);
       })

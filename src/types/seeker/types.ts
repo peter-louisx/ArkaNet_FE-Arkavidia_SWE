@@ -7,6 +7,7 @@ export type GeneralProfile = {
 }
 
 export type SeekerPersonalInfo = {
+    id: string;
     name: string;
     headline: string;
     location: string;

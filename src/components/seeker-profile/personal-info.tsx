@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { Edit, Loader2Icon, MapPin, Upload } from "lucide-react";
+import { Cloud, Edit, Loader2Icon, MapPin, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -25,15 +25,19 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SeekerPersonalInfo } from "@/types/seeker/types";
 import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 import { HEADER_PICTURE, PROFILE_PICTURE } from "@/lib/image-placeholder";
+import { ChatAPI } from "@/api/Chat";
+import { verifySession } from "@/lib/session";
 
 type ImageUploadType = "logo" | "cover";
 
 export default function PersonalInfo({
   personalInfoData,
   allowEdit = false,
+  canChat = false,
 }: {
   personalInfoData: SeekerPersonalInfo;
   allowEdit?: boolean;
+  canChat?: boolean;
 }) {
   const router = useRouter();
   const [personalInfo, setPersonalInfo] = useState(personalInfoData);
@@ -156,6 +160,19 @@ export default function PersonalInfo({
     setIsEditingPersonalInfo(false);
   }
 
+  const getChatRoom = async () => {
+    await ChatAPI.getChatRoom(personalInfoData.id)
+      .then((res) => {
+        const { success, message, data } = res.data;
+        if (success) {
+          router.push(`/chat/${data.id}`);
+        }
+      })
+      .catch((err) => {
+        showErrorToast("Failed to fetch chat room");
+      });
+  };
+
   return (
     <>
       <Card className="py-0">
@@ -229,11 +246,17 @@ export default function PersonalInfo({
                 <p className="text-muted-foreground">{personalInfo.headline}</p>
               </div>
 
-              <div className="flex justify-center gap-4 text-sm text-muted-foreground">
+              <div className="flex justify-center flex-col items-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center">
                   <MapPin className="h-4 w-4 mr-1" />
                   <span>{personalInfo.location}</span>
                 </div>
+                {!allowEdit && canChat && (
+                  <Button className="flex items-center" onClick={getChatRoom}>
+                    <Cloud className="h-4 w-4 mr-1" />
+                    <span>Chat</span>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
