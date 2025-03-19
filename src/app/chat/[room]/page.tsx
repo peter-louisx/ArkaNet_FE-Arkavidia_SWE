@@ -130,7 +130,7 @@ export default function Page({
               <Link href="/chats" className="text-gray-500 hover:text-gray-700">
                 <ArrowLeft className="h-5 w-5" />
               </Link>
-              {loading && <Loader2Icon className="h-5 w-5" />}
+              {loading && <Loader2Icon className="h-5 w-5 animate-spin" />}
 
               {!loading && (
                 <>
