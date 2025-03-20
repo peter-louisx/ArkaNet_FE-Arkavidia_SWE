@@ -78,16 +78,6 @@ export default function JobCard({ job }: { job: Job }) {
                   <span>{job.location_type}</span>
                 </div>
               </div>
-
-              <p className="mt-3 text-sm line-clamp-2">{job.description}</p>
-
-              <div className="flex flex-wrap gap-2 mt-3">
-                {job.skills.map((skill: string) => (
-                  <Badge key={skill} variant="secondary" className="text-xs">
-                    {skill}
-                  </Badge>
-                ))}
-              </div>
             </div>
           </div>
         </div>
