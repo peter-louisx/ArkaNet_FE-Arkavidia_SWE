@@ -243,15 +243,9 @@ export default function CompanyJobs({
                   <h3 className="text-lg font-medium mb-2">No jobs found</h3>
                   <p className="text-muted-foreground mb-4">
                     {jobs.length === 0
-                      ? "You haven't posted any jobs yet."
+                      ? "No jobs added yet."
                       : "No jobs match your search criteria."}
                   </p>
-                  {jobs.length === 0 && (
-                    <Button onClick={addNewJob}>
-                      <Plus className="h-4 w-4 mr-2" />
-                      Post Your First Job
-                    </Button>
-                  )}
                 </div>
               ) : (
                 filteredJobs.map((job) => (
