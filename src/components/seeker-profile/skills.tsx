@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Puzzle, X } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -10,11 +9,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import SkillInput from "../skills/skill-input";
 import { UserAPI } from "@/api/User";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { SeekerSkill } from "@/types/seeker/types";
 import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
@@ -71,6 +68,12 @@ export default function Skills({
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
+            {skills.length === 0 && (
+              <div className="flex justify-center items-center flex-col h-40">
+                <Puzzle className="h-20 w-20 text-primary" />
+                No skills added at the moment
+              </div>
+            )}
             <div className="flex flex-wrap gap-2">
               {skills.map((skill) => (
                 <Badge

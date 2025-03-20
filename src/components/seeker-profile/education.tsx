@@ -147,6 +147,12 @@ export default function Education({
           )}
         </CardHeader>
         <CardContent className="space-y-6">
+          {!education.length && (
+            <div className="flex justify-center items-center flex-col h-40">
+              <GraduationCap className="h-20 w-20 text-primary" />
+              No education added at the moment
+            </div>
+          )}
           {education.map((edu) => (
             <div key={edu.id} className="border rounded-lg p-4 relative group">
               <div className="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity">

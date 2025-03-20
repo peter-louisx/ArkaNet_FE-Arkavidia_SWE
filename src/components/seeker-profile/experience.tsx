@@ -190,6 +190,12 @@ export default function Experience({
           )}
         </CardHeader>
         <CardContent className="space-y-6">
+          {experiences.length === 0 && (
+            <div className="flex justify-center items-center flex-col h-40">
+              <Briefcase className="h-20 w-20 text-primary" />
+              No experiences added at the moment
+            </div>
+          )}
           {experiences.map((experience) => (
             <div
               key={experience.id}
