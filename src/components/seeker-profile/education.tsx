@@ -264,7 +264,7 @@ export default function Education({
                     )}
                   />
 
-                  <div className="grid grid-cols-2 gap-4 mt-4">
+                  <div className="grid grid-cols-2 gap-4 mt-4 max-md:grid-cols-1">
                     <div className="grid gap-2">
                       <DatePicker
                         form={form}

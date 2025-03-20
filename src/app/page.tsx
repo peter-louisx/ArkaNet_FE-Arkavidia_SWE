@@ -3,6 +3,33 @@ import { Button } from "@/components/ui/button";
 import { Briefcase, Users, MessageSquare } from "lucide-react";
 import Link from "next/link";
 
+const testimonials = [
+  {
+    name: "Sarah Johnson",
+    title: "Product Manager at TechCorp",
+    avatar:
+      "https://img.freepik.com/free-photo/portrait-happy-asian-woman-smiling-posing-confident-cross-arms-chest-standing-against-studio-background_1258-89269.jpg?t=st=1742486823~exp=1742490423~hmac=c449c6c662923a29e1a25b67f4f1e7947b5a480017f72e7b9d8bdd8f987ffebb&w=1380",
+    message:
+      "ArkaNet helped me connect with industry leaders and find my dream job. The networking opportunities are invaluable.",
+  },
+  {
+    name: "John Smith",
+    title: "Software Engineer at DevWorks",
+    avatar:
+      "https://img.freepik.com/free-photo/portrait-smiling-young-man_23-2149393640.jpg",
+    message:
+      "Thanks to ArkaNet, I was able to expand my professional network and land a great job in my field.",
+  },
+  {
+    name: "Emily Davis",
+    title: "Marketing Specialist at MarketGuru",
+    avatar:
+      "https://img.freepik.com/free-photo/lifestyle-people-emotions-casual-concept-confident-nice-smiling-asian-woman-cross-arms-chest-confident-ready-help-listening-coworkers-taking-part-conversation_1258-59335.jpg?t=st=1742486942~exp=1742490542~hmac=9d74ef74de9c9f58daaf49d3ffd579297b9178a9d9e957a231e123ef03975720&w=1380",
+    message:
+      "ArkaNet is a fantastic platform for connecting with professionals and discovering new career opportunities.",
+  },
+];
+
 export default function Home() {
   return (
     <>
@@ -65,12 +92,12 @@ export default function Home() {
             Join your colleagues, classmates, and friends
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
+            {testimonials.map((testimonial, i) => (
               <div key={i} className="bg-white p-6 rounded-lg shadow-sm">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-primary/20 overflow-hidden">
                     <Image
-                      src={`https://img.freepik.com/free-photo/young-adult-man-wearing-hoodie-beanie_23-2149393636.jpg`}
+                      src={testimonial.avatar}
                       width={48}
                       height={48}
                       alt={`User ${i}`}
@@ -78,16 +105,13 @@ export default function Home() {
                     />
                   </div>
                   <div>
-                    <h3 className="font-semibold">Sarah Johnson</h3>
+                    <h3 className="font-semibold">{testimonial.name}</h3>
                     <p className="text-sm text-muted-foreground">
-                      Product Manager at TechCorp
+                      {testimonial.title}
                     </p>
                   </div>
                 </div>
-                <p className="text-muted-foreground">
-                  "ArkaNet helped me connect with industry leaders and find my
-                  dream job. The networking opportunities are invaluable."
-                </p>
+                <p className="text-muted-foreground">{testimonial.message}</p>
               </div>
             ))}
           </div>

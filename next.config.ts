@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   output: "standalone",
   images: {
+    domains: ["img.freepik.com", "karirlab-prod-bucket.s3.ap-southeast-1.amazonaws.com", "arkavidia-fp.s3.ap-southeast-3.amazonaws.com", "fpswe.s3.ap-southeast-1.amazonaws.com"],
     remotePatterns: [
       {
         protocol: "https",

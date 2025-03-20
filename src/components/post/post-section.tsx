@@ -145,7 +145,7 @@ export default function PostSection({
 
           {posts.length > 0 && (
             <div className="px-9">
-              <Carousel className="w-full px-2">
+              <Carousel className="w-full px-2 max-md:px-0">
                 <CarouselContent>
                   {posts.map((post, index) => (
                     <CarouselItem
@@ -162,8 +162,8 @@ export default function PostSection({
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
+                <CarouselPrevious className="max-md:w-6 max-md:h-6" />
+                <CarouselNext className="max-md:w-6 max-md:h-6" />
               </Carousel>
             </div>
           )}

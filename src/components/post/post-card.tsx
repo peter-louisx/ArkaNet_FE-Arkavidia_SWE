@@ -25,7 +25,7 @@ export default function PostCard({
         <div className="w-full">
           <CardTitle className=" w-full">
             <div className="flex items-start justify-between gap-4">
-              <div className="flex gap-4 px-4 items-center">
+              <div className="flex gap-4 px-4 items-center max-md:items-start">
                 <Link
                   href={
                     post.type == "company"
@@ -33,7 +33,7 @@ export default function PostCard({
                       : `/seeker/${post.slug}`
                   }
                 >
-                  <Avatar className="w-12 h-12">
+                  <Avatar className="w-12 h-12 max-md:w-6 max-md:h-6">
                     <AvatarImage
                       src={
                         post.profile_picture ||
@@ -50,13 +50,19 @@ export default function PostCard({
                   </Avatar>
                 </Link>
                 <div>
-                  <h3>{post.name ? post.name : "User"}</h3>
-                  <p className="text-sm font-medium">{post.headline}</p>
-                  <div className="text-sm font-medium">{post.created_at}</div>
+                  <h3 className="max-md:text-sm">
+                    {post.name ? post.name : "User"}
+                  </h3>
+                  <p className="text-sm max-md:text-xs font-medium">
+                    {post.headline}
+                  </p>
+                  <div className="text-sm max-md:text-xs  font-medium">
+                    {post.created_at}
+                  </div>
                 </div>
               </div>
               {allowEdit && (
-                <div className="flex items-end px-2">
+                <div className="flex items-end px-2 max-md:px-0">
                   <Button
                     variant="ghost"
                     size="icon"
