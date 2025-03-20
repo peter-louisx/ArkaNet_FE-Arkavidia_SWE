@@ -71,18 +71,6 @@ export function JobCardCompany({
                   <span>{job.location_type}</span>
                 </div>
               </div>
-
-              {/* <div className="flex flex-wrap gap-2 mt-3">
-                {job.skills.map((skill: CompanySkill) => (
-                  <Badge
-                    key={skill.skill_id}
-                    variant="secondary"
-                    className="text-xs"
-                  >
-                    {skill.name}
-                  </Badge>
-                ))}
-              </div> */}
             </div>
             {allowEdit && (
               <div className="flex items-end gap-2">

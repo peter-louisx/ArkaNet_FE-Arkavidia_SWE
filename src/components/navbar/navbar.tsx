@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Briefcase, Users, MessageSquare, Bell } from "lucide-react";
+import { Briefcase, Users, MessageSquare, Bell, LogIn } from "lucide-react";
 import Sidebar from "./sidebar";
 import Profile from "./profile-dropdown";
 import { verifySession } from "@/lib/session";
@@ -37,8 +37,9 @@ export default async function Navbar() {
           {!isAuthenticated && (
             <Link
               href={"/seeker/login"}
-              className="bg-primary px-4 py-2 text-white rounded-md"
+              className="bg-primary px-4 py-2 text-white rounded-md flex items-center gap-2"
             >
+              <LogIn className="h-5 w-5" />
               Login
             </Link>
           )}

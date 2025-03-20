@@ -10,6 +10,7 @@ import {
   User,
   Menu,
   Loader2Icon,
+  LogIn,
 } from "lucide-react";
 import {
   Sheet,
@@ -126,8 +127,9 @@ export default function Sidebar({
                     </div>
                     <Link
                       href={"/seeker/login"}
-                      className="bg-primary px-4 py-2 text-white rounded-md"
+                      className="bg-primary px-4 py-2 text-white rounded-md flex items-center gap-2"
                     >
+                      <LogIn className="h-5 w-5" />
                       Login
                     </Link>
                   </div>
