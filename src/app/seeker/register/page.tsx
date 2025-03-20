@@ -240,7 +240,7 @@ export default function Register() {
                 disabled={loadingSubmit}
               >
                 {loadingSubmit ? <Loader2Icon className="animate-spin" /> : ""}
-                Sign Up
+                Sign Up as <span className="font-bold">Seeker</span>
               </Button>
               <div className="relative flex items-center gap-4 py-2">
                 <div className="flex-1 border-t"></div>
