@@ -57,8 +57,23 @@ export default function Experience({
     title: z.string().nonempty(),
     company: z.string().nonempty(),
     location: z.string().nonempty(),
-    startDate: z.date(),
-    endDate: z.date().nullable(),
+    startDate: z.date({
+      message: "Start date is required",
+    }),
+    endDate: z
+      .date()
+      .nullable()
+      .refine(
+        (data): boolean => {
+          if (form.getValues("startDate") && data) {
+            return data >= form.getValues("startDate");
+          }
+          return true;
+        },
+        {
+          message: "End date should be greater than start date",
+        }
+      ),
     description: z.string(),
   });
 
@@ -267,7 +282,7 @@ export default function Experience({
             setIsEditingExperience(open);
           }}
         >
-          <DialogContent className="sm:max-w-[600px] [&>button]:hidden">
+          <DialogContent className="sm:max-w-[600px] [&>button]:hidden max-h-[85vh] overflow-y-scroll">
             <DialogHeader>
               <DialogTitle>
                 {currentExperience ? "Edit Experience" : "Add Experience"}

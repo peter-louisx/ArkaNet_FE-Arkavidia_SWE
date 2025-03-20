@@ -55,7 +55,16 @@ export default function CompanyJobs({
     location_type: z.string().nonempty(),
     experience: z.string().nonempty(),
     min_salary: z.string(),
-    max_salary: z.string(),
+    max_salary: z.string().refine(
+      (data): boolean => {
+        return (
+          parseInt(data) > parseInt(form.getValues("min_salary") as string)
+        );
+      },
+      {
+        message: "Maximum salary must be greater than minimum",
+      }
+    ),
     job_description: z.string().nonempty(),
     skills: z.array(
       z.object({

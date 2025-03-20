@@ -144,6 +144,11 @@ export default async function Page(props: { params: tParams }) {
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
+                    {job.skills.length == 0 && (
+                      <p className="text-muted-foreground">
+                        No skills listed for this job
+                      </p>
+                    )}
                     {job.skills.map((skill: string) => (
                       <Badge key={skill} variant="secondary">
                         {skill}

@@ -39,9 +39,23 @@ export default function Education({
     school: z.string().nonempty("School is required"),
     degree: z.string().nonempty("Degree is required"),
     field: z.string().nonempty("Field of study is required"),
-    startDate: z.date(),
-    endDate: z.date(),
-    description: z.string(),
+    startDate: z.date({
+      message: "Start date is required",
+    }),
+    endDate: z.date().refine(
+      (data): boolean => {
+        if (form.getValues("startDate") && data) {
+          return data >= form.getValues("startDate");
+        }
+        return true;
+      },
+      {
+        message: "End date should be greater than start date",
+      }
+    ),
+    description: z.string({
+      message: "Description is required",
+    }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -216,7 +230,7 @@ export default function Education({
             setIsEditingEducation(true);
           }}
         >
-          <DialogContent className="sm:max-w-[600px] [&>button]:hidden">
+          <DialogContent className="sm:max-w-[600px] [&>button]:hidden max-h-[85vh] overflow-y-scroll">
             <DialogHeader>
               <DialogTitle>
                 {currentEducation ? "Edit Education" : "Add Education"}
