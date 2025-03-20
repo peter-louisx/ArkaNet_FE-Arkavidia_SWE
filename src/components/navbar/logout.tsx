@@ -4,6 +4,7 @@ import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { deleteSession } from "@/lib/session";
 import { toast } from "sonner";
+import { showSuccessToast } from "@/lib/show-toast";
 
 export default function Logout() {
   const router = useRouter();
@@ -11,7 +12,7 @@ export default function Logout() {
     <div
       onClick={() => {
         deleteSession();
-        toast("Signed out successfully");
+        showSuccessToast("Signed out successfully");
         router.push("/");
         router.refresh();
       }}

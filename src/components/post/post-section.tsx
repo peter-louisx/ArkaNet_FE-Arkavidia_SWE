@@ -20,7 +20,7 @@ import {
 import { useState, useRef } from "react";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { Upload, Edit } from "lucide-react";
+import { Upload, Edit, MessageCircle, MessageCircleDashed } from "lucide-react";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { PostAPI } from "@/api/Post";
@@ -137,8 +137,9 @@ export default function PostSection({
         </CardHeader>
         <CardContent className="">
           {posts.length === 0 && (
-            <div className="flex justify-center items-center h-32">
-              <p>No posts found</p>
+            <div className="flex justify-center items-center flex-col h-40">
+              <MessageCircle className="h-20 w-20 text-primary mb-4" />
+              No post added at the moment
             </div>
           )}
 
