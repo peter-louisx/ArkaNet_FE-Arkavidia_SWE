@@ -45,7 +45,7 @@ export default async function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2 md:hidden">
-          <Sidebar isAuthenticated={isAuthenticated} />
+          <Sidebar isAuthenticated={isAuthenticated} user={user} />
         </div>
       </div>
     </header>

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "../ui/button";
 import {
@@ -20,16 +22,25 @@ import { getUserCookie } from "@/lib/session";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { GeneralProfile } from "@/types/seeker/types";
 import { PROFILE_PICTURE, COMPANY_PICTURE } from "@/lib/image-placeholder";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
-export default async function Sidebar({
+export default function Sidebar({
   isAuthenticated,
+  user,
 }: {
   isAuthenticated: boolean;
+  user: GeneralProfile;
 }) {
-  const user: GeneralProfile = await getUserCookie();
+  const pathname = usePathname();
+  const [openMobile, setOpenMobile] = useState(false);
+
+  useEffect(() => {
+    setOpenMobile(false);
+  }, [pathname, setOpenMobile]);
 
   return (
-    <Sheet>
+    <Sheet open={openMobile} onOpenChange={setOpenMobile}>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon">
           <Menu className="h-5 w-5" />
