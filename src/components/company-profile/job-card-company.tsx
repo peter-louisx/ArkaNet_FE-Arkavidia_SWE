@@ -72,7 +72,7 @@ export function JobCardCompany({
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-2 mt-3">
+              {/* <div className="flex flex-wrap gap-2 mt-3">
                 {job.skills.map((skill: CompanySkill) => (
                   <Badge
                     key={skill.skill_id}
@@ -82,7 +82,7 @@ export function JobCardCompany({
                     {skill.name}
                   </Badge>
                 ))}
-              </div>
+              </div> */}
             </div>
             {allowEdit && (
               <div className="flex items-end gap-2">
