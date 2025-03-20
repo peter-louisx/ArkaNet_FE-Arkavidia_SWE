@@ -49,10 +49,10 @@ export function NotificationCard({
           </div>
         </div>
         <div className="flex flex-col">
-          <Button size="sm" variant="outline" className="ml-4">
+          {/* <Button size="sm" variant="outline" className="ml-4">
             <BookMarked className="h-4 w-4 " />
             Mark as read
-          </Button>
+          </Button> */}
         </div>
       </div>
     </div>

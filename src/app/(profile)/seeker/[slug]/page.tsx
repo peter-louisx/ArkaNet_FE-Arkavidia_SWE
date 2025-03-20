@@ -7,6 +7,7 @@ import { UserAPI } from "@/api/User";
 import { getUserCookie } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { verifySession } from "@/lib/session";
+import PostSection from "@/components/post/post-section";
 
 type tParams = Promise<{ slug: string }>;
 
@@ -56,6 +57,8 @@ export default async function Page(props: { params: tParams }) {
           personalInfoData={profileData.personal_info}
           allowEdit={allowEdit}
         />
+
+        <PostSection allowEdit={allowEdit} posts={profileData.posts} />
 
         {/* Experience */}
         <Experience
