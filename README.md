@@ -28,7 +28,7 @@ ArkaNet is a professional platform that enables job seekers to find jobs, commun
 
 **Client:** NextJs, Shadcn, Tailwind
 
-**Server:** Golang, Postgres
+**Server:** Golang, PostgreSQL
 
 **Deployment:** Docker, AWS EC2, Github Actions
 
@@ -36,7 +36,13 @@ ArkaNet is a professional platform that enables job seekers to find jobs, commun
 
 **Code Design:** Clean Architecture
 
-**Security:** OWASP
+**Security:** OWASP, JWT
+
+## ERD
+![Screenshot 2025-03-20 212310](https://github.com/user-attachments/assets/fe2c0fcc-7385-4050-a205-1917157f419e)
+
+## Brief View
+![Screenshot 2025-03-22 234911](https://github.com/user-attachments/assets/ee212c60-ac65-4edf-9a64-70f37b075861)
 
 
 
