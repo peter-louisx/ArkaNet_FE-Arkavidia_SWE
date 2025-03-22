@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# ArkaNet
 
-First, run the development server:
+ArkaNet is a professional platform that enables job seekers to find jobs, communicate with other seekers and companies and also apply for jobs. 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## Authors
 
-To learn more about Next.js, take a look at the following resources:
+- [@paundraP](https://github.com/paundraP)
+- [@Gmnaqib](https://github.com/Gmnaqib)
+- [@nickolasww](https://github.com/nickolasww)
+- [@peter-louisx](https://github.com/peter-louisx)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Profile management for seekers and companies. Seekers can customize their experience, education, skills, etc and companies can edit their profile and add jobs. 
+- Seekers can find jobs based on keyword and other filters.
+- Seekers can apply for jobs and companies can view their job applications and change statuses, review resume, or chat directly.
+- Notifications for chats, new jobs recommendation, and job application status.
+- Real-time chat between users utilizing websockets. 
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Tech Stack
+
+**Client:** NextJs, Shadcn, Tailwind
+
+**Server:** Golang, Postgres
+
+**Deployment:** Docker, AWS EC2, Github Actions
+
+**File Storage Management:** Amazon S3
+
+**Code Design:** Clean Architecture
+
+**Security:** OWASP
+
+
+
