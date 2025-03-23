@@ -23,6 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { showErrorToast, showSuccessToast } from "@/lib/show-toast";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { validatePassword } from "@/lib/password";
 
 export default function Register() {
   const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
@@ -31,7 +32,18 @@ export default function Register() {
   const formSchema: z.ZodSchema = z.object({
     name: z.string().min(3),
     email: z.string().email(),
-    password: z.string().min(6),
+    password: z
+      .string()
+      .min(6)
+      .refine(
+        (data) => {
+          return validatePassword(data);
+        },
+        {
+          message:
+            "Password must contain at least 6 characters, 1 number, 1 uppercase letter, and 1 special character",
+        }
+      ),
     about: z.string(),
     address: z.string().min(1),
     currenttitle: z.string().min(1),
