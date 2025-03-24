@@ -145,13 +145,13 @@ export default function PostSection({
           )}
 
           {posts.length > 0 && (
-            <div className="px-9">
+            <div className="px-9 ">
               <Carousel className="w-full px-2 max-md:px-0">
                 <CarouselContent>
                   {posts.map((post, index) => (
                     <CarouselItem
                       key={index}
-                      className="md:basis-1/2 lg:basis-1/1"
+                      className="md:basis-1/2 lg:basis-1/2"
                     >
                       <PostCard
                         key={index}
