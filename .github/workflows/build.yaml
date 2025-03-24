@@ -30,7 +30,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: "./docker-compose.yaml"
-          target: "/home/${{ secrets.EC2_HOST }}/docker-compose.yaml"
+          target: "/home/${{ secrets.EC2_USER }}/docker-compose.yaml"
 
       - name: Send nginx.conf to EC2
         uses: appleboy/scp-action@master
@@ -39,7 +39,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: "./nginx.conf"
-          target: "/home/${{ secrets.EC2_HOST }}/nginx.conf"
+          target: "/home/${{ secrets.EC2_USER }}/nginx.conf"
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
