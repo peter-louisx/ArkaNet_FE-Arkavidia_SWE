@@ -19,8 +19,28 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build the Docker image
         run: docker build . --file ./Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/arkavidia-final-project-frontend:latest
+
       - name: Push the Docker image to DockerHub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/arkavidia-final-project-frontend:latest
+
+      - name: Send docker compose file to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          source: "./docker-compose.yaml"
+          target: "/home/${{ secrets.EC2_HOST }}/docker-compose.yaml"
+
+      - name: Send nginx.conf to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          source: "./nginx.conf"
+          target: "/home/${{ secrets.EC2_HOST }}/nginx.conf"
+
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -28,8 +48,19 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/arkavidia-final-project-frontend:latest
-            docker stop arkavidia-final-project-frontend
-            docker rm arkavidia-final-project-frontend
-            docker run -d -p 3000:3000 --name arkavidia-final-project-frontend ${{ secrets.DOCKER_USERNAME }}/arkavidia-final-project-frontend:latest
+            docker compose -f down
+            docker-compose -f up -d
             docker image prune -f
+
+      # - name: Deploy to EC2
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.EC2_HOST }}
+      #     username: ${{ secrets.EC2_USER }}
+      #     key: ${{ secrets.EC2_PRIVATE_KEY }}
+      #     script: |
+      #       docker pull ${{ secrets.DOCKER_USERNAME }}/arkavidia-final-project-frontend:latest
+      #       docker stop arkavidia-final-project-frontend
+      #       docker rm arkavidia-final-project-frontend
+      #       docker run -d -p 3000:3000 --name arkavidia-final-project-frontend ${{ secrets.DOCKER_USERNAME }}/arkavidia-final-project-frontend:latest
+      #       docker image prune -f

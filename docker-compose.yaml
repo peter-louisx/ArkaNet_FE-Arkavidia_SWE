@@ -1,0 +1,25 @@
+version: "3"
+name: arkavidia
+services:
+  arkavidia-web:
+    image: peterlouisx2005/arkavidia-final-project-frontend:latest
+    container_name: arkavidia-web
+    networks:
+      - arkavidia-network
+
+  arkavidia-nginx:
+    container_name: arkavidia-nginx
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - arkavidia-web
+    networks:
+      - arkavidia-network
+
+networks:
+  arkavidia-network:
+    driver: bridge
