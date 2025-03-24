@@ -106,6 +106,7 @@ export default function PostSection({
         setImagePreview(null);
         setContent("");
         setImageFile(null);
+        setPostToUpdate("");
       });
   };
 
@@ -178,6 +179,7 @@ export default function PostSection({
               setContent("");
               setImagePreview(null);
               setIsEditingPost(open);
+              setPostToUpdate("");
               return;
             }
 
@@ -250,6 +252,7 @@ export default function PostSection({
                   setContent("");
                   setImagePreview(null);
                   setImageFile(null);
+                  setPostToUpdate("");
                 }}
               >
                 Cancel
