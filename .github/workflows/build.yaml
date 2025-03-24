@@ -49,7 +49,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             docker compose -f down
-            docker-compose -f up -d
+            docker compose -f up -d
             docker image prune -f
 
       # - name: Deploy to EC2
